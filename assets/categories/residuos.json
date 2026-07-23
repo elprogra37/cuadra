@@ -1,0 +1,195 @@
+{
+  "id": "residuos",
+  "version": 1,
+  "scope": "global",
+  "orden": 3,
+  "icono": "🗑️",
+  "nombre": { "es": "Residuos", "en": "Waste", "pt": "Resíduos" },
+  "templateKey": "reclamo_servicio",
+  "subtipos": [
+    {
+      "id": "basural",
+      "nombre": { "es": "Basural", "en": "Illegal dump", "pt": "Lixão" },
+      "fragmento": {
+        "es": "la formación de un basural a cielo abierto",
+        "en": "the formation of an open-air illegal dump",
+        "pt": "a formação de um lixão a céu aberto"
+      }
+    },
+    {
+      "id": "contenedor_roto",
+      "nombre": { "es": "Contenedor roto o faltante", "en": "Broken or missing container", "pt": "Contêiner quebrado ou faltante" },
+      "fragmento": {
+        "es": "el estado defectuoso o la ausencia del contenedor de residuos",
+        "en": "the broken or missing waste container",
+        "pt": "o estado defeituoso ou a ausência do contêiner de resíduos"
+      }
+    },
+    {
+      "id": "recoleccion_no_pasa",
+      "nombre": { "es": "La recolección no pasa", "en": "Collection not passing", "pt": "A coleta não passa" },
+      "fragmento": {
+        "es": "la interrupción del servicio de recolección de residuos",
+        "en": "the interruption of the waste collection service",
+        "pt": "a interrupção do serviço de coleta de resíduos"
+      }
+    },
+    {
+      "id": "escombros",
+      "nombre": { "es": "Escombros", "en": "Rubble", "pt": "Entulho" },
+      "fragmento": {
+        "es": "la acumulación de escombros en la vía pública",
+        "en": "the accumulation of rubble on public space",
+        "pt": "o acúmulo de entulho na via pública"
+      }
+    }
+  ],
+  "preguntas": [
+    {
+      "id": "magnitud",
+      "tipo": "opcion",
+      "texto": { "es": "¿Qué magnitud tiene?", "en": "How big is it?", "pt": "Qual é a magnitude?" },
+      "opciones": [
+        {
+          "id": "bolsas_sueltas",
+          "texto": { "es": "Bolsas sueltas", "en": "Loose bags", "pt": "Sacos soltos" },
+          "fragmento": {
+            "es": "consistente en bolsas de residuos dispersas",
+            "en": "consisting of scattered waste bags",
+            "pt": "consistindo em sacos de resíduos dispersos"
+          }
+        },
+        {
+          "id": "acumulacion_esquina",
+          "texto": { "es": "Ocupa parte de la vereda o esquina", "en": "Takes up part of the sidewalk or corner", "pt": "Ocupa parte da calçada ou esquina" },
+          "fragmento": {
+            "es": "ocupando parcialmente la vereda o esquina",
+            "en": "partially occupying the sidewalk or corner",
+            "pt": "ocupando parcialmente a calçada ou esquina"
+          }
+        },
+        {
+          "id": "gran_volumen",
+          "texto": { "es": "Gran volumen, crece hace tiempo", "en": "Large volume, growing for a while", "pt": "Grande volume, crescendo há tempo" },
+          "fragmento": {
+            "es": "de gran volumen y crecimiento sostenido en el tiempo",
+            "en": "of large volume and sustained growth over time",
+            "pt": "de grande volume e crescimento sustentado no tempo"
+          }
+        }
+      ]
+    },
+    {
+      "id": "desde_cuando",
+      "tipo": "opcion",
+      "texto": { "es": "¿Desde cuándo?", "en": "Since when?", "pt": "Desde quando?" },
+      "opciones": [
+        {
+          "id": "dias",
+          "texto": { "es": "Hace días", "en": "For days", "pt": "Há dias" },
+          "fragmento": {
+            "es": "La situación se registra desde hace días.",
+            "en": "The situation has been observed for days.",
+            "pt": "A situação é registrada há dias."
+          }
+        },
+        {
+          "id": "semanas",
+          "texto": { "es": "Hace semanas", "en": "For weeks", "pt": "Há semanas" },
+          "fragmento": {
+            "es": "La situación se registra desde hace semanas.",
+            "en": "The situation has been observed for weeks.",
+            "pt": "A situação é registrada há semanas."
+          }
+        },
+        {
+          "id": "meses",
+          "texto": { "es": "Hace meses", "en": "For months", "pt": "Há meses" },
+          "fragmento": {
+            "es": "La situación se extiende por un plazo de varios meses.",
+            "en": "The situation has persisted for several months.",
+            "pt": "A situação se estende por um prazo de vários meses."
+          }
+        }
+      ]
+    },
+    {
+      "id": "consecuencias",
+      "tipo": "multiple",
+      "obligatoria": false,
+      "texto": { "es": "¿Qué consecuencia tiene?", "en": "What are the consequences?", "pt": "Qual é a consequência?" },
+      "opciones": [
+        {
+          "id": "olores",
+          "texto": { "es": "Olores", "en": "Odors", "pt": "Odores" },
+          "fragmento": {
+            "es": "Genera olores que afectan a los frentistas.",
+            "en": "It generates odors affecting nearby residents.",
+            "pt": "Gera odores que afetam os moradores próximos."
+          }
+        },
+        {
+          "id": "plagas",
+          "texto": { "es": "Roedores o plagas", "en": "Rodents or pests", "pt": "Roedores ou pragas" },
+          "fragmento": {
+            "es": "Favorece la proliferación de roedores y plagas, con riesgo sanitario.",
+            "en": "It encourages rodents and pests, creating a health risk.",
+            "pt": "Favorece a proliferação de roedores e pragas, com risco sanitário."
+          }
+        },
+        {
+          "id": "obstruye_paso",
+          "texto": { "es": "Obstruye el paso", "en": "Blocks the way", "pt": "Obstrui a passagem" },
+          "fragmento": {
+            "es": "Obstruye la circulación peatonal.",
+            "en": "It blocks pedestrian circulation.",
+            "pt": "Obstrui a circulação de pedestres."
+          }
+        },
+        {
+          "id": "cerca_escuela_salud",
+          "texto": { "es": "Cerca de escuela o centro de salud", "en": "Near a school or health center", "pt": "Perto de escola ou centro de saúde" },
+          "fragmento": {
+            "es": "El punto se encuentra próximo a un establecimiento escolar o de salud.",
+            "en": "The location is near a school or health facility.",
+            "pt": "O ponto está próximo a um estabelecimento escolar ou de saúde."
+          }
+        }
+      ]
+    },
+    {
+      "id": "reclamo_previo",
+      "tipo": "opcion",
+      "texto": { "es": "¿Reclamaste antes?", "en": "Did you report this before?", "pt": "Você já reclamou antes?" },
+      "opciones": [
+        {
+          "id": "no",
+          "texto": { "es": "No, es el primer reclamo", "en": "No, this is the first report", "pt": "Não, é a primeira reclamação" },
+          "fragmento": {
+            "es": "No se registran reclamos previos por esta situación.",
+            "en": "No previous reports of this situation are on record.",
+            "pt": "Não se registram reclamações anteriores por esta situação."
+          }
+        },
+        {
+          "id": "sin_respuesta",
+          "texto": { "es": "Sí, sin respuesta", "en": "Yes, no response", "pt": "Sim, sem resposta" },
+          "fragmento": {
+            "es": "Se registran reclamos previos sin respuesta acreditada.",
+            "en": "Previous reports are on record with no documented response.",
+            "pt": "Registram-se reclamações anteriores sem resposta comprovada."
+          }
+        },
+        {
+          "id": "varios_vecinos",
+          "texto": { "es": "Sí, varios vecinos reclamamos", "en": "Yes, several neighbors reported it", "pt": "Sim, vários vizinhos reclamaram" },
+          "fragmento": {
+            "es": "Se registran múltiples reclamos previos de distintos vecinos sin respuesta acreditada.",
+            "en": "Multiple previous reports from different neighbors are on record with no documented response.",
+            "pt": "Registram-se múltiplas reclamações anteriores de diferentes vizinhos sem resposta comprovada."
+          }
+        }
+      ]
+    }
+  ]
+}

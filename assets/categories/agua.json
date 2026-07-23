@@ -1,0 +1,195 @@
+{
+  "id": "agua",
+  "version": 1,
+  "scope": "global",
+  "orden": 4,
+  "icono": "💧",
+  "nombre": { "es": "Agua y cloacas", "en": "Water and sewage", "pt": "Água e esgoto" },
+  "templateKey": "reclamo_servicio",
+  "subtipos": [
+    {
+      "id": "perdida",
+      "nombre": { "es": "Pérdida de agua", "en": "Water leak", "pt": "Vazamento de água" },
+      "fragmento": {
+        "es": "una pérdida de agua en la vía pública",
+        "en": "a water leak on public space",
+        "pt": "um vazamento de água na via pública"
+      }
+    },
+    {
+      "id": "falta_suministro",
+      "nombre": { "es": "Falta de suministro", "en": "No water supply", "pt": "Falta de fornecimento" },
+      "fragmento": {
+        "es": "la interrupción del suministro de agua potable",
+        "en": "the interruption of drinking water supply",
+        "pt": "a interrupção do fornecimento de água potável"
+      }
+    },
+    {
+      "id": "desborde_cloacal",
+      "nombre": { "es": "Desborde cloacal", "en": "Sewage overflow", "pt": "Transbordamento de esgoto" },
+      "fragmento": {
+        "es": "el desborde de líquidos cloacales en la vía pública",
+        "en": "the overflow of sewage onto public space",
+        "pt": "o transbordamento de esgoto na via pública"
+      }
+    },
+    {
+      "id": "boca_tormenta_tapada",
+      "nombre": { "es": "Boca de tormenta tapada", "en": "Blocked storm drain", "pt": "Bueiro entupido" },
+      "fragmento": {
+        "es": "la obstrucción de una boca de tormenta",
+        "en": "the blocked storm drain",
+        "pt": "a obstrução de um bueiro"
+      }
+    }
+  ],
+  "preguntas": [
+    {
+      "id": "intensidad",
+      "tipo": "opcion",
+      "texto": { "es": "¿Qué intensidad tiene?", "en": "How intense is it?", "pt": "Qual é a intensidade?" },
+      "opciones": [
+        {
+          "id": "leve",
+          "texto": { "es": "Leve pero constante", "en": "Slight but constant", "pt": "Leve mas constante" },
+          "fragmento": {
+            "es": "de intensidad leve pero constante",
+            "en": "of slight but constant intensity",
+            "pt": "de intensidade leve mas constante"
+          }
+        },
+        {
+          "id": "moderada",
+          "texto": { "es": "Moderada, forma charcos o correntada", "en": "Moderate, forms puddles or streams", "pt": "Moderada, forma poças ou correnteza" },
+          "fragmento": {
+            "es": "de intensidad moderada, con formación de charcos o correntada",
+            "en": "of moderate intensity, forming puddles or streams",
+            "pt": "de intensidade moderada, com formação de poças ou correnteza"
+          }
+        },
+        {
+          "id": "grave",
+          "texto": { "es": "Grave, afecta la circulación o viviendas", "en": "Severe, affects circulation or homes", "pt": "Grave, afeta a circulação ou moradias" },
+          "fragmento": {
+            "es": "de gravedad, afectando la circulación o el ingreso a viviendas",
+            "en": "severe, affecting circulation or access to homes",
+            "pt": "grave, afetando a circulação ou o acesso a moradias"
+          }
+        }
+      ]
+    },
+    {
+      "id": "desde_cuando",
+      "tipo": "opcion",
+      "texto": { "es": "¿Desde cuándo?", "en": "Since when?", "pt": "Desde quando?" },
+      "opciones": [
+        {
+          "id": "horas",
+          "texto": { "es": "Hace horas", "en": "For hours", "pt": "Há horas" },
+          "fragmento": {
+            "es": "La situación se registra desde hace horas.",
+            "en": "The situation has been observed for hours.",
+            "pt": "A situação é registrada há horas."
+          }
+        },
+        {
+          "id": "dias",
+          "texto": { "es": "Hace días", "en": "For days", "pt": "Há dias" },
+          "fragmento": {
+            "es": "La situación se registra desde hace días.",
+            "en": "The situation has been observed for days.",
+            "pt": "A situação é registrada há dias."
+          }
+        },
+        {
+          "id": "semanas_o_mas",
+          "texto": { "es": "Semanas o más", "en": "Weeks or more", "pt": "Semanas ou mais" },
+          "fragmento": {
+            "es": "La situación se extiende por semanas o más tiempo.",
+            "en": "The situation has persisted for weeks or longer.",
+            "pt": "A situação se estende por semanas ou mais."
+          }
+        }
+      ]
+    },
+    {
+      "id": "consecuencias",
+      "tipo": "multiple",
+      "obligatoria": false,
+      "texto": { "es": "¿Qué consecuencia tiene?", "en": "What are the consequences?", "pt": "Qual é a consequência?" },
+      "opciones": [
+        {
+          "id": "desperdicio",
+          "texto": { "es": "Desperdicio de agua potable", "en": "Drinking water waste", "pt": "Desperdício de água potável" },
+          "fragmento": {
+            "es": "Implica desperdicio sostenido de agua potable.",
+            "en": "It involves sustained waste of drinking water.",
+            "pt": "Implica desperdício sustentado de água potável."
+          }
+        },
+        {
+          "id": "olores_salud",
+          "texto": { "es": "Olores y riesgo sanitario", "en": "Odors and health risk", "pt": "Odores e risco sanitário" },
+          "fragmento": {
+            "es": "Genera olores y riesgo sanitario para los frentistas.",
+            "en": "It generates odors and health risk for residents.",
+            "pt": "Gera odores e risco sanitário para os moradores."
+          }
+        },
+        {
+          "id": "socava_calzada",
+          "texto": { "es": "Socava la calzada o vereda", "en": "Undermines the road or sidewalk", "pt": "Solapa a rua ou calçada" },
+          "fragmento": {
+            "es": "El escurrimiento socava la calzada o vereda, con riesgo de hundimiento.",
+            "en": "The runoff undermines the road or sidewalk, risking collapse.",
+            "pt": "O escoamento solapa a rua ou calçada, com risco de afundamento."
+          }
+        },
+        {
+          "id": "sin_agua_hogares",
+          "texto": { "es": "Hogares sin agua", "en": "Homes without water", "pt": "Casas sem água" },
+          "fragmento": {
+            "es": "Deja hogares sin acceso al agua potable.",
+            "en": "It leaves homes without access to drinking water.",
+            "pt": "Deixa casas sem acesso à água potável."
+          }
+        }
+      ]
+    },
+    {
+      "id": "reclamo_previo",
+      "tipo": "opcion",
+      "texto": { "es": "¿Reclamaste antes?", "en": "Did you report this before?", "pt": "Você já reclamou antes?" },
+      "opciones": [
+        {
+          "id": "no",
+          "texto": { "es": "No, es el primer reclamo", "en": "No, this is the first report", "pt": "Não, é a primeira reclamação" },
+          "fragmento": {
+            "es": "No se registran reclamos previos por esta situación.",
+            "en": "No previous reports of this situation are on record.",
+            "pt": "Não se registram reclamações anteriores por esta situação."
+          }
+        },
+        {
+          "id": "sin_respuesta",
+          "texto": { "es": "Sí, sin respuesta", "en": "Yes, no response", "pt": "Sim, sem resposta" },
+          "fragmento": {
+            "es": "Se registran reclamos previos sin respuesta acreditada.",
+            "en": "Previous reports are on record with no documented response.",
+            "pt": "Registram-se reclamações anteriores sem resposta comprovada."
+          }
+        },
+        {
+          "id": "varios_vecinos",
+          "texto": { "es": "Sí, varios vecinos reclamamos", "en": "Yes, several neighbors reported it", "pt": "Sim, vários vizinhos reclamaram" },
+          "fragmento": {
+            "es": "Se registran múltiples reclamos previos de distintos vecinos sin respuesta acreditada.",
+            "en": "Multiple previous reports from different neighbors are on record with no documented response.",
+            "pt": "Registram-se múltiplas reclamações anteriores de diferentes vizinhos sem resposta comprovada."
+          }
+        }
+      ]
+    }
+  ]
+}

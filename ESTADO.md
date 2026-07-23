@@ -27,7 +27,7 @@
 |---|---|---|
 | 1 | Andamiaje (estructura, Android+Windows compilan, CI) | ✅ hecho |
 | 2 | Sistema de diseño (tokens §5, `EstadoSello`, tests) | ✅ hecho |
-| 3 | Datos (Drift §19, freezed, repos offline-first, SyncQueue) | 🔨 en curso |
+| 3 | Datos (Drift §19, freezed, repos offline-first, SyncQueue) | ✅ hecho |
 | 4 | Backend (Supabase: SQL, PostGIS, RLS, siembra GeoNames) | ⬜ |
 | 5 | Motor geográfico (buscador, crear barrio, polígonos, resolve) | ⬜ |
 | 6 | Flujo de reporte guiado (cámara, EXIF, hash, árbol JSON, dedup) | ⬜ |
@@ -66,6 +66,34 @@
   resuelto (sello), archivado (tiza). `esperaAccion` codifica la regla del amarillo.
 - Tests: regla del amarillo verificada por test, paleta exacta, borde, rotación,
   semántica. 14 tests en verde.
+
+### Etapa 3 — Datos ✅ (2026-07-23)
+
+- **Drift** (`lib/data/local/`): esquema completo §19 en `tablas.dart` (geografía,
+  jurisdicciones, catálogo, casos, evidencia, adhesiones, acciones, respuestas,
+  resoluciones, usuarios, sync_ops), mixin `Sincronizable` (client_uuid +
+  sync_status + updated_at), `BaseDatos` v1 con índices. Nombres de tabla/columna
+  en inglés = contrato 1:1 con el Postgres futuro. Las data classes generadas se
+  llaman `Case`, `Neighborhood`, etc. (no `CaseData`).
+- **SyncQueue** (`lib/data/sync/cola_sync.dart`): backoff exponencial 30s→1h,
+  idempotencia por client_uuid, orden causal (caso antes que adhesión), estado
+  por ítem reflejado en cada entidad. `Conflictos.gananLocales` codifica LWW
+  salvo contadores (autoridad servidor). `ClienteRemoto` abstracto +
+  `ClienteRemotoNulo` hasta la etapa 4.
+- **Repos** (`lib/data/repositories/`): `RepoCasos` (crear con rate limit 5/día,
+  dedup 80 m/30 días por geohash+haversine, adherir con contador optimista,
+  feeds), `RepoGeografia` (crear barrio propuesto con límites 4 vértices/25 km²,
+  normalización de nombres, resolver punto→barrio), `RepoCategorias` (assets).
+- **Modelos**: `CategoriaDef`/`PreguntaGuiada`/`OpcionGuiada` (freezed, árbol §9),
+  `FichaJurisdiccion` (§14.3), `TextoI18n`, enums de dominio en `enums.dart`.
+- **Utils**: `Geohash` (codificar/decodificar), `Geodesia` (haversine, punto en
+  polígono, desplazamiento determinista ≤25 m para privacidad de pines).
+- **Assets**: 5 categorías del núcleo con árboles completos es/en/pt en
+  `assets/categories/` (alumbrado, calzada, residuos, agua, arbolado) + indice.json.
+  Cada opción lleva su `fragmento` para el generador de escritos (etapa 6).
+- **Tests**: 51 en verde (cola con base en memoria y reloj falso, repos, geohash,
+  geodesia, JSON de categorías validados contra las reglas §9).
+- Ojo: Drift devuelve DateTime en hora local; comparar `.toUtc()` en tests.
 
 ## Cómo retomar
 

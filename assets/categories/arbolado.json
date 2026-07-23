@@ -1,0 +1,204 @@
+{
+  "id": "arbolado",
+  "version": 1,
+  "scope": "global",
+  "orden": 5,
+  "icono": "🌳",
+  "nombre": { "es": "Arbolado", "en": "Trees", "pt": "Arborização" },
+  "templateKey": "reclamo_infraestructura",
+  "subtipos": [
+    {
+      "id": "rama_riesgo",
+      "nombre": { "es": "Rama en riesgo de caer", "en": "Branch at risk of falling", "pt": "Galho em risco de queda" },
+      "fragmento": {
+        "es": "la existencia de una rama con riesgo de caída",
+        "en": "a branch at risk of falling",
+        "pt": "a existência de um galho com risco de queda"
+      }
+    },
+    {
+      "id": "arbol_caido",
+      "nombre": { "es": "Árbol caído", "en": "Fallen tree", "pt": "Árvore caída" },
+      "fragmento": {
+        "es": "la caída de un árbol",
+        "en": "a fallen tree",
+        "pt": "a queda de uma árvore"
+      }
+    },
+    {
+      "id": "raiz_vereda",
+      "nombre": { "es": "Raíz levantando la vereda", "en": "Root lifting the sidewalk", "pt": "Raiz levantando a calçada" },
+      "fragmento": {
+        "es": "el levantamiento de la vereda por raíces",
+        "en": "the sidewalk lifted by tree roots",
+        "pt": "o levantamento da calçada por raízes"
+      }
+    },
+    {
+      "id": "poda_necesaria",
+      "nombre": { "es": "Poda necesaria", "en": "Pruning needed", "pt": "Poda necessária" },
+      "fragmento": {
+        "es": "la necesidad de poda del ejemplar",
+        "en": "the need for pruning",
+        "pt": "a necessidade de poda do exemplar"
+      }
+    }
+  ],
+  "preguntas": [
+    {
+      "id": "que_afecta",
+      "tipo": "opcion",
+      "texto": { "es": "¿Qué afecta o toca?", "en": "What does it affect or touch?", "pt": "O que afeta ou toca?" },
+      "opciones": [
+        {
+          "id": "cables",
+          "texto": { "es": "Cables o tendido eléctrico", "en": "Cables or power lines", "pt": "Cabos ou rede elétrica" },
+          "fragmento": {
+            "es": "en contacto con el tendido eléctrico o de servicios",
+            "en": "in contact with power or utility lines",
+            "pt": "em contato com a rede elétrica ou de serviços"
+          }
+        },
+        {
+          "id": "via_publica",
+          "texto": { "es": "La calle o la vereda", "en": "The street or sidewalk", "pt": "A rua ou a calçada" },
+          "fragmento": {
+            "es": "afectando la circulación por calle o vereda",
+            "en": "affecting street or sidewalk circulation",
+            "pt": "afetando a circulação pela rua ou calçada"
+          }
+        },
+        {
+          "id": "frente_vivienda",
+          "texto": { "es": "Frente de vivienda o techo", "en": "House front or roof", "pt": "Frente de moradia ou telhado" },
+          "fragmento": {
+            "es": "comprometiendo el frente o techo de una vivienda",
+            "en": "compromising the front or roof of a home",
+            "pt": "comprometendo a frente ou o telhado de uma moradia"
+          }
+        },
+        {
+          "id": "espacio_publico",
+          "texto": { "es": "Plaza o espacio público", "en": "Park or public space", "pt": "Praça ou espaço público" },
+          "fragmento": {
+            "es": "en plaza o espacio de uso público",
+            "en": "in a park or public-use space",
+            "pt": "em praça ou espaço de uso público"
+          }
+        }
+      ]
+    },
+    {
+      "id": "desde_cuando",
+      "tipo": "opcion",
+      "texto": { "es": "¿Desde cuándo?", "en": "Since when?", "pt": "Desde quando?" },
+      "opciones": [
+        {
+          "id": "reciente",
+          "texto": { "es": "Es reciente (tormenta, días)", "en": "Recent (storm, days)", "pt": "É recente (tempestade, dias)" },
+          "fragmento": {
+            "es": "La situación es reciente.",
+            "en": "The situation is recent.",
+            "pt": "A situação é recente."
+          }
+        },
+        {
+          "id": "meses",
+          "texto": { "es": "Hace meses", "en": "For months", "pt": "Há meses" },
+          "fragmento": {
+            "es": "La situación se extiende por un plazo de varios meses.",
+            "en": "The situation has persisted for several months.",
+            "pt": "A situação se estende por um prazo de vários meses."
+          }
+        },
+        {
+          "id": "mas_1_anio",
+          "texto": { "es": "Más de un año", "en": "More than a year", "pt": "Mais de um ano" },
+          "fragmento": {
+            "es": "La situación se extiende por un plazo superior a un (1) año.",
+            "en": "The situation has persisted for more than one (1) year.",
+            "pt": "A situação se estende por prazo superior a um (1) ano."
+          }
+        }
+      ]
+    },
+    {
+      "id": "consecuencias",
+      "tipo": "multiple",
+      "obligatoria": false,
+      "texto": { "es": "¿Qué consecuencia tiene?", "en": "What are the consequences?", "pt": "Qual é a consequência?" },
+      "opciones": [
+        {
+          "id": "riesgo_personas",
+          "texto": { "es": "Riesgo de golpear a alguien", "en": "Risk of hitting someone", "pt": "Risco de atingir alguém" },
+          "fragmento": {
+            "es": "Configura riesgo cierto para la integridad de las personas que circulan.",
+            "en": "It poses a real risk to passersby.",
+            "pt": "Configura risco certo para a integridade das pessoas que circulam."
+          }
+        },
+        {
+          "id": "caidas_vereda",
+          "texto": { "es": "Tropiezos y caídas en la vereda", "en": "Trips and falls on the sidewalk", "pt": "Tropeços e quedas na calçada" },
+          "fragmento": {
+            "es": "Provoca tropiezos y caídas en la vereda, en particular de personas mayores.",
+            "en": "It causes trips and falls on the sidewalk, particularly among the elderly.",
+            "pt": "Provoca tropeços e quedas na calçada, em particular de idosos."
+          }
+        },
+        {
+          "id": "corte_servicio",
+          "texto": { "es": "Puede cortar luz o servicios", "en": "May cut power or services", "pt": "Pode cortar energia ou serviços" },
+          "fragmento": {
+            "es": "Amenaza con provocar cortes de energía o servicios en la zona.",
+            "en": "It threatens to cause power or service outages in the area.",
+            "pt": "Ameaça provocar cortes de energia ou serviços na região."
+          }
+        },
+        {
+          "id": "obstruye_paso",
+          "texto": { "es": "Obstruye el paso", "en": "Blocks the way", "pt": "Obstrui a passagem" },
+          "fragmento": {
+            "es": "Obstruye la circulación peatonal o vehicular.",
+            "en": "It blocks pedestrian or vehicle circulation.",
+            "pt": "Obstrui a circulação de pedestres ou veículos."
+          }
+        }
+      ]
+    },
+    {
+      "id": "reclamo_previo",
+      "tipo": "opcion",
+      "texto": { "es": "¿Reclamaste antes?", "en": "Did you report this before?", "pt": "Você já reclamou antes?" },
+      "opciones": [
+        {
+          "id": "no",
+          "texto": { "es": "No, es el primer reclamo", "en": "No, this is the first report", "pt": "Não, é a primeira reclamação" },
+          "fragmento": {
+            "es": "No se registran reclamos previos por esta situación.",
+            "en": "No previous reports of this situation are on record.",
+            "pt": "Não se registram reclamações anteriores por esta situação."
+          }
+        },
+        {
+          "id": "sin_respuesta",
+          "texto": { "es": "Sí, sin respuesta", "en": "Yes, no response", "pt": "Sim, sem resposta" },
+          "fragmento": {
+            "es": "Se registran reclamos previos sin respuesta acreditada.",
+            "en": "Previous reports are on record with no documented response.",
+            "pt": "Registram-se reclamações anteriores sem resposta comprovada."
+          }
+        },
+        {
+          "id": "varios_vecinos",
+          "texto": { "es": "Sí, varios vecinos reclamamos", "en": "Yes, several neighbors reported it", "pt": "Sim, vários vizinhos reclamaram" },
+          "fragmento": {
+            "es": "Se registran múltiples reclamos previos de distintos vecinos sin respuesta acreditada.",
+            "en": "Multiple previous reports from different neighbors are on record with no documented response.",
+            "pt": "Registram-se múltiplas reclamações anteriores de diferentes vizinhos sem resposta comprovada."
+          }
+        }
+      ]
+    }
+  ]
+}

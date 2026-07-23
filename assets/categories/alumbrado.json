@@ -1,0 +1,322 @@
+{
+  "id": "alumbrado",
+  "version": 1,
+  "scope": "global",
+  "orden": 1,
+  "icono": "💡",
+  "nombre": {
+    "es": "Alumbrado público",
+    "en": "Street lighting",
+    "pt": "Iluminação pública"
+  },
+  "templateKey": "reclamo_infraestructura",
+  "subtipos": [
+    {
+      "id": "luminaria_apagada",
+      "nombre": {
+        "es": "Luminaria apagada",
+        "en": "Light out",
+        "pt": "Luminária apagada"
+      },
+      "fragmento": {
+        "es": "la falta de funcionamiento de la luminaria pública",
+        "en": "the non-functioning public streetlight",
+        "pt": "o não funcionamento da luminária pública"
+      }
+    },
+    {
+      "id": "luminaria_intermitente",
+      "nombre": {
+        "es": "Luminaria intermitente",
+        "en": "Flickering light",
+        "pt": "Luminária intermitente"
+      },
+      "fragmento": {
+        "es": "el funcionamiento intermitente de la luminaria pública",
+        "en": "the intermittent operation of the public streetlight",
+        "pt": "o funcionamento intermitente da luminária pública"
+      }
+    },
+    {
+      "id": "columna_caida",
+      "nombre": {
+        "es": "Columna caída o inclinada",
+        "en": "Fallen or leaning pole",
+        "pt": "Poste caído ou inclinado"
+      },
+      "fragmento": {
+        "es": "la caída o inclinación peligrosa de una columna de alumbrado",
+        "en": "the fallen or dangerously leaning lighting pole",
+        "pt": "a queda ou inclinação perigosa de um poste de iluminação"
+      }
+    },
+    {
+      "id": "cableado_expuesto",
+      "nombre": {
+        "es": "Cableado expuesto",
+        "en": "Exposed wiring",
+        "pt": "Fiação exposta"
+      },
+      "fragmento": {
+        "es": "la existencia de cableado eléctrico expuesto en instalación de alumbrado",
+        "en": "the exposed electrical wiring on a lighting installation",
+        "pt": "a existência de fiação elétrica exposta em instalação de iluminação"
+      }
+    }
+  ],
+  "preguntas": [
+    {
+      "id": "donde_exactamente",
+      "tipo": "opcion",
+      "texto": {
+        "es": "¿Dónde exactamente?",
+        "en": "Where exactly?",
+        "pt": "Onde exatamente?"
+      },
+      "opciones": [
+        {
+          "id": "columna_esquina",
+          "texto": {
+            "es": "Columna de esquina",
+            "en": "Corner pole",
+            "pt": "Poste de esquina"
+          },
+          "fragmento": {
+            "es": "emplazada en columna de esquina",
+            "en": "located on a corner pole",
+            "pt": "localizada em poste de esquina"
+          }
+        },
+        {
+          "id": "media_cuadra",
+          "texto": {
+            "es": "A mitad de cuadra",
+            "en": "Mid-block",
+            "pt": "No meio da quadra"
+          },
+          "fragmento": {
+            "es": "emplazada a mitad de cuadra",
+            "en": "located mid-block",
+            "pt": "localizada no meio da quadra"
+          }
+        },
+        {
+          "id": "plaza_espacio_verde",
+          "texto": {
+            "es": "En plaza o espacio verde",
+            "en": "In a park or green space",
+            "pt": "Em praça ou área verde"
+          },
+          "fragmento": {
+            "es": "emplazada en plaza o espacio verde",
+            "en": "located in a park or green space",
+            "pt": "localizada em praça ou área verde"
+          }
+        },
+        {
+          "id": "varias_luminarias",
+          "texto": {
+            "es": "Varias luminarias de la cuadra",
+            "en": "Several lights on the block",
+            "pt": "Várias luminárias da quadra"
+          },
+          "fragmento": {
+            "es": "afectando a varias luminarias del tramo",
+            "en": "affecting several lights along the stretch",
+            "pt": "afetando várias luminárias do trecho"
+          }
+        }
+      ]
+    },
+    {
+      "id": "desde_cuando",
+      "tipo": "opcion",
+      "texto": {
+        "es": "¿Desde cuándo?",
+        "en": "Since when?",
+        "pt": "Desde quando?"
+      },
+      "opciones": [
+        {
+          "id": "menos_1_semana",
+          "texto": {
+            "es": "Menos de una semana",
+            "en": "Less than a week",
+            "pt": "Menos de uma semana"
+          },
+          "fragmento": {
+            "es": "La situación se registra desde hace menos de una semana.",
+            "en": "The situation has been observed for less than a week.",
+            "pt": "A situação é registrada há menos de uma semana."
+          }
+        },
+        {
+          "id": "entre_1_4_semanas",
+          "texto": {
+            "es": "Entre una semana y un mes",
+            "en": "Between a week and a month",
+            "pt": "Entre uma semana e um mês"
+          },
+          "fragmento": {
+            "es": "La situación se extiende por un plazo de entre una semana y un mes.",
+            "en": "The situation has persisted for between one week and one month.",
+            "pt": "A situação se estende por um prazo entre uma semana e um mês."
+          }
+        },
+        {
+          "id": "entre_1_3_meses",
+          "texto": {
+            "es": "Entre 1 y 3 meses",
+            "en": "Between 1 and 3 months",
+            "pt": "Entre 1 e 3 meses"
+          },
+          "fragmento": {
+            "es": "La situación se extiende por un plazo de entre uno (1) y tres (3) meses.",
+            "en": "The situation has persisted for between one (1) and three (3) months.",
+            "pt": "A situação se estende por um prazo entre um (1) e três (3) meses."
+          }
+        },
+        {
+          "id": "mas_3_meses",
+          "texto": {
+            "es": "Más de 3 meses",
+            "en": "More than 3 months",
+            "pt": "Mais de 3 meses"
+          },
+          "fragmento": {
+            "es": "La situación se extiende por un plazo superior a noventa (90) días.",
+            "en": "The situation has persisted for more than ninety (90) days.",
+            "pt": "A situação se estende por prazo superior a noventa (90) dias."
+          }
+        }
+      ]
+    },
+    {
+      "id": "consecuencias",
+      "tipo": "multiple",
+      "obligatoria": false,
+      "texto": {
+        "es": "¿Qué consecuencia tiene?",
+        "en": "What are the consequences?",
+        "pt": "Qual é a consequência?"
+      },
+      "opciones": [
+        {
+          "id": "zona_escolar",
+          "texto": {
+            "es": "Zona escolar",
+            "en": "School zone",
+            "pt": "Zona escolar"
+          },
+          "fragmento": {
+            "es": "El punto se encuentra en zona escolar.",
+            "en": "The location is in a school zone.",
+            "pt": "O ponto se encontra em zona escolar."
+          }
+        },
+        {
+          "id": "inseguridad",
+          "texto": {
+            "es": "Sensación de inseguridad",
+            "en": "Feeling of insecurity",
+            "pt": "Sensação de insegurança"
+          },
+          "fragmento": {
+            "es": "La falta de iluminación afecta las condiciones de seguridad del sector.",
+            "en": "The lack of lighting affects the safety conditions of the area.",
+            "pt": "A falta de iluminação afeta as condições de segurança do setor."
+          }
+        },
+        {
+          "id": "caidas_accidentes",
+          "texto": {
+            "es": "Caídas o accidentes",
+            "en": "Falls or accidents",
+            "pt": "Quedas ou acidentes"
+          },
+          "fragmento": {
+            "es": "Se registran caídas o accidentes atribuibles a la falta de iluminación.",
+            "en": "Falls or accidents attributable to the lack of lighting have occurred.",
+            "pt": "Registram-se quedas ou acidentes atribuíveis à falta de iluminação."
+          }
+        },
+        {
+          "id": "sin_otra_iluminacion",
+          "texto": {
+            "es": "Zona sin otra iluminación",
+            "en": "Area with no other lighting",
+            "pt": "Zona sem outra iluminação"
+          },
+          "fragmento": {
+            "es": "El sector carece de fuente alternativa de iluminación.",
+            "en": "The area lacks any alternative source of lighting.",
+            "pt": "O setor carece de fonte alternativa de iluminação."
+          }
+        }
+      ]
+    },
+    {
+      "id": "reclamo_previo",
+      "tipo": "opcion",
+      "texto": {
+        "es": "¿Reclamaste antes?",
+        "en": "Did you report this before?",
+        "pt": "Você já reclamou antes?"
+      },
+      "opciones": [
+        {
+          "id": "no",
+          "texto": {
+            "es": "No, es el primer reclamo",
+            "en": "No, this is the first report",
+            "pt": "Não, é a primeira reclamação"
+          },
+          "fragmento": {
+            "es": "No se registran reclamos previos por esta situación.",
+            "en": "No previous reports of this situation are on record.",
+            "pt": "Não se registram reclamações anteriores por esta situação."
+          }
+        },
+        {
+          "id": "telefono_sin_respuesta",
+          "texto": {
+            "es": "Sí, por teléfono, sin respuesta",
+            "en": "Yes, by phone, no response",
+            "pt": "Sim, por telefone, sem resposta"
+          },
+          "fragmento": {
+            "es": "Se registran reclamos previos por vía telefónica sin respuesta acreditada.",
+            "en": "Previous reports were made by phone with no documented response.",
+            "pt": "Registram-se reclamações anteriores por via telefônica sem resposta comprovada."
+          }
+        },
+        {
+          "id": "web_sin_respuesta",
+          "texto": {
+            "es": "Sí, por la web del municipio, sin respuesta",
+            "en": "Yes, via the city website, no response",
+            "pt": "Sim, pelo site da prefeitura, sem resposta"
+          },
+          "fragmento": {
+            "es": "Se registran reclamos previos por el canal web oficial sin respuesta acreditada.",
+            "en": "Previous reports were filed through the official web channel with no documented response.",
+            "pt": "Registram-se reclamações anteriores pelo canal web oficial sem resposta comprovada."
+          }
+        },
+        {
+          "id": "varios_vecinos",
+          "texto": {
+            "es": "Sí, varios vecinos reclamamos",
+            "en": "Yes, several neighbors reported it",
+            "pt": "Sim, vários vizinhos reclamaram"
+          },
+          "fragmento": {
+            "es": "Se registran múltiples reclamos previos de distintos vecinos sin respuesta acreditada.",
+            "en": "Multiple previous reports from different neighbors are on record with no documented response.",
+            "pt": "Registram-se múltiplas reclamações anteriores de diferentes vizinhos sem resposta comprovada."
+          }
+        }
+      ]
+    }
+  ]
+}

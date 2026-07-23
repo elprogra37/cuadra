@@ -52,6 +52,25 @@ Estado y un contador público de días sin respuesta.
 pantallas de caso a partir de la etapa 7. Mientras tanto:
 `flutter test test/core/theme/` corre los tests del sistema de diseño.
 
+### Capa de datos offline-first (Etapa 3) ✅
+
+- **Base local Drift (SQLite)** con el esquema completo del expediente:
+  barrios con polígono, casos con evidencia hasheada, adhesiones, acciones de
+  escalamiento, resoluciones. La app funciona 100% sin conexión.
+- **Cola de sincronización** con reintentos exponenciales (30 s → 1 h),
+  idempotencia por `client_uuid` y estado visible por registro. Los contadores
+  son autoridad del servidor; el resto resuelve por último-en-escribir.
+- **Reglas antifraude locales:** máximo 5 casos por día, deduplicación a menos
+  de 80 m + misma categoría + 30 días, adhesión única por usuario.
+- **Catálogo guiado:** 5 categorías (alumbrado, calzada, residuos, agua,
+  arbolado) definidas en JSON con árboles de preguntas en es/en/pt — agregar
+  una categoría es agregar un JSON, sin tocar código.
+- **Privacidad en el modelo:** domicilios como geohash de 7 caracteres (~150 m)
+  y pines sobre viviendas desplazados hasta 25 m de forma estable.
+
+**Cómo probarlo:** `flutter test test/data/` (cola, repos y esquema contra una
+base en memoria). La UI de reporte que consume esto llega en la etapa 6.
+
 ---
 
 ## Desarrollo

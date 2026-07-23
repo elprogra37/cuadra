@@ -1,0 +1,251 @@
+{
+  "id": "calzada",
+  "version": 1,
+  "scope": "global",
+  "orden": 2,
+  "icono": "🛣️",
+  "nombre": {
+    "es": "Calzada y veredas",
+    "en": "Road and sidewalks",
+    "pt": "Rua e calçadas"
+  },
+  "templateKey": "reclamo_infraestructura",
+  "subtipos": [
+    {
+      "id": "bache",
+      "nombre": { "es": "Bache", "en": "Pothole", "pt": "Buraco" },
+      "fragmento": {
+        "es": "la existencia de un bache en la calzada",
+        "en": "the existence of a pothole in the roadway",
+        "pt": "a existência de um buraco na pista"
+      }
+    },
+    {
+      "id": "hundimiento",
+      "nombre": { "es": "Hundimiento", "en": "Road sinking", "pt": "Afundamento" },
+      "fragmento": {
+        "es": "el hundimiento de la calzada",
+        "en": "the sinking of the roadway",
+        "pt": "o afundamento da pista"
+      }
+    },
+    {
+      "id": "vereda_rota",
+      "nombre": { "es": "Vereda rota", "en": "Broken sidewalk", "pt": "Calçada quebrada" },
+      "fragmento": {
+        "es": "la rotura de la vereda",
+        "en": "the broken sidewalk",
+        "pt": "a calçada quebrada"
+      }
+    },
+    {
+      "id": "rampa_faltante",
+      "nombre": { "es": "Rampa faltante", "en": "Missing ramp", "pt": "Rampa faltante" },
+      "fragmento": {
+        "es": "la falta de rampa de accesibilidad",
+        "en": "the missing accessibility ramp",
+        "pt": "a falta de rampa de acessibilidade"
+      }
+    },
+    {
+      "id": "tapa_servicio",
+      "nombre": { "es": "Tapa de servicio", "en": "Utility cover", "pt": "Tampa de serviço" },
+      "fragmento": {
+        "es": "el estado defectuoso de una tapa de servicio",
+        "en": "the defective utility cover",
+        "pt": "o estado defeituoso de uma tampa de serviço"
+      }
+    }
+  ],
+  "preguntas": [
+    {
+      "id": "tamano",
+      "tipo": "opcion",
+      "texto": { "es": "¿Tamaño aproximado?", "en": "Approximate size?", "pt": "Tamanho aproximado?" },
+      "opciones": [
+        {
+          "id": "chico",
+          "texto": { "es": "Menor que una rueda de auto", "en": "Smaller than a car wheel", "pt": "Menor que uma roda de carro" },
+          "fragmento": {
+            "es": "de dimensiones menores a una rueda de vehículo",
+            "en": "smaller than a vehicle wheel",
+            "pt": "de dimensões menores que uma roda de veículo"
+          }
+        },
+        {
+          "id": "mediano",
+          "texto": { "es": "Como una tapa de alcantarilla", "en": "Like a manhole cover", "pt": "Como uma tampa de bueiro" },
+          "fragmento": {
+            "es": "de dimensiones comparables a una tapa de alcantarilla",
+            "en": "comparable in size to a manhole cover",
+            "pt": "de dimensões comparáveis a uma tampa de bueiro"
+          }
+        },
+        {
+          "id": "grande",
+          "texto": { "es": "Más grande que una tapa de alcantarilla", "en": "Bigger than a manhole cover", "pt": "Maior que uma tampa de bueiro" },
+          "fragmento": {
+            "es": "de dimensiones superiores a una tapa de alcantarilla",
+            "en": "larger than a manhole cover",
+            "pt": "de dimensões superiores a uma tampa de bueiro"
+          }
+        }
+      ]
+    },
+    {
+      "id": "donde",
+      "tipo": "opcion",
+      "texto": { "es": "¿Dónde?", "en": "Where?", "pt": "Onde?" },
+      "opciones": [
+        {
+          "id": "carril_circulacion",
+          "texto": { "es": "Carril de circulación", "en": "Traffic lane", "pt": "Faixa de circulação" },
+          "fragmento": {
+            "es": "ubicado en carril de circulación vehicular",
+            "en": "located in a traffic lane",
+            "pt": "localizado em faixa de circulação de veículos"
+          }
+        },
+        {
+          "id": "junto_cordon",
+          "texto": { "es": "Junto al cordón", "en": "Next to the curb", "pt": "Junto ao meio-fio" },
+          "fragmento": {
+            "es": "ubicado junto al cordón",
+            "en": "located next to the curb",
+            "pt": "localizado junto ao meio-fio"
+          }
+        },
+        {
+          "id": "senda_peatonal",
+          "texto": { "es": "Sobre la senda peatonal", "en": "On the crosswalk", "pt": "Na faixa de pedestres" },
+          "fragmento": {
+            "es": "ubicado sobre la senda peatonal",
+            "en": "located on the pedestrian crossing",
+            "pt": "localizado na faixa de pedestres"
+          }
+        },
+        {
+          "id": "vereda",
+          "texto": { "es": "En la vereda", "en": "On the sidewalk", "pt": "Na calçada" },
+          "fragmento": {
+            "es": "ubicado en la vereda",
+            "en": "located on the sidewalk",
+            "pt": "localizado na calçada"
+          }
+        }
+      ]
+    },
+    {
+      "id": "desde_cuando",
+      "tipo": "opcion",
+      "texto": { "es": "¿Desde cuándo?", "en": "Since when?", "pt": "Desde quando?" },
+      "opciones": [
+        {
+          "id": "menos_1_mes",
+          "texto": { "es": "Menos de un mes", "en": "Less than a month", "pt": "Menos de um mês" },
+          "fragmento": {
+            "es": "La situación se registra desde hace menos de un mes.",
+            "en": "The situation has been observed for less than a month.",
+            "pt": "A situação é registrada há menos de um mês."
+          }
+        },
+        {
+          "id": "entre_1_3_meses",
+          "texto": { "es": "Entre 1 y 3 meses", "en": "Between 1 and 3 months", "pt": "Entre 1 e 3 meses" },
+          "fragmento": {
+            "es": "La situación se extiende por un plazo de entre uno (1) y tres (3) meses.",
+            "en": "The situation has persisted for between one (1) and three (3) months.",
+            "pt": "A situação se estende por um prazo entre um (1) e três (3) meses."
+          }
+        },
+        {
+          "id": "mas_3_meses",
+          "texto": { "es": "Más de 3 meses", "en": "More than 3 months", "pt": "Mais de 3 meses" },
+          "fragmento": {
+            "es": "La situación se extiende por un plazo superior a noventa (90) días.",
+            "en": "The situation has persisted for more than ninety (90) days.",
+            "pt": "A situação se estende por prazo superior a noventa (90) dias."
+          }
+        }
+      ]
+    },
+    {
+      "id": "consecuencias",
+      "tipo": "multiple",
+      "obligatoria": false,
+      "texto": { "es": "¿Consecuencias?", "en": "Consequences?", "pt": "Consequências?" },
+      "opciones": [
+        {
+          "id": "danos_vehiculos",
+          "texto": { "es": "Daños a vehículos", "en": "Vehicle damage", "pt": "Danos a veículos" },
+          "fragmento": {
+            "es": "Se registran daños a vehículos atribuibles al estado de la calzada.",
+            "en": "Vehicle damage attributable to the road condition has occurred.",
+            "pt": "Registram-se danos a veículos atribuíveis ao estado da pista."
+          }
+        },
+        {
+          "id": "invasion_carril",
+          "texto": { "es": "Los autos esquivan e invaden el otro carril", "en": "Cars swerve into the other lane", "pt": "Os carros desviam e invadem a outra faixa" },
+          "fragmento": {
+            "es": "Los vehículos realizan maniobras de esquive invadiendo el carril contrario, con riesgo de colisión frontal.",
+            "en": "Vehicles swerve into the opposite lane, creating head-on collision risk.",
+            "pt": "Os veículos fazem manobras de desvio invadindo a faixa contrária, com risco de colisão frontal."
+          }
+        },
+        {
+          "id": "se_llena_agua",
+          "texto": { "es": "Se llena de agua", "en": "It fills with water", "pt": "Enche de água" },
+          "fragmento": {
+            "es": "El desperfecto acumula agua, agravando su deterioro y ocultando su profundidad.",
+            "en": "The defect accumulates water, worsening deterioration and hiding its depth.",
+            "pt": "O defeito acumula água, agravando a deterioração e ocultando sua profundidade."
+          }
+        },
+        {
+          "id": "riesgo_peatones",
+          "texto": { "es": "Riesgo para peatones", "en": "Risk for pedestrians", "pt": "Risco para pedestres" },
+          "fragmento": {
+            "es": "Configura riesgo de caídas para la circulación peatonal, en particular personas mayores y con movilidad reducida.",
+            "en": "It creates fall risk for pedestrians, particularly the elderly and people with reduced mobility.",
+            "pt": "Configura risco de quedas para pedestres, em particular idosos e pessoas com mobilidade reduzida."
+          }
+        }
+      ]
+    },
+    {
+      "id": "reclamo_previo",
+      "tipo": "opcion",
+      "texto": { "es": "¿Reclamaste antes?", "en": "Did you report this before?", "pt": "Você já reclamou antes?" },
+      "opciones": [
+        {
+          "id": "no",
+          "texto": { "es": "No, es el primer reclamo", "en": "No, this is the first report", "pt": "Não, é a primeira reclamação" },
+          "fragmento": {
+            "es": "No se registran reclamos previos por esta situación.",
+            "en": "No previous reports of this situation are on record.",
+            "pt": "Não se registram reclamações anteriores por esta situação."
+          }
+        },
+        {
+          "id": "sin_respuesta",
+          "texto": { "es": "Sí, sin respuesta", "en": "Yes, no response", "pt": "Sim, sem resposta" },
+          "fragmento": {
+            "es": "Se registran reclamos previos sin respuesta acreditada.",
+            "en": "Previous reports are on record with no documented response.",
+            "pt": "Registram-se reclamações anteriores sem resposta comprovada."
+          }
+        },
+        {
+          "id": "varios_vecinos",
+          "texto": { "es": "Sí, varios vecinos reclamamos", "en": "Yes, several neighbors reported it", "pt": "Sim, vários vizinhos reclamaram" },
+          "fragmento": {
+            "es": "Se registran múltiples reclamos previos de distintos vecinos sin respuesta acreditada.",
+            "en": "Multiple previous reports from different neighbors are on record with no documented response.",
+            "pt": "Registram-se múltiplas reclamações anteriores de diferentes vizinhos sem resposta comprovada."
+          }
+        }
+      ]
+    }
+  ]
+}
