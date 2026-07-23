@@ -1,0 +1,50 @@
+{
+  "id": "otro",
+  "version": 1,
+  "scope": "global",
+  "orden": 12,
+  "icono": "➕",
+  "nombre": { "es": "Otro", "en": "Other", "pt": "Outro" },
+  "templateKey": "reclamo_generico",
+  "subtipos": [
+    {
+      "id": "otro_generico",
+      "nombre": { "es": "Otro problema del barrio", "en": "Another neighborhood issue", "pt": "Outro problema do bairro" },
+      "fragmento": { "es": "una situación que afecta al espacio público del barrio", "en": "a situation affecting the neighborhood's public space", "pt": "uma situação que afeta o espaço público do bairro" }
+    }
+  ],
+  "preguntas": [
+    {
+      "id": "sobre_que",
+      "tipo": "opcion",
+      "texto": { "es": "¿Sobre qué es?", "en": "What is it about?", "pt": "Sobre o que é?" },
+      "opciones": [
+        { "id": "infraestructura", "texto": { "es": "Infraestructura", "en": "Infrastructure", "pt": "Infraestrutura" }, "fragmento": { "es": "referida a infraestructura pública", "en": "regarding public infrastructure", "pt": "referente a infraestrutura pública" } },
+        { "id": "servicio", "texto": { "es": "Un servicio", "en": "A service", "pt": "Um serviço" }, "fragmento": { "es": "referida a un servicio público", "en": "regarding a public service", "pt": "referente a um serviço público" } },
+        { "id": "ambiente", "texto": { "es": "Ambiente", "en": "Environment", "pt": "Ambiente" }, "fragmento": { "es": "referida a una cuestión ambiental", "en": "regarding an environmental matter", "pt": "referente a uma questão ambiental" } },
+        { "id": "seguridad_edilicia", "texto": { "es": "Seguridad edilicia", "en": "Building safety", "pt": "Segurança predial" }, "fragmento": { "es": "referida a la seguridad edilicia", "en": "regarding building safety", "pt": "referente à segurança predial" } }
+      ]
+    },
+    {
+      "id": "donde",
+      "tipo": "opcion",
+      "texto": { "es": "¿Dónde ocurre?", "en": "Where does it happen?", "pt": "Onde ocorre?" },
+      "opciones": [
+        { "id": "calle", "texto": { "es": "En la calle", "en": "On the street", "pt": "Na rua" }, "fragmento": { "es": "con ubicación en la calzada", "en": "located on the roadway", "pt": "com localização na pista" } },
+        { "id": "vereda", "texto": { "es": "En la vereda", "en": "On the sidewalk", "pt": "Na calçada" }, "fragmento": { "es": "con ubicación en la vereda", "en": "located on the sidewalk", "pt": "com localização na calçada" } },
+        { "id": "plaza", "texto": { "es": "En una plaza", "en": "In a square", "pt": "Em uma praça" }, "fragmento": { "es": "con ubicación en un espacio verde", "en": "located in a green space", "pt": "com localização em uma área verde" } },
+        { "id": "edificio_publico", "texto": { "es": "En un edificio público", "en": "In a public building", "pt": "Em um prédio público" }, "fragmento": { "es": "con ubicación en un edificio público", "en": "located in a public building", "pt": "com localização em um prédio público" } }
+      ]
+    },
+    {
+      "id": "frecuencia",
+      "tipo": "opcion",
+      "texto": { "es": "¿Con qué frecuencia?", "en": "How often?", "pt": "Com que frequência?" },
+      "opciones": [
+        { "id": "permanente", "texto": { "es": "Permanente", "en": "Permanent", "pt": "Permanente" }, "fragmento": { "es": "de carácter permanente", "en": "of a permanent nature", "pt": "de caráter permanente" } },
+        { "id": "diaria", "texto": { "es": "Diaria", "en": "Daily", "pt": "Diária" }, "fragmento": { "es": "con recurrencia diaria", "en": "with daily recurrence", "pt": "com recorrência diária" } },
+        { "id": "esporadica", "texto": { "es": "Esporádica", "en": "Sporadic", "pt": "Esporádica" }, "fragmento": { "es": "con recurrencia esporádica", "en": "with sporadic recurrence", "pt": "com recorrência esporádica" } }
+      ]
+    }
+  ]
+}

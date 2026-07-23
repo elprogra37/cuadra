@@ -68,6 +68,8 @@ insert into public.cities (id, region_id, name, geonames_id, population) values
 -- Categorías del núcleo (§8.3). El árbol guiado completo vive en los assets
 -- del cliente (assets/categories/*.json) y acá como jsonb para el panel y
 -- las extensiones futuras; la clave es que cases.category_id tenga FK.
+-- Las 12 categorías del núcleo global (§8.3). El árbol guiado completo vive
+-- en assets/categories/*.json del cliente; acá va la referencia + el FK.
 insert into public.categories (id, scope, name_i18n, icon, order_index, guided_tree, template_key) values
   ('alumbrado', 'global',
    '{"es": "Alumbrado público", "en": "Street lighting", "pt": "Iluminação pública"}',
@@ -84,9 +86,27 @@ insert into public.categories (id, scope, name_i18n, icon, order_index, guided_t
   ('arbolado', 'global',
    '{"es": "Arbolado", "en": "Trees", "pt": "Arborização"}',
    '🌳', 5, '{"ref": "assets/categories/arbolado.json"}', 'reclamo_infraestructura'),
+  ('transito', 'global',
+   '{"es": "Tránsito y señalización", "en": "Traffic and signage", "pt": "Trânsito e sinalização"}',
+   '🚦', 6, '{"ref": "assets/categories/transito.json"}', 'reclamo_infraestructura'),
+  ('espacios_verdes', 'global',
+   '{"es": "Espacios verdes", "en": "Green spaces", "pt": "Áreas verdes"}',
+   '🏞', 7, '{"ref": "assets/categories/espacios_verdes.json"}', 'reclamo_infraestructura'),
+  ('transporte', 'global',
+   '{"es": "Transporte público", "en": "Public transit", "pt": "Transporte público"}',
+   '🚌', 8, '{"ref": "assets/categories/transporte.json"}', 'reclamo_servicio'),
+  ('ruido', 'global',
+   '{"es": "Ruido y contaminación", "en": "Noise and pollution", "pt": "Ruído e poluição"}',
+   '🔊', 9, '{"ref": "assets/categories/ruido.json"}', 'reclamo_servicio'),
+  ('obra', 'global',
+   '{"es": "Obra y edificación", "en": "Construction and buildings", "pt": "Obra e edificação"}',
+   '🏗', 10, '{"ref": "assets/categories/obra.json"}', 'reclamo_infraestructura'),
+  ('anegamiento', 'global',
+   '{"es": "Anegamiento e inundación", "en": "Flooding", "pt": "Alagamento e inundação"}',
+   '🌊', 11, '{"ref": "assets/categories/anegamiento.json"}', 'reclamo_infraestructura'),
   ('otro', 'global',
    '{"es": "Otro", "en": "Other", "pt": "Outro"}',
-   '➕', 99, '{"ref": "motor de propuestas §8.4"}', 'reclamo_generico');
+   '➕', 12, '{"ref": "assets/categories/otro.json"}', 'reclamo_generico');
 
 -- Jurisdicción de ejemplo (§14.3) para desarrollo: CABA con un organismo
 -- ficticio. La ficha real la carga el panel antes de lanzar.

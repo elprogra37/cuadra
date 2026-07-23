@@ -1,0 +1,66 @@
+{
+  "id": "espacios_verdes",
+  "version": 1,
+  "scope": "global",
+  "orden": 7,
+  "icono": "🏞",
+  "nombre": { "es": "Espacios verdes", "en": "Green spaces", "pt": "Áreas verdes" },
+  "templateKey": "reclamo_infraestructura",
+  "subtipos": [
+    {
+      "id": "juego_roto",
+      "nombre": { "es": "Juego roto", "en": "Broken playground equipment", "pt": "Brinquedo quebrado" },
+      "fragmento": { "es": "el estado defectuoso de un juego infantil", "en": "broken playground equipment", "pt": "o estado defeituoso de um brinquedo infantil" }
+    },
+    {
+      "id": "plaza_sin_mantenimiento",
+      "nombre": { "es": "Plaza sin mantenimiento", "en": "Unmaintained square", "pt": "Praça sem manutenção" },
+      "fragmento": { "es": "la falta de mantenimiento de la plaza", "en": "the lack of maintenance of the square", "pt": "a falta de manutenção da praça" }
+    },
+    {
+      "id": "falta_iluminacion",
+      "nombre": { "es": "Falta de iluminación", "en": "Lack of lighting", "pt": "Falta de iluminação" },
+      "fragmento": { "es": "la falta de iluminación del espacio verde", "en": "the lack of lighting in the green space", "pt": "a falta de iluminação da área verde" }
+    }
+  ],
+  "preguntas": [
+    {
+      "id": "estado",
+      "tipo": "opcion",
+      "texto": { "es": "¿Cómo está?", "en": "What's the state?", "pt": "Como está?" },
+      "opciones": [
+        { "id": "peligroso", "texto": { "es": "Peligroso para chicos", "en": "Dangerous for kids", "pt": "Perigoso para crianças" }, "fragmento": { "es": "en estado que representa un peligro para los niños que lo usan", "en": "in a state that endangers the children who use it", "pt": "em estado que representa perigo para as crianças que o usam" } },
+        { "id": "inutilizable", "texto": { "es": "No se puede usar", "en": "Unusable", "pt": "Não dá para usar" }, "fragmento": { "es": "en estado que impide su uso", "en": "in a state that prevents its use", "pt": "em estado que impede seu uso" } },
+        { "id": "descuidado", "texto": { "es": "Descuidado pero usable", "en": "Neglected but usable", "pt": "Descuidado mas usável" }, "fragmento": { "es": "en estado de descuido general", "en": "in a state of general neglect", "pt": "em estado de descuido geral" } }
+      ]
+    },
+    {
+      "id": "desde_cuando",
+      "tipo": "opcion",
+      "texto": { "es": "¿Desde cuándo?", "en": "Since when?", "pt": "Desde quando?" },
+      "opciones": [
+        { "id": "semanas", "texto": { "es": "Hace semanas", "en": "For weeks", "pt": "Há semanas" }, "fragmento": { "es": "La situación se registra desde hace semanas.", "en": "The situation has been observed for weeks.", "pt": "A situação é registrada há semanas." } },
+        { "id": "meses", "texto": { "es": "Hace meses", "en": "For months", "pt": "Há meses" }, "fragmento": { "es": "La situación se extiende por varios meses.", "en": "The situation has persisted for several months.", "pt": "A situação se estende por vários meses." } }
+      ]
+    },
+    {
+      "id": "consecuencias",
+      "tipo": "multiple",
+      "obligatoria": false,
+      "texto": { "es": "¿Qué consecuencia tiene?", "en": "What are the consequences?", "pt": "Qual é a consequência?" },
+      "opciones": [
+        { "id": "unico_espacio", "texto": { "es": "Es el único espacio del barrio", "en": "It's the only space in the area", "pt": "É o único espaço do bairro" }, "fragmento": { "es": "Se trata del único espacio verde del sector.", "en": "It is the only green space in the area.", "pt": "Trata-se do único espaço verde do setor." } },
+        { "id": "riesgo_ninos", "texto": { "es": "Riesgo para chicos", "en": "Risk for children", "pt": "Risco para crianças" }, "fragmento": { "es": "Configura riesgo para los niños que lo usan.", "en": "It poses a risk to the children who use it.", "pt": "Configura risco para as crianças que o usam." } }
+      ]
+    },
+    {
+      "id": "reclamo_previo",
+      "tipo": "opcion",
+      "texto": { "es": "¿Reclamaste antes?", "en": "Did you report this before?", "pt": "Você já reclamou antes?" },
+      "opciones": [
+        { "id": "no", "texto": { "es": "No, es el primer reclamo", "en": "No, this is the first report", "pt": "Não, é a primeira reclamação" }, "fragmento": { "es": "No se registran reclamos previos por esta situación.", "en": "No previous reports of this situation are on record.", "pt": "Não se registram reclamações anteriores por esta situação." } },
+        { "id": "sin_respuesta", "texto": { "es": "Sí, sin respuesta", "en": "Yes, no response", "pt": "Sim, sem resposta" }, "fragmento": { "es": "Se registran reclamos previos sin respuesta acreditada.", "en": "Previous reports are on record with no documented response.", "pt": "Registram-se reclamações anteriores sem resposta comprovada." } }
+      ]
+    }
+  ]
+}

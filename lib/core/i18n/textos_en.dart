@@ -296,4 +296,39 @@ class TextosEn extends Textos {
   String get deskBarrioEstigmaNota =>
       'Many reports = an organized neighborhood. The metric that matters is how '
       'long the State takes to respond, not how many problems there are.';
+
+  @override
+  String get registroTitulo => 'Neighborhood record';
+  @override
+  String get registroVacio =>
+      'No resolved cases yet. When the first one gets fixed, it lands here with '
+      'the before and after.';
+  @override
+  String get registroEmpujadoPor => 'Pushed by';
+  @override
+  String get perfilTitulo => 'Profile';
+  @override
+  String get perfilVisitante => "You're viewing as a visitor";
+  @override
+  String get perfilVecino => 'Neighbor';
+  @override
+  String get perfilCambiarBarrio => 'Change neighborhood';
+  @override
+  String get perfilIdioma => 'Language';
+  @override
+  String get perfilExportarDatos => 'Export my data';
+  @override
+  String get perfilBorrarDatos => 'Delete my data';
+  @override
+  String get modoVisitante => 'Visitor mode';
+  @override
+  String get soloLectura =>
+      "You're viewing your neighborhood read-only. To report and sign, enter as a neighbor.";
+  @override
+  String get entrarComoVecino => 'Enter as a neighbor';
+  @override
+  String tiempoMedioRespuesta(int dias) =>
+      'The city takes an average of $dias days to respond here.';
+  @override
+  String get sinDatosAun => 'Not enough data yet.';
 }

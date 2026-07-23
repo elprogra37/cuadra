@@ -71,6 +71,21 @@ pantallas de caso a partir de la etapa 7. Mientras tanto:
 **Cómo probarlo:** `flutter test test/data/` (cola, repos y esquema contra una
 base en memoria). La UI de reporte que consume esto llega en la etapa 6.
 
+### Catálogo completo, registro y navegación (Fase 4) ✅
+
+- **12 categorías de reclamo:** alumbrado, calzada, residuos, agua, arbolado,
+  tránsito, espacios verdes, transporte, ruido, obra, anegamiento y "Otro".
+- **App con sus cuatro pestañas:** Mi cuadra · Mapa · Registro · Perfil, con el
+  botón de reportar siempre a mano.
+- **Registro del barrio:** el archivo permanente de lo que se resolvió, con el
+  nombre de quienes lo empujaron.
+- **Perfil:** cambiar de barrio, exportar o borrar tus datos.
+- **Detección de barrios duplicados** para fusionarlos (Villa Crespo / Vila
+  Crespo) por nombre, superposición y cercanía.
+
+**Cómo probarlo:** navegá entre las cuatro pestañas de abajo; en Reportar
+elegí cualquiera de las 12 categorías; los casos resueltos aparecen en Registro.
+
 ### Panel de escritorio (Fase 3) ✅
 
 El build de Windows es la **mesa de trabajo del referente**: al abrirlo aparece

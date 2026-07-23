@@ -1,0 +1,61 @@
+{
+  "id": "anegamiento",
+  "version": 1,
+  "scope": "global",
+  "orden": 11,
+  "icono": "🌊",
+  "nombre": { "es": "Anegamiento e inundación", "en": "Flooding", "pt": "Alagamento e inundação" },
+  "templateKey": "reclamo_infraestructura",
+  "subtipos": [
+    {
+      "id": "zona_se_inunda",
+      "nombre": { "es": "Zona que se inunda", "en": "Area that floods", "pt": "Zona que alaga" },
+      "fragmento": { "es": "el anegamiento recurrente de la zona", "en": "the recurring flooding of the area", "pt": "o alagamento recorrente da zona" }
+    },
+    {
+      "id": "desague_obstruido",
+      "nombre": { "es": "Desagüe obstruido", "en": "Blocked drain", "pt": "Bueiro obstruído" },
+      "fragmento": { "es": "la obstrucción del desagüe pluvial", "en": "the blocked storm drain", "pt": "a obstrução do sistema de drenagem pluvial" }
+    }
+  ],
+  "preguntas": [
+    {
+      "id": "frecuencia",
+      "tipo": "opcion",
+      "texto": { "es": "¿Con qué frecuencia pasa?", "en": "How often does it happen?", "pt": "Com que frequência acontece?" },
+      "opciones": [
+        { "id": "cada_lluvia", "texto": { "es": "Con cada lluvia", "en": "With every rain", "pt": "A cada chuva" }, "fragmento": { "es": "produciéndose con cada precipitación, aún de baja intensidad", "en": "occurring with every rainfall, even light", "pt": "ocorrendo a cada precipitação, mesmo de baixa intensidade" } },
+        { "id": "lluvias_fuertes", "texto": { "es": "Con lluvias fuertes", "en": "With heavy rain", "pt": "Com chuvas fortes" }, "fragmento": { "es": "produciéndose ante precipitaciones intensas", "en": "occurring during heavy rainfall", "pt": "ocorrendo diante de precipitações intensas" } }
+      ]
+    },
+    {
+      "id": "altura",
+      "tipo": "opcion",
+      "texto": { "es": "¿Hasta dónde llega el agua?", "en": "How high does the water get?", "pt": "Até onde chega a água?" },
+      "opciones": [
+        { "id": "calzada", "texto": { "es": "Cubre la calle", "en": "Covers the street", "pt": "Cobre a rua" }, "fragmento": { "es": "El agua cubre la calzada.", "en": "The water covers the roadway.", "pt": "A água cobre a pista." } },
+        { "id": "vereda", "texto": { "es": "Sube a la vereda", "en": "Reaches the sidewalk", "pt": "Sobe na calçada" }, "fragmento": { "es": "El agua supera el cordón y alcanza la vereda.", "en": "The water rises above the curb onto the sidewalk.", "pt": "A água supera o meio-fio e alcança a calçada." } },
+        { "id": "viviendas", "texto": { "es": "Entra a las casas", "en": "Enters homes", "pt": "Entra nas casas" }, "fragmento": { "es": "El agua ingresa a las viviendas.", "en": "The water enters homes.", "pt": "A água entra nas moradias." } }
+      ]
+    },
+    {
+      "id": "consecuencias",
+      "tipo": "multiple",
+      "obligatoria": false,
+      "texto": { "es": "¿Qué consecuencia tiene?", "en": "What are the consequences?", "pt": "Qual é a consequência?" },
+      "opciones": [
+        { "id": "perdidas", "texto": { "es": "Pérdidas materiales", "en": "Property damage", "pt": "Perdas materiais" }, "fragmento": { "es": "Ocasiona pérdidas materiales a los frentistas.", "en": "It causes property damage to residents.", "pt": "Ocasiona perdas materiais aos moradores." } },
+        { "id": "aislamiento", "texto": { "es": "Aísla el barrio", "en": "Isolates the neighborhood", "pt": "Isola o bairro" }, "fragmento": { "es": "Impide el ingreso y egreso del sector.", "en": "It blocks access into and out of the area.", "pt": "Impede a entrada e saída do setor." } }
+      ]
+    },
+    {
+      "id": "reclamo_previo",
+      "tipo": "opcion",
+      "texto": { "es": "¿Reclamaste antes?", "en": "Did you report this before?", "pt": "Você já reclamou antes?" },
+      "opciones": [
+        { "id": "no", "texto": { "es": "No, es el primer reclamo", "en": "No, this is the first report", "pt": "Não, é a primeira reclamação" }, "fragmento": { "es": "No se registran reclamos previos por esta situación.", "en": "No previous reports of this situation are on record.", "pt": "Não se registram reclamações anteriores por esta situação." } },
+        { "id": "sin_respuesta", "texto": { "es": "Sí, sin respuesta", "en": "Yes, no response", "pt": "Sim, sem resposta" }, "fragmento": { "es": "Se registran reclamos previos sin respuesta acreditada.", "en": "Previous reports are on record with no documented response.", "pt": "Registram-se reclamações anteriores sem resposta comprovada." } }
+      ]
+    }
+  ]
+}

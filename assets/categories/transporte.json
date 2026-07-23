@@ -1,0 +1,66 @@
+{
+  "id": "transporte",
+  "version": 1,
+  "scope": "global",
+  "orden": 8,
+  "icono": "🚌",
+  "nombre": { "es": "Transporte público", "en": "Public transit", "pt": "Transporte público" },
+  "templateKey": "reclamo_servicio",
+  "subtipos": [
+    {
+      "id": "parada_sin_refugio",
+      "nombre": { "es": "Parada sin refugio", "en": "Stop without shelter", "pt": "Ponto sem abrigo" },
+      "fragmento": { "es": "la falta de refugio en una parada de transporte", "en": "the lack of a shelter at a transit stop", "pt": "a falta de abrigo em um ponto de transporte" }
+    },
+    {
+      "id": "recorrido_suprimido",
+      "nombre": { "es": "Recorrido suprimido", "en": "Suppressed route", "pt": "Itinerário suprimido" },
+      "fragmento": { "es": "la supresión de un recorrido de transporte", "en": "the suppression of a transit route", "pt": "a supressão de um itinerário de transporte" }
+    },
+    {
+      "id": "frecuencia",
+      "nombre": { "es": "Frecuencia deficiente", "en": "Poor frequency", "pt": "Frequência deficiente" },
+      "fragmento": { "es": "la frecuencia deficiente del servicio de transporte", "en": "the poor frequency of the transit service", "pt": "a frequência deficiente do serviço de transporte" }
+    }
+  ],
+  "preguntas": [
+    {
+      "id": "cuando",
+      "tipo": "opcion",
+      "texto": { "es": "¿Cuándo afecta más?", "en": "When does it hit hardest?", "pt": "Quando afeta mais?" },
+      "opciones": [
+        { "id": "horas_pico", "texto": { "es": "En horas pico", "en": "During rush hour", "pt": "Nos horários de pico" }, "fragmento": { "es": "afectando especialmente las horas pico", "en": "affecting rush hours in particular", "pt": "afetando especialmente os horários de pico" } },
+        { "id": "noche", "texto": { "es": "De noche", "en": "At night", "pt": "À noite" }, "fragmento": { "es": "afectando especialmente el horario nocturno", "en": "affecting nighttime service in particular", "pt": "afetando especialmente o horário noturno" } },
+        { "id": "todo_el_dia", "texto": { "es": "Todo el día", "en": "All day", "pt": "O dia todo" }, "fragmento": { "es": "afectando el servicio durante toda la jornada", "en": "affecting service throughout the day", "pt": "afetando o serviço durante todo o dia" } }
+      ]
+    },
+    {
+      "id": "desde_cuando",
+      "tipo": "opcion",
+      "texto": { "es": "¿Desde cuándo?", "en": "Since when?", "pt": "Desde quando?" },
+      "opciones": [
+        { "id": "semanas", "texto": { "es": "Hace semanas", "en": "For weeks", "pt": "Há semanas" }, "fragmento": { "es": "La situación se registra desde hace semanas.", "en": "The situation has been observed for weeks.", "pt": "A situação é registrada há semanas." } },
+        { "id": "meses", "texto": { "es": "Hace meses", "en": "For months", "pt": "Há meses" }, "fragmento": { "es": "La situación se extiende por varios meses.", "en": "The situation has persisted for several months.", "pt": "A situação se estende por vários meses." } }
+      ]
+    },
+    {
+      "id": "consecuencias",
+      "tipo": "multiple",
+      "obligatoria": false,
+      "texto": { "es": "¿Qué consecuencia tiene?", "en": "What are the consequences?", "pt": "Qual é a consequência?" },
+      "opciones": [
+        { "id": "aislamiento", "texto": { "es": "Deja aislado al barrio", "en": "It isolates the neighborhood", "pt": "Deixa o bairro isolado" }, "fragmento": { "es": "Deja al sector con conectividad de transporte insuficiente.", "en": "It leaves the area with insufficient transit connectivity.", "pt": "Deixa o setor com conectividade de transporte insuficiente." } },
+        { "id": "esperas_largas", "texto": { "es": "Esperas muy largas", "en": "Very long waits", "pt": "Esperas muito longas" }, "fragmento": { "es": "Genera tiempos de espera excesivos para los usuarios.", "en": "It creates excessive wait times for users.", "pt": "Gera tempos de espera excessivos para os usuários." } }
+      ]
+    },
+    {
+      "id": "reclamo_previo",
+      "tipo": "opcion",
+      "texto": { "es": "¿Reclamaste antes?", "en": "Did you report this before?", "pt": "Você já reclamou antes?" },
+      "opciones": [
+        { "id": "no", "texto": { "es": "No, es el primer reclamo", "en": "No, this is the first report", "pt": "Não, é a primeira reclamação" }, "fragmento": { "es": "No se registran reclamos previos por esta situación.", "en": "No previous reports of this situation are on record.", "pt": "Não se registram reclamações anteriores por esta situação." } },
+        { "id": "sin_respuesta", "texto": { "es": "Sí, sin respuesta", "en": "Yes, no response", "pt": "Sim, sem resposta" }, "fragmento": { "es": "Se registran reclamos previos sin respuesta acreditada.", "en": "Previous reports are on record with no documented response.", "pt": "Registram-se reclamações anteriores sem resposta comprovada." } }
+      ]
+    }
+  ]
+}

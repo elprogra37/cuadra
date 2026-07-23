@@ -10,7 +10,7 @@ void main() {
 
   setUp(() => repo = RepoCategorias(rootBundle));
 
-  test('carga las 5 categorías del núcleo de la Fase 1, ordenadas', () async {
+  test('carga las 12 categorías del núcleo global, ordenadas', () async {
     final r = await repo.todas();
     expect(r.isOk, isTrue, reason: r.failureOrNull?.message);
 
@@ -21,6 +21,13 @@ void main() {
       'residuos',
       'agua',
       'arbolado',
+      'transito',
+      'espacios_verdes',
+      'transporte',
+      'ruido',
+      'obra',
+      'anegamiento',
+      'otro',
     ]);
   });
 

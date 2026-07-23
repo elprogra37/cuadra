@@ -8,29 +8,11 @@ import '../../core/theme/estado_sello.dart';
 import '../../core/theme/tokens.dart';
 import '../../data/local/base_datos.dart';
 import '../../data/providers.dart';
-import '../../services/preferencias.dart';
 import '../case/estado_visual.dart';
 
-/// Pantalla principal: el feed de la cuadra. Sin barrio elegido muestra la
-/// bienvenida con UNA acción concreta (regla §2: cada pantalla ofrece un
-/// acto). El feed real llega en la etapa 7.
-class MiCuadraScreen extends ConsumerWidget {
-  const MiCuadraScreen({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final barrioId = ref.watch(barrioActivoProvider);
-    return barrioId.when(
-      loading: () =>
-          const Scaffold(body: Center(child: CircularProgressIndicator())),
-      error: (_, _) => const _Bienvenida(),
-      data: (id) => id == null ? const _Bienvenida() : _Feed(barrioId: id),
-    );
-  }
-}
-
-class _Bienvenida extends StatelessWidget {
-  const _Bienvenida();
+/// Bienvenida sin barrio elegido: UNA sola acción concreta (regla §2).
+class MiCuadraBienvenida extends StatelessWidget {
+  const MiCuadraBienvenida({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -78,8 +60,10 @@ class _Bienvenida extends StatelessWidget {
   }
 }
 
-class _Feed extends ConsumerWidget {
-  const _Feed({required this.barrioId});
+/// Feed de la cuadra (contenido de la pestaña Mi cuadra; el shell provee la
+/// barra de navegación y el FAB). La lista TERMINA y lo dice (§25.4).
+class MiCuadraFeed extends ConsumerWidget {
+  const MiCuadraFeed({super.key, required this.barrioId});
 
   final String barrioId;
 
@@ -94,26 +78,12 @@ class _Feed extends ConsumerWidget {
         title: Text(barrio.value?.name ?? t.tabMiCuadra),
         actions: [
           IconButton(
-            icon: const Icon(Icons.map_outlined),
-            tooltip: t.verEnElMapa,
-            onPressed: () => context.push(Rutas.mapa),
-          ),
-          IconButton(
             icon: const Icon(Icons.swap_horiz),
             tooltip: t.buscarBarrio,
             onPressed: () => context.push(Rutas.buscarBarrio),
           ),
         ],
       ),
-      // Reportar es LA acción pendiente del feed: amarillo vial.
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: TokensCuadra.vial,
-        foregroundColor: TokensCuadra.asfalto,
-        onPressed: () => context.push(Rutas.reportar),
-        icon: const Icon(Icons.photo_camera_outlined),
-        label: Text(t.tabReportar),
-      ),
-      // La lista TERMINA y lo dice (§25.4): sin scroll infinito.
       body: ListView(
         padding: const EdgeInsets.all(TokensCuadra.esp16),
         children: [

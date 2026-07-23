@@ -150,6 +150,23 @@ abstract class Textos {
   String get deskSinBarrio;
   String get deskColaVacia;
   String get deskBarrioEstigmaNota;
+
+  // Registro del barrio, perfil, visitante (§15, §7)
+  String get registroTitulo;
+  String get registroVacio;
+  String get registroEmpujadoPor;
+  String get perfilTitulo;
+  String get perfilVisitante;
+  String get perfilVecino;
+  String get perfilCambiarBarrio;
+  String get perfilIdioma;
+  String get perfilExportarDatos;
+  String get perfilBorrarDatos;
+  String get modoVisitante;
+  String get soloLectura;
+  String get entrarComoVecino;
+  String tiempoMedioRespuesta(int dias);
+  String get sinDatosAun;
 }
 
 class _TextosDelegate extends LocalizationsDelegate<Textos> {

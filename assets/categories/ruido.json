@@ -1,0 +1,72 @@
+{
+  "id": "ruido",
+  "version": 1,
+  "scope": "global",
+  "orden": 9,
+  "icono": "🔊",
+  "nombre": { "es": "Ruido y contaminación", "en": "Noise and pollution", "pt": "Ruído e poluição" },
+  "templateKey": "reclamo_servicio",
+  "subtipos": [
+    {
+      "id": "ruido_industrial",
+      "nombre": { "es": "Ruido industrial", "en": "Industrial noise", "pt": "Ruído industrial" },
+      "fragmento": { "es": "la emisión de ruido de origen industrial", "en": "the emission of industrial noise", "pt": "a emissão de ruído de origem industrial" }
+    },
+    {
+      "id": "obra_fuera_horario",
+      "nombre": { "es": "Obra fuera de horario", "en": "Off-hours construction", "pt": "Obra fora de horário" },
+      "fragmento": { "es": "la realización de obra fuera del horario permitido", "en": "construction work outside permitted hours", "pt": "a realização de obra fora do horário permitido" }
+    },
+    {
+      "id": "olor",
+      "nombre": { "es": "Olor", "en": "Odor", "pt": "Odor" },
+      "fragmento": { "es": "la emisión de olores molestos", "en": "the emission of nuisance odors", "pt": "a emissão de odores incômodos" }
+    },
+    {
+      "id": "humo",
+      "nombre": { "es": "Humo", "en": "Smoke", "pt": "Fumaça" },
+      "fragmento": { "es": "la emisión de humo", "en": "the emission of smoke", "pt": "a emissão de fumaça" }
+    }
+  ],
+  "preguntas": [
+    {
+      "id": "cuando",
+      "tipo": "opcion",
+      "texto": { "es": "¿Cuándo ocurre?", "en": "When does it happen?", "pt": "Quando ocorre?" },
+      "opciones": [
+        { "id": "noche", "texto": { "es": "De noche", "en": "At night", "pt": "À noite" }, "fragmento": { "es": "ocurriendo principalmente en horario nocturno, en detrimento del descanso", "en": "occurring mainly at night, harming rest", "pt": "ocorrendo principalmente no período noturno, em detrimento do descanso" } },
+        { "id": "todo_el_dia", "texto": { "es": "Todo el día", "en": "All day", "pt": "O dia todo" }, "fragmento": { "es": "ocurriendo de forma sostenida durante todo el día", "en": "occurring steadily throughout the day", "pt": "ocorrendo de forma sustentada durante todo o dia" } },
+        { "id": "intermitente", "texto": { "es": "De forma intermitente", "en": "Intermittently", "pt": "De forma intermitente" }, "fragmento": { "es": "ocurriendo de forma intermitente", "en": "occurring intermittently", "pt": "ocorrendo de forma intermitente" } }
+      ]
+    },
+    {
+      "id": "desde_cuando",
+      "tipo": "opcion",
+      "texto": { "es": "¿Desde cuándo?", "en": "Since when?", "pt": "Desde quando?" },
+      "opciones": [
+        { "id": "dias", "texto": { "es": "Hace días", "en": "For days", "pt": "Há dias" }, "fragmento": { "es": "La situación se registra desde hace días.", "en": "The situation has been observed for days.", "pt": "A situação é registrada há dias." } },
+        { "id": "semanas", "texto": { "es": "Hace semanas", "en": "For weeks", "pt": "Há semanas" }, "fragmento": { "es": "La situación se registra desde hace semanas.", "en": "The situation has been observed for weeks.", "pt": "A situação é registrada há semanas." } },
+        { "id": "meses", "texto": { "es": "Hace meses", "en": "For months", "pt": "Há meses" }, "fragmento": { "es": "La situación se extiende por varios meses.", "en": "The situation has persisted for several months.", "pt": "A situação se estende por vários meses." } }
+      ]
+    },
+    {
+      "id": "consecuencias",
+      "tipo": "multiple",
+      "obligatoria": false,
+      "texto": { "es": "¿Qué consecuencia tiene?", "en": "What are the consequences?", "pt": "Qual é a consequência?" },
+      "opciones": [
+        { "id": "descanso", "texto": { "es": "Impide descansar", "en": "Prevents rest", "pt": "Impede o descanso" }, "fragmento": { "es": "Afecta el descanso y la salud de los vecinos.", "en": "It affects neighbors' rest and health.", "pt": "Afeta o descanso e a saúde dos vizinhos." } },
+        { "id": "salud", "texto": { "es": "Afecta la salud", "en": "Affects health", "pt": "Afeta a saúde" }, "fragmento": { "es": "Configura un riesgo para la salud del entorno.", "en": "It poses a health risk to the surroundings.", "pt": "Configura um risco para a saúde do entorno." } }
+      ]
+    },
+    {
+      "id": "reclamo_previo",
+      "tipo": "opcion",
+      "texto": { "es": "¿Reclamaste antes?", "en": "Did you report this before?", "pt": "Você já reclamou antes?" },
+      "opciones": [
+        { "id": "no", "texto": { "es": "No, es el primer reclamo", "en": "No, this is the first report", "pt": "Não, é a primeira reclamação" }, "fragmento": { "es": "No se registran reclamos previos por esta situación.", "en": "No previous reports of this situation are on record.", "pt": "Não se registram reclamações anteriores por esta situação." } },
+        { "id": "sin_respuesta", "texto": { "es": "Sí, sin respuesta", "en": "Yes, no response", "pt": "Sim, sem resposta" }, "fragmento": { "es": "Se registran reclamos previos sin respuesta acreditada.", "en": "Previous reports are on record with no documented response.", "pt": "Registram-se reclamações anteriores sem resposta comprovada." } }
+      ]
+    }
+  ]
+}

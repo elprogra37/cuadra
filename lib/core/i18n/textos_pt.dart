@@ -294,4 +294,39 @@ class TextosPt extends Textos {
   String get deskBarrioEstigmaNota =>
       'Muitos reportes = bairro organizado. A métrica que importa é quanto o '
       'Estado demora a responder, não quantos problemas existem.';
+
+  @override
+  String get registroTitulo => 'Registro do bairro';
+  @override
+  String get registroVacio =>
+      'Ainda não há casos resolvidos. Quando o primeiro for resolvido, fica aqui '
+      'com o antes e o depois.';
+  @override
+  String get registroEmpujadoPor => 'Empurrado por';
+  @override
+  String get perfilTitulo => 'Perfil';
+  @override
+  String get perfilVisitante => 'Você está vendo como visitante';
+  @override
+  String get perfilVecino => 'Vizinho';
+  @override
+  String get perfilCambiarBarrio => 'Trocar de bairro';
+  @override
+  String get perfilIdioma => 'Idioma';
+  @override
+  String get perfilExportarDatos => 'Exportar meus dados';
+  @override
+  String get perfilBorrarDatos => 'Apagar meus dados';
+  @override
+  String get modoVisitante => 'Modo visitante';
+  @override
+  String get soloLectura =>
+      'Você está vendo seu bairro em modo leitura. Para reportar e assinar, entre como vizinho.';
+  @override
+  String get entrarComoVecino => 'Entrar como vizinho';
+  @override
+  String tiempoMedioRespuesta(int dias) =>
+      'A prefeitura leva em média $dias dias para responder aqui.';
+  @override
+  String get sinDatosAun => 'Ainda sem dados suficientes.';
 }

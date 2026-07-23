@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:drift/drift.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -120,4 +121,20 @@ final barriosPropuestosProvider = StreamProvider<List<Neighborhood>>((ref) {
   return (db.select(
     db.neighborhoods,
   )..where((t) => t.status.equals(NeighborhoodStatus.propuesto.name))).watch();
+});
+
+/// Registro del barrio (§12): casos resueltos, permanentes.
+final registroBarrioProvider = StreamProvider.family<List<Case>, String>((
+  ref,
+  barrioId,
+) {
+  final db = ref.watch(baseDatosProvider);
+  return (db.select(db.cases)
+        ..where(
+          (t) =>
+              t.neighborhoodId.equals(barrioId) &
+              t.status.equals(CaseStatus.resuelto.name),
+        )
+        ..orderBy([(t) => OrderingTerm.desc(t.resolvedAt)]))
+      .watch();
 });

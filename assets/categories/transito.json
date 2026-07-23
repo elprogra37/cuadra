@@ -1,0 +1,68 @@
+{
+  "id": "transito",
+  "version": 1,
+  "scope": "global",
+  "orden": 6,
+  "icono": "🚦",
+  "nombre": { "es": "Tránsito y señalización", "en": "Traffic and signage", "pt": "Trânsito e sinalização" },
+  "templateKey": "reclamo_infraestructura",
+  "subtipos": [
+    {
+      "id": "semaforo_fuera_servicio",
+      "nombre": { "es": "Semáforo fuera de servicio", "en": "Traffic light out", "pt": "Semáforo fora de serviço" },
+      "fragmento": { "es": "el desperfecto de un semáforo fuera de servicio", "en": "a traffic light out of service", "pt": "o defeito de um semáforo fora de serviço" }
+    },
+    {
+      "id": "senal_faltante",
+      "nombre": { "es": "Señal faltante o dañada", "en": "Missing or damaged sign", "pt": "Placa faltante ou danificada" },
+      "fragmento": { "es": "la falta o el daño de una señal de tránsito", "en": "a missing or damaged traffic sign", "pt": "a falta ou dano de uma placa de trânsito" }
+    },
+    {
+      "id": "senda_borrada",
+      "nombre": { "es": "Senda peatonal borrada", "en": "Faded crosswalk", "pt": "Faixa de pedestres apagada" },
+      "fragmento": { "es": "el borramiento de la senda peatonal", "en": "a faded pedestrian crossing", "pt": "o apagamento da faixa de pedestres" }
+    }
+  ],
+  "preguntas": [
+    {
+      "id": "donde",
+      "tipo": "opcion",
+      "texto": { "es": "¿Dónde está?", "en": "Where is it?", "pt": "Onde está?" },
+      "opciones": [
+        { "id": "cruce_escuela", "texto": { "es": "En un cruce con escuela", "en": "At a crossing near a school", "pt": "Em um cruzamento com escola" }, "fragmento": { "es": "ubicado en un cruce contiguo a un establecimiento escolar", "en": "at a crossing next to a school", "pt": "em um cruzamento contíguo a uma escola" } },
+        { "id": "avenida", "texto": { "es": "En una avenida", "en": "On an avenue", "pt": "Em uma avenida" }, "fragmento": { "es": "ubicado sobre una avenida de tránsito intenso", "en": "on a high-traffic avenue", "pt": "sobre uma avenida de trânsito intenso" } },
+        { "id": "esquina_barrial", "texto": { "es": "En una esquina del barrio", "en": "At a neighborhood corner", "pt": "Em uma esquina do bairro" }, "fragmento": { "es": "ubicado en una esquina del barrio", "en": "at a neighborhood corner", "pt": "em uma esquina do bairro" } }
+      ]
+    },
+    {
+      "id": "desde_cuando",
+      "tipo": "opcion",
+      "texto": { "es": "¿Desde cuándo?", "en": "Since when?", "pt": "Desde quando?" },
+      "opciones": [
+        { "id": "dias", "texto": { "es": "Hace días", "en": "For days", "pt": "Há dias" }, "fragmento": { "es": "La situación se registra desde hace días.", "en": "The situation has been observed for days.", "pt": "A situação é registrada há dias." } },
+        { "id": "semanas", "texto": { "es": "Hace semanas", "en": "For weeks", "pt": "Há semanas" }, "fragmento": { "es": "La situación se registra desde hace semanas.", "en": "The situation has been observed for weeks.", "pt": "A situação é registrada há semanas." } },
+        { "id": "meses", "texto": { "es": "Hace meses", "en": "For months", "pt": "Há meses" }, "fragmento": { "es": "La situación se extiende por varios meses.", "en": "The situation has persisted for several months.", "pt": "A situação se estende por vários meses." } }
+      ]
+    },
+    {
+      "id": "consecuencias",
+      "tipo": "multiple",
+      "obligatoria": false,
+      "texto": { "es": "¿Qué consecuencia tiene?", "en": "What are the consequences?", "pt": "Qual é a consequência?" },
+      "opciones": [
+        { "id": "riesgo_peatones", "texto": { "es": "Riesgo para peatones", "en": "Risk for pedestrians", "pt": "Risco para pedestres" }, "fragmento": { "es": "Configura riesgo para el cruce peatonal seguro.", "en": "It creates a risk to safe pedestrian crossing.", "pt": "Configura risco para a travessia segura de pedestres." } },
+        { "id": "riesgo_choques", "texto": { "es": "Riesgo de choques", "en": "Risk of crashes", "pt": "Risco de colisões" }, "fragmento": { "es": "Aumenta el riesgo de colisiones vehiculares.", "en": "It increases the risk of vehicle collisions.", "pt": "Aumenta o risco de colisões veiculares." } },
+        { "id": "zona_escolar", "texto": { "es": "Zona escolar", "en": "School zone", "pt": "Zona escolar" }, "fragmento": { "es": "El punto se encuentra en zona escolar.", "en": "The location is in a school zone.", "pt": "O ponto se encontra em zona escolar." } }
+      ]
+    },
+    {
+      "id": "reclamo_previo",
+      "tipo": "opcion",
+      "texto": { "es": "¿Reclamaste antes?", "en": "Did you report this before?", "pt": "Você já reclamou antes?" },
+      "opciones": [
+        { "id": "no", "texto": { "es": "No, es el primer reclamo", "en": "No, this is the first report", "pt": "Não, é a primeira reclamação" }, "fragmento": { "es": "No se registran reclamos previos por esta situación.", "en": "No previous reports of this situation are on record.", "pt": "Não se registram reclamações anteriores por esta situação." } },
+        { "id": "sin_respuesta", "texto": { "es": "Sí, sin respuesta", "en": "Yes, no response", "pt": "Sim, sem resposta" }, "fragmento": { "es": "Se registran reclamos previos sin respuesta acreditada.", "en": "Previous reports are on record with no documented response.", "pt": "Registram-se reclamações anteriores sem resposta comprovada." } }
+      ]
+    }
+  ]
+}

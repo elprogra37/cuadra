@@ -257,20 +257,58 @@ presentable con reloj corriendo.
 - **Pendiente Fase 3**: impresión de legajo de caso individual (hoy imprime el
   resumen de datos), multiventana, atajos de teclado.
 
+## FASE 4 — Escala mundial ✅ (2026-07-23)
+
+- **Catálogo completo de 12 categorías** (§8.3): se sumaron tránsito,
+  espacios verdes, transporte, ruido, obra, anegamiento y "Otro" — todas con
+  árbol guiado es/en/pt y fragmentos para el escrito. `indice.json` + SQL seed
+  actualizados. El test valida las 12 contra las reglas §9.
+- **Navegación completa** (`HomeShell`, §20.4): 4 pestañas Android
+  (Mi cuadra · Mapa · Registro · Perfil) + FAB Reportar. `MiCuadraScreen`
+  se separó en `MiCuadraBienvenida` (sin barrio) y `MiCuadraFeed` (pestaña).
+- **Registro del barrio** (`RegistroScreen`, §12): casos resueltos permanentes
+  con sello verde y "lo empujaron N vecinos". Provider `registroBarrioProvider`.
+- **Perfil** (`PerfilScreen`, §7/§22): estado de vecino, cambiar barrio,
+  exportar y borrar datos (borrado con confirmación).
+- **Fusión de duplicados** (§6.4): `RepoGeografia.esDuplicado` (2 de 3 señales:
+  similitud de nombre por Levenshtein ≥0.85, solapamiento ≥40%, centroides
+  <800 m) + `similitudNombre`. Función pura testeada (Villa Crespo/Vila Crespo).
+- 96 tests en verde.
+- **Pendiente Fase 4** (todo requiere el backend conectado): clustering de
+  propuestas de categoría "Otro" (embeddings server-side), Open311, rol
+  visitante real con auth, panel público de datos abiertos, siembra GeoNames
+  mundial. La lógica de "Otro" ya publica como caso normal con plantilla
+  genérica; falta solo el agrupamiento.
+
 ## Estado general al cierre de la sesión 2026-07-23
 
-**La Fase 1 está funcionalmente completa en local** (sin backend conectado):
-elegir/crear barrio → reportar guiado con foto → caso en feed/mapa → detalle
-con sello y adhesión. Todo offline-first con cola de sync esperando el
-`ClienteRemoto` real.
+**Las 4 fases están funcionalmente completas en local.** La app es un producto
+usable de punta a punta sin backend conectado:
 
-**Lo más importante que sigue** (en orden sugerido):
-1. Probar el APK en un dispositivo Android real (cámara, GPS, mapa).
-2. `ClienteRemoto` Supabase + auth (email/OTP) → destraba etapa 8 completa.
-3. Fase 2: generador de PDF, presentación formal con acuse, contador de plazos
-   (`check_deadlines`), escalera de escalamiento.
-4. Clustering del mapa, editor de vértices del polígono, buscador jerárquico
-   remoto.
+1. **Onboarding y geografía:** elegir o crear el barrio (validado contra OSM,
+   polígono en el mapa).
+2. **Reporte guiado:** foto sin galería + EXIF fuera + SHA-256, ubicación con
+   pin, 12 categorías, escrito formal autogenerado, dedup a 80 m, filtro del
+   campo libre.
+3. **Expediente y presión:** feed/mapa por estado, detalle con contador de
+   días, PDF de presentación formal, escalera de escalamiento completa,
+   plazos con vencimiento automático, cierre con antes/después + 2 confirmaciones.
+4. **Registro del barrio, perfil, y panel de escritorio** (Windows) con tabla
+   filtrable, embudo de datos, CSV/PDF y cola de moderación de barrios.
+
+Todo offline-first con la cola de sync esperando el `ClienteRemoto` real.
+
+**Lo único que queda para producción real** (todo depende del backend Supabase
+desplegado, que ya está escrito y probado localmente):
+1. Implementar `ClienteRemoto` contra Supabase + auth (email/OTP) → activa la
+   sincronización, el rol visitante/verificado y las firmas formales.
+2. Envío real de presentaciones por email/Open311 (hoy es Exportar PDF).
+3. Jobs del servidor: clustering de categorías, promoción y fusión de barrios,
+   siembra GeoNames mundial.
+4. Firma del APK de release y revisión legal por país antes de publicar.
+
+**Cómo probar la app hoy:** instalar el APK del CI (workflow Android APK) o
+correr el build de Windows. Funciona entera sin conexión.
 
 ## Cómo retomar
 

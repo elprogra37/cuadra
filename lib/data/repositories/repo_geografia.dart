@@ -203,6 +203,56 @@ class RepoGeografia {
     return ciudad?.jurisdictionId;
   }
 
+  /// Detección de duplicados (§6.4): se marca fusión cuando se cumplen dos de
+  /// tres — nombre similar ≥0.85, solapamiento ≥40%, centroides a <800 m.
+  /// Función pura (la cola de fusión real la resuelve el panel del dueño).
+  static bool esDuplicado({
+    required String nombreA,
+    required String nombreB,
+    required double solapamiento,
+    required double distanciaCentroidesM,
+  }) {
+    var senales = 0;
+    if (similitudNombre(nombreA, nombreB) >= 0.85) senales++;
+    if (solapamiento >= 0.40) senales++;
+    if (distanciaCentroidesM < 800) senales++;
+    return senales >= 2;
+  }
+
+  /// Similitud de nombres normalizados por distancia de Levenshtein (0..1),
+  /// tolerante a "Villa Crespo" / "Vila Crespo" (§6.4).
+  static double similitudNombre(String a, String b) {
+    final na = normalizar(a);
+    final nb = normalizar(b);
+    if (na.isEmpty && nb.isEmpty) return 1;
+    final dist = _levenshtein(na, nb);
+    final maxLen = na.length > nb.length ? na.length : nb.length;
+    return maxLen == 0 ? 1 : 1 - dist / maxLen;
+  }
+
+  static int _levenshtein(String a, String b) {
+    final m = a.length, n = b.length;
+    if (m == 0) return n;
+    if (n == 0) return m;
+    var previa = List<int>.generate(n + 1, (i) => i);
+    var actual = List<int>.filled(n + 1, 0);
+    for (var i = 0; i < m; i++) {
+      actual[0] = i + 1;
+      for (var j = 0; j < n; j++) {
+        final costo = a[i] == b[j] ? 0 : 1;
+        actual[j + 1] = [
+          actual[j] + 1,
+          previa[j + 1] + 1,
+          previa[j] + costo,
+        ].reduce((x, y) => x < y ? x : y);
+      }
+      final tmp = previa;
+      previa = actual;
+      actual = tmp;
+    }
+    return previa[n];
+  }
+
   /// Normalización para búsqueda y detección de duplicados (§6.4).
   static String normalizar(String nombre) => nombre
       .toLowerCase()

@@ -3,5 +3,12 @@
   "calzada.json",
   "residuos.json",
   "agua.json",
-  "arbolado.json"
+  "arbolado.json",
+  "transito.json",
+  "espacios_verdes.json",
+  "transporte.json",
+  "ruido.json",
+  "obra.json",
+  "anegamiento.json",
+  "otro.json"
 ]

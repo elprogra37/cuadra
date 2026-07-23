@@ -105,6 +105,52 @@ void main() {
     expect(ok.isOk, isTrue, reason: ok.failureOrNull?.message);
   });
 
+  group('detección de duplicados (§6.4)', () {
+    test('similitudNombre tolera Villa Crespo / Vila Crespo', () {
+      expect(
+        RepoGeografia.similitudNombre('Villa Crespo', 'Vila Crespo'),
+        greaterThan(0.85),
+      );
+      expect(
+        RepoGeografia.similitudNombre('Palermo', 'Belgrano'),
+        lessThan(0.5),
+      );
+    });
+
+    test('esDuplicado marca fusión con 2 de 3 señales', () {
+      // Nombre casi igual + centroides cerca = duplicado (2 señales).
+      expect(
+        RepoGeografia.esDuplicado(
+          nombreA: 'Villa Crespo',
+          nombreB: 'Vila Crespo',
+          solapamiento: 0.1,
+          distanciaCentroidesM: 300,
+        ),
+        isTrue,
+      );
+      // Solo el nombre parecido: 1 señal, no alcanza.
+      expect(
+        RepoGeografia.esDuplicado(
+          nombreA: 'Villa Crespo',
+          nombreB: 'Vila Crespo',
+          solapamiento: 0.1,
+          distanciaCentroidesM: 5000,
+        ),
+        isFalse,
+      );
+      // Nombres distintos pero mismo polígono y centro: 2 señales.
+      expect(
+        RepoGeografia.esDuplicado(
+          nombreA: 'El Barrio',
+          nombreB: 'Los Vecinos',
+          solapamiento: 0.6,
+          distanciaCentroidesM: 200,
+        ),
+        isTrue,
+      );
+    });
+  });
+
   test('estadoSegunUmbrales aplica §6.3', () {
     expect(
       RepoGeografia.estadoSegunUmbrales(
