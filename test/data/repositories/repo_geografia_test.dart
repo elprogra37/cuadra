@@ -71,6 +71,72 @@ void main() {
     expect(r.failureOrNull!.message, contains('25 km²'));
   });
 
+  test('rechaza un polígono que solapa >40% con un barrio activo', () async {
+    final primero = await repo.crearBarrio(
+      cityId: 'c1',
+      nombre: 'Original',
+      poligono: poligonoValido,
+    );
+    // Se activa el primero (la promoción real la hace el servidor).
+    await db.customStatement("UPDATE neighborhoods SET status = 'activo'", []);
+    expect(primero.isOk, isTrue);
+
+    // Mismo polígono corrido apenas: solapa casi todo.
+    final solapado = [
+      for (final p in poligonoValido) (lat: p.lat + 0.001, lng: p.lng),
+    ];
+    final r = await repo.crearBarrio(
+      cityId: 'c1',
+      nombre: 'Duplicado',
+      poligono: solapado,
+    );
+    expect(r.isOk, isFalse);
+    expect(r.failureOrNull!.message, contains('superpone'));
+
+    // Un polígono lejano no molesta.
+    final lejos = [
+      for (final p in poligonoValido) (lat: p.lat + 0.5, lng: p.lng),
+    ];
+    final ok = await repo.crearBarrio(
+      cityId: 'c1',
+      nombre: 'Otro barrio',
+      poligono: lejos,
+    );
+    expect(ok.isOk, isTrue, reason: ok.failureOrNull?.message);
+  });
+
+  test('estadoSegunUmbrales aplica §6.3', () {
+    expect(
+      RepoGeografia.estadoSegunUmbrales(
+        usuariosVerificados: 0,
+        casosPresentados: 0,
+      ),
+      NeighborhoodStatus.propuesto,
+    );
+    expect(
+      RepoGeografia.estadoSegunUmbrales(
+        usuariosVerificados: 3,
+        casosPresentados: 0,
+      ),
+      NeighborhoodStatus.activo,
+    );
+    expect(
+      RepoGeografia.estadoSegunUmbrales(
+        usuariosVerificados: 10,
+        casosPresentados: 1,
+      ),
+      NeighborhoodStatus.consolidado,
+    );
+    expect(
+      RepoGeografia.estadoSegunUmbrales(
+        usuariosVerificados: 10,
+        casosPresentados: 0,
+      ),
+      NeighborhoodStatus.activo,
+      reason: 'sin caso presentado no consolida',
+    );
+  });
+
   test('normalizar tolera tildes y espacios (para fusión §6.4)', () {
     expect(RepoGeografia.normalizar('  Villa   Crespo '), 'villa crespo');
     expect(RepoGeografia.normalizar('Ñuñoa'), 'nunoa');

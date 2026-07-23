@@ -1,8 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../services/geografia/validador_toponimos.dart';
 import 'local/base_datos.dart';
 import 'local/conexion.dart';
+import 'local/siembra_local.dart';
 import 'repositories/repo_casos.dart';
 import 'repositories/repo_categorias.dart';
 import 'repositories/repo_geografia.dart';
@@ -44,4 +47,20 @@ final repoCategoriasProvider = Provider<RepoCategorias>(
 /// Operaciones sin sincronizar, para el indicador global de la UI.
 final syncPendientesProvider = StreamProvider<int>(
   (ref) => ref.watch(colaSyncProvider).pendientesCount(),
+);
+
+/// Siembra geográfica mínima local (idempotente, primer arranque).
+final siembraLocalProvider = FutureProvider<void>(
+  (ref) => sembrarGeografiaLocal(ref.watch(baseDatosProvider)),
+);
+
+/// Validación externa de topónimos: Nominatim/OSM primero (§6.2); Google
+/// Places como fallback cuando haya API key.
+final validadorToponimosProvider = Provider<ValidadorToponimos>(
+  (ref) => NominatimValidador(Dio()),
+);
+
+/// Un barrio observado en vivo desde la base local.
+final barrioProvider = StreamProvider.family<Neighborhood?, String>(
+  (ref, id) => ref.watch(repoGeografiaProvider).watchBarrio(id),
 );

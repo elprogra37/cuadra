@@ -719,6 +719,24 @@ class $CitiesTable extends Cities with TableInfo<$CitiesTable, City> {
     type: DriftSqlType.int,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _latMeta = const VerificationMeta('lat');
+  @override
+  late final GeneratedColumn<double> lat = GeneratedColumn<double>(
+    'lat',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _lngMeta = const VerificationMeta('lng');
+  @override
+  late final GeneratedColumn<double> lng = GeneratedColumn<double>(
+    'lng',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -728,6 +746,8 @@ class $CitiesTable extends Cities with TableInfo<$CitiesTable, City> {
     jurisdictionId,
     osmRelationId,
     population,
+    lat,
+    lng,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -792,6 +812,18 @@ class $CitiesTable extends Cities with TableInfo<$CitiesTable, City> {
         population.isAcceptableOrUnknown(data['population']!, _populationMeta),
       );
     }
+    if (data.containsKey('lat')) {
+      context.handle(
+        _latMeta,
+        lat.isAcceptableOrUnknown(data['lat']!, _latMeta),
+      );
+    }
+    if (data.containsKey('lng')) {
+      context.handle(
+        _lngMeta,
+        lng.isAcceptableOrUnknown(data['lng']!, _lngMeta),
+      );
+    }
     return context;
   }
 
@@ -829,6 +861,14 @@ class $CitiesTable extends Cities with TableInfo<$CitiesTable, City> {
         DriftSqlType.int,
         data['${effectivePrefix}population'],
       ),
+      lat: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}lat'],
+      ),
+      lng: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}lng'],
+      ),
     );
   }
 
@@ -849,6 +889,10 @@ class City extends DataClass implements Insertable<City> {
   final String? jurisdictionId;
   final int? osmRelationId;
   final int? population;
+
+  /// Centro aproximado, para centrar el mapa al crear un barrio.
+  final double? lat;
+  final double? lng;
   const City({
     required this.id,
     required this.regionId,
@@ -857,6 +901,8 @@ class City extends DataClass implements Insertable<City> {
     this.jurisdictionId,
     this.osmRelationId,
     this.population,
+    this.lat,
+    this.lng,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -875,6 +921,12 @@ class City extends DataClass implements Insertable<City> {
     }
     if (!nullToAbsent || population != null) {
       map['population'] = Variable<int>(population);
+    }
+    if (!nullToAbsent || lat != null) {
+      map['lat'] = Variable<double>(lat);
+    }
+    if (!nullToAbsent || lng != null) {
+      map['lng'] = Variable<double>(lng);
     }
     return map;
   }
@@ -896,6 +948,8 @@ class City extends DataClass implements Insertable<City> {
       population: population == null && nullToAbsent
           ? const Value.absent()
           : Value(population),
+      lat: lat == null && nullToAbsent ? const Value.absent() : Value(lat),
+      lng: lng == null && nullToAbsent ? const Value.absent() : Value(lng),
     );
   }
 
@@ -912,6 +966,8 @@ class City extends DataClass implements Insertable<City> {
       jurisdictionId: serializer.fromJson<String?>(json['jurisdictionId']),
       osmRelationId: serializer.fromJson<int?>(json['osmRelationId']),
       population: serializer.fromJson<int?>(json['population']),
+      lat: serializer.fromJson<double?>(json['lat']),
+      lng: serializer.fromJson<double?>(json['lng']),
     );
   }
   @override
@@ -925,6 +981,8 @@ class City extends DataClass implements Insertable<City> {
       'jurisdictionId': serializer.toJson<String?>(jurisdictionId),
       'osmRelationId': serializer.toJson<int?>(osmRelationId),
       'population': serializer.toJson<int?>(population),
+      'lat': serializer.toJson<double?>(lat),
+      'lng': serializer.toJson<double?>(lng),
     };
   }
 
@@ -936,6 +994,8 @@ class City extends DataClass implements Insertable<City> {
     Value<String?> jurisdictionId = const Value.absent(),
     Value<int?> osmRelationId = const Value.absent(),
     Value<int?> population = const Value.absent(),
+    Value<double?> lat = const Value.absent(),
+    Value<double?> lng = const Value.absent(),
   }) => City(
     id: id ?? this.id,
     regionId: regionId ?? this.regionId,
@@ -948,6 +1008,8 @@ class City extends DataClass implements Insertable<City> {
         ? osmRelationId.value
         : this.osmRelationId,
     population: population.present ? population.value : this.population,
+    lat: lat.present ? lat.value : this.lat,
+    lng: lng.present ? lng.value : this.lng,
   );
   City copyWithCompanion(CitiesCompanion data) {
     return City(
@@ -966,6 +1028,8 @@ class City extends DataClass implements Insertable<City> {
       population: data.population.present
           ? data.population.value
           : this.population,
+      lat: data.lat.present ? data.lat.value : this.lat,
+      lng: data.lng.present ? data.lng.value : this.lng,
     );
   }
 
@@ -978,7 +1042,9 @@ class City extends DataClass implements Insertable<City> {
           ..write('geonamesId: $geonamesId, ')
           ..write('jurisdictionId: $jurisdictionId, ')
           ..write('osmRelationId: $osmRelationId, ')
-          ..write('population: $population')
+          ..write('population: $population, ')
+          ..write('lat: $lat, ')
+          ..write('lng: $lng')
           ..write(')'))
         .toString();
   }
@@ -992,6 +1058,8 @@ class City extends DataClass implements Insertable<City> {
     jurisdictionId,
     osmRelationId,
     population,
+    lat,
+    lng,
   );
   @override
   bool operator ==(Object other) =>
@@ -1003,7 +1071,9 @@ class City extends DataClass implements Insertable<City> {
           other.geonamesId == this.geonamesId &&
           other.jurisdictionId == this.jurisdictionId &&
           other.osmRelationId == this.osmRelationId &&
-          other.population == this.population);
+          other.population == this.population &&
+          other.lat == this.lat &&
+          other.lng == this.lng);
 }
 
 class CitiesCompanion extends UpdateCompanion<City> {
@@ -1014,6 +1084,8 @@ class CitiesCompanion extends UpdateCompanion<City> {
   final Value<String?> jurisdictionId;
   final Value<int?> osmRelationId;
   final Value<int?> population;
+  final Value<double?> lat;
+  final Value<double?> lng;
   final Value<int> rowid;
   const CitiesCompanion({
     this.id = const Value.absent(),
@@ -1023,6 +1095,8 @@ class CitiesCompanion extends UpdateCompanion<City> {
     this.jurisdictionId = const Value.absent(),
     this.osmRelationId = const Value.absent(),
     this.population = const Value.absent(),
+    this.lat = const Value.absent(),
+    this.lng = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   CitiesCompanion.insert({
@@ -1033,6 +1107,8 @@ class CitiesCompanion extends UpdateCompanion<City> {
     this.jurisdictionId = const Value.absent(),
     this.osmRelationId = const Value.absent(),
     this.population = const Value.absent(),
+    this.lat = const Value.absent(),
+    this.lng = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        regionId = Value(regionId),
@@ -1045,6 +1121,8 @@ class CitiesCompanion extends UpdateCompanion<City> {
     Expression<String>? jurisdictionId,
     Expression<int>? osmRelationId,
     Expression<int>? population,
+    Expression<double>? lat,
+    Expression<double>? lng,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -1055,6 +1133,8 @@ class CitiesCompanion extends UpdateCompanion<City> {
       if (jurisdictionId != null) 'jurisdiction_id': jurisdictionId,
       if (osmRelationId != null) 'osm_relation_id': osmRelationId,
       if (population != null) 'population': population,
+      if (lat != null) 'lat': lat,
+      if (lng != null) 'lng': lng,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1067,6 +1147,8 @@ class CitiesCompanion extends UpdateCompanion<City> {
     Value<String?>? jurisdictionId,
     Value<int?>? osmRelationId,
     Value<int?>? population,
+    Value<double?>? lat,
+    Value<double?>? lng,
     Value<int>? rowid,
   }) {
     return CitiesCompanion(
@@ -1077,6 +1159,8 @@ class CitiesCompanion extends UpdateCompanion<City> {
       jurisdictionId: jurisdictionId ?? this.jurisdictionId,
       osmRelationId: osmRelationId ?? this.osmRelationId,
       population: population ?? this.population,
+      lat: lat ?? this.lat,
+      lng: lng ?? this.lng,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1105,6 +1189,12 @@ class CitiesCompanion extends UpdateCompanion<City> {
     if (population.present) {
       map['population'] = Variable<int>(population.value);
     }
+    if (lat.present) {
+      map['lat'] = Variable<double>(lat.value);
+    }
+    if (lng.present) {
+      map['lng'] = Variable<double>(lng.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -1121,6 +1211,8 @@ class CitiesCompanion extends UpdateCompanion<City> {
           ..write('jurisdictionId: $jurisdictionId, ')
           ..write('osmRelationId: $osmRelationId, ')
           ..write('population: $population, ')
+          ..write('lat: $lat, ')
+          ..write('lng: $lng, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -11206,6 +11298,8 @@ typedef $$CitiesTableCreateCompanionBuilder =
       Value<String?> jurisdictionId,
       Value<int?> osmRelationId,
       Value<int?> population,
+      Value<double?> lat,
+      Value<double?> lng,
       Value<int> rowid,
     });
 typedef $$CitiesTableUpdateCompanionBuilder =
@@ -11217,6 +11311,8 @@ typedef $$CitiesTableUpdateCompanionBuilder =
       Value<String?> jurisdictionId,
       Value<int?> osmRelationId,
       Value<int?> population,
+      Value<double?> lat,
+      Value<double?> lng,
       Value<int> rowid,
     });
 
@@ -11260,6 +11356,16 @@ class $$CitiesTableFilterComposer extends Composer<_$BaseDatos, $CitiesTable> {
 
   ColumnFilters<int> get population => $composableBuilder(
     column: $table.population,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get lat => $composableBuilder(
+    column: $table.lat,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get lng => $composableBuilder(
+    column: $table.lng,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -11307,6 +11413,16 @@ class $$CitiesTableOrderingComposer
     column: $table.population,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<double> get lat => $composableBuilder(
+    column: $table.lat,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get lng => $composableBuilder(
+    column: $table.lng,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$CitiesTableAnnotationComposer
@@ -11346,6 +11462,12 @@ class $$CitiesTableAnnotationComposer
     column: $table.population,
     builder: (column) => column,
   );
+
+  GeneratedColumn<double> get lat =>
+      $composableBuilder(column: $table.lat, builder: (column) => column);
+
+  GeneratedColumn<double> get lng =>
+      $composableBuilder(column: $table.lng, builder: (column) => column);
 }
 
 class $$CitiesTableTableManager
@@ -11383,6 +11505,8 @@ class $$CitiesTableTableManager
                 Value<String?> jurisdictionId = const Value.absent(),
                 Value<int?> osmRelationId = const Value.absent(),
                 Value<int?> population = const Value.absent(),
+                Value<double?> lat = const Value.absent(),
+                Value<double?> lng = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => CitiesCompanion(
                 id: id,
@@ -11392,6 +11516,8 @@ class $$CitiesTableTableManager
                 jurisdictionId: jurisdictionId,
                 osmRelationId: osmRelationId,
                 population: population,
+                lat: lat,
+                lng: lng,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -11403,6 +11529,8 @@ class $$CitiesTableTableManager
                 Value<String?> jurisdictionId = const Value.absent(),
                 Value<int?> osmRelationId = const Value.absent(),
                 Value<int?> population = const Value.absent(),
+                Value<double?> lat = const Value.absent(),
+                Value<double?> lng = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => CitiesCompanion.insert(
                 id: id,
@@ -11412,6 +11540,8 @@ class $$CitiesTableTableManager
                 jurisdictionId: jurisdictionId,
                 osmRelationId: osmRelationId,
                 population: population,
+                lat: lat,
+                lng: lng,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

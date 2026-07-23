@@ -26,6 +26,20 @@ class RepoGeografia {
   /// Límites de un polígono de barrio (§6.2).
   static const minVertices = 4;
   static const maxAreaKm2 = 25.0;
+  static const maxSolapamiento = 0.40;
+
+  /// Máquina de estados de un barrio (§6.3). La promoción real la corre un
+  /// job del servidor; esta regla pura sirve para mostrar umbrales en la UI.
+  static NeighborhoodStatus estadoSegunUmbrales({
+    required int usuariosVerificados,
+    required int casosPresentados,
+  }) {
+    if (usuariosVerificados >= 10 && casosPresentados >= 1) {
+      return NeighborhoodStatus.consolidado;
+    }
+    if (usuariosVerificados >= 3) return NeighborhoodStatus.activo;
+    return NeighborhoodStatus.propuesto;
+  }
 
   /// Crea un barrio PROPUESTO local (§6.3) y lo encola. Ningún barrio
   /// propuesto bloquea a nadie: se puede reportar desde el momento cero.
@@ -53,6 +67,31 @@ class RepoGeografia {
           'de 25 km². Un barrio es más chico: ajustá el polígono.',
         ),
       );
+    }
+
+    // Rechazo si solapa >40% con un barrio ya activo (§6.2). El chequeo
+    // exacto lo repite PostGIS al sincronizar.
+    final activos =
+        await (_db.select(_db.neighborhoods)..where(
+              (t) => t.status.isIn([
+                NeighborhoodStatus.activo.name,
+                NeighborhoodStatus.consolidado.name,
+              ]),
+            ))
+            .get();
+    if (activos.isNotEmpty) {
+      final solapa = Geodesia.fraccionSolapada(poligono, [
+        for (final a in activos) _poligonoDe(a.polygon),
+      ]);
+      if (solapa > maxSolapamiento) {
+        return Err(
+          ValidationFailure(
+            'El área marcada se superpone un ${(solapa * 100).round()}% con '
+            'un barrio ya activo. Buscalo en el mapa y sumate, o ajustá '
+            'los límites.',
+          ),
+        );
+      }
     }
 
     final id = _uuid.v4();
@@ -132,15 +171,19 @@ class RepoGeografia {
   Future<Neighborhood?> resolver(double lat, double lng) async {
     final todos = await _db.select(_db.neighborhoods).get();
     for (final b in todos) {
-      final crudo = (jsonDecode(b.polygon) as List<dynamic>)
-          .cast<List<dynamic>>();
-      final poligono = [
-        for (final par in crudo)
-          (lat: (par[0] as num).toDouble(), lng: (par[1] as num).toDouble()),
-      ];
-      if (Geodesia.puntoEnPoligono(lat, lng, poligono)) return b;
+      if (Geodesia.puntoEnPoligono(lat, lng, _poligonoDe(b.polygon))) {
+        return b;
+      }
     }
     return null;
+  }
+
+  static List<({double lat, double lng})> _poligonoDe(String json) {
+    final crudo = (jsonDecode(json) as List<dynamic>).cast<List<dynamic>>();
+    return [
+      for (final par in crudo)
+        (lat: (par[0] as num).toDouble(), lng: (par[1] as num).toDouble()),
+    ];
   }
 
   Stream<Neighborhood?> watchBarrio(String id) => (_db.select(

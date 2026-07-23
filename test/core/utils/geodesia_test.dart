@@ -46,6 +46,42 @@ void main() {
     });
   });
 
+  group('fraccionSolapada (regla del 40%, §6.2)', () {
+    final cuadrado = [
+      (lat: 0.0, lng: 0.0),
+      (lat: 0.0, lng: 1.0),
+      (lat: 1.0, lng: 1.0),
+      (lat: 1.0, lng: 0.0),
+    ];
+
+    test('polígono idéntico → solapa ~100%', () {
+      expect(
+        Geodesia.fraccionSolapada(cuadrado, [cuadrado]),
+        closeTo(1.0, 0.05),
+      );
+    });
+
+    test('polígonos disjuntos → 0%', () {
+      final lejos = [
+        (lat: 5.0, lng: 5.0),
+        (lat: 5.0, lng: 6.0),
+        (lat: 6.0, lng: 6.0),
+        (lat: 6.0, lng: 5.0),
+      ];
+      expect(Geodesia.fraccionSolapada(cuadrado, [lejos]), 0);
+    });
+
+    test('mitad adentro → ~50%', () {
+      final medio = [
+        (lat: 0.0, lng: 0.5),
+        (lat: 0.0, lng: 1.5),
+        (lat: 1.0, lng: 1.5),
+        (lat: 1.0, lng: 0.5),
+      ];
+      expect(Geodesia.fraccionSolapada(medio, [cuadrado]), closeTo(0.5, 0.08));
+    });
+  });
+
   group('desplazar (privacidad de pines, §19)', () {
     test('nunca supera el máximo de metros', () {
       for (var semilla = 0; semilla < 200; semilla++) {

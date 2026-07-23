@@ -57,6 +57,10 @@ class Cities extends Table {
   IntColumn get osmRelationId => integer().nullable()();
   IntColumn get population => integer().nullable()();
 
+  /// Centro aproximado, para centrar el mapa al crear un barrio.
+  RealColumn get lat => real().nullable()();
+  RealColumn get lng => real().nullable()();
+
   @override
   Set<Column<Object>> get primaryKey => {id};
 }

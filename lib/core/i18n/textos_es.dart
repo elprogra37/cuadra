@@ -65,4 +65,55 @@ class TextosEs extends Textos {
       'Sin conexión. Tu reporte queda guardado y se envía solo cuando vuelva la señal.';
   @override
   String get errorReintentar => 'Reintentar';
+
+  @override
+  String get buscarBarrio => 'Buscá tu barrio';
+  @override
+  String get buscarBarrioPista => 'Nombre del barrio, ciudad…';
+  @override
+  String get sinResultados =>
+      'Tu barrio no aparece. Crealo: la app verifica que exista y lo suma al mapa.';
+  @override
+  String get crearMiBarrio => 'Crear mi barrio';
+  @override
+  String get nombreDelBarrio => '¿Cómo se llama tu barrio?';
+  @override
+  String get nombreDelBarrioPista => 'Ej.: Villa Crespo';
+  @override
+  String get validandoNombre => 'Verificando que el barrio exista…';
+  @override
+  String get nombreValidado =>
+      'Encontrado en el mapa. Ahora marcá sus límites.';
+  @override
+  String get nombreNoEncontrado =>
+      'No lo encontramos en el mapa. Podés dibujar sus límites igual: '
+      'queda como propuesto hasta que más vecinos lo confirmen.';
+  @override
+  String get dibujarPoligono => 'Marcá los límites';
+  @override
+  String get dibujarPoligonoPista =>
+      'Tocá el mapa para marcar cada esquina del barrio (mínimo 4).';
+  @override
+  String verticesYArea(int vertices, String areaKm2) =>
+      '$vertices vértices · $areaKm2 km²';
+  @override
+  String get deshacerVertice => 'Deshacer último punto';
+  @override
+  String get guardarBarrio => 'Proponer este barrio';
+  @override
+  String get barrioCreado => 'Tu barrio quedó propuesto. Ya podés reportar.';
+  @override
+  String get barrioPropuestoAviso =>
+      'Con 3 vecinos verificados pasa a activo y aparece en el buscador público.';
+  @override
+  String estadoBarrio(String estado) => switch (estado) {
+    'propuesto' => 'Propuesto',
+    'activo' => 'Activo',
+    'consolidado' => 'Consolidado',
+    'fusionado' => 'Fusionado',
+    _ => 'Oculto',
+  };
+  @override
+  String vecinosVerificados(int n) =>
+      n == 1 ? '1 vecino verificado' : '$n vecinos verificados';
 }

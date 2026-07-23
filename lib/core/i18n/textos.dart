@@ -58,6 +58,26 @@ abstract class Textos {
   // Errores genéricos
   String get errorSinConexion;
   String get errorReintentar;
+
+  // Buscador geográfico y alta de barrio (§6)
+  String get buscarBarrio;
+  String get buscarBarrioPista;
+  String get sinResultados;
+  String get crearMiBarrio;
+  String get nombreDelBarrio;
+  String get nombreDelBarrioPista;
+  String get validandoNombre;
+  String get nombreValidado;
+  String get nombreNoEncontrado;
+  String get dibujarPoligono;
+  String get dibujarPoligonoPista;
+  String verticesYArea(int vertices, String areaKm2);
+  String get deshacerVertice;
+  String get guardarBarrio;
+  String get barrioCreado;
+  String get barrioPropuestoAviso;
+  String estadoBarrio(String estado);
+  String vecinosVerificados(int n);
 }
 
 class _TextosDelegate extends LocalizationsDelegate<Textos> {

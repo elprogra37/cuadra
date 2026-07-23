@@ -71,6 +71,22 @@ pantallas de caso a partir de la etapa 7. Mientras tanto:
 **Cómo probarlo:** `flutter test test/data/` (cola, repos y esquema contra una
 base en memoria). La UI de reporte que consume esto llega en la etapa 6.
 
+### Motor geográfico (Etapa 5) ✅
+
+- **Buscá tu barrio o crealo:** buscador local + alta de barrio con validación
+  automática del nombre contra OpenStreetMap (Nominatim). Si el nombre no
+  aparece, se puede dibujar igual: nada bloquea al vecino.
+- **Dibujo del polígono en el mapa:** tocás las esquinas del barrio sobre el
+  mapa OSM (mínimo 4 vértices, máximo 25 km², rechazo si se superpone más del
+  40% con un barrio activo). Área calculada en vivo y deshacer por punto.
+- **Estados de barrio:** propuesto → activo (3 vecinos verificados) →
+  consolidado (10 + un caso presentado).
+
+**Cómo probarlo:** abrir la app → "Buscá tu barrio" → "Crear mi barrio" →
+elegir ciudad, escribir el nombre (el ícono de la lupa lo valida contra OSM),
+tocar 4+ esquinas en el mapa y "Proponer este barrio". La pantalla principal
+pasa a mostrar el barrio con su estado.
+
 ### Backend Supabase local (Etapa 4) ✅
 
 - **Stack completo self-hosted** (Postgres 15 + PostGIS + Auth + REST + Storage

@@ -29,7 +29,7 @@
 | 2 | Sistema de diseño (tokens §5, `EstadoSello`, tests) | ✅ hecho |
 | 3 | Datos (Drift §19, freezed, repos offline-first, SyncQueue) | ✅ hecho |
 | 4 | Backend (Supabase: SQL, PostGIS, RLS, siembra GeoNames) | ✅ hecho |
-| 5 | Motor geográfico (buscador, crear barrio, polígonos, resolve) | ⬜ |
+| 5 | Motor geográfico (buscador, crear barrio, polígonos, resolve) | ✅ hecho |
 | 6 | Flujo de reporte guiado (cámara, EXIF, hash, árbol JSON, dedup) | ⬜ |
 | 7 | Mi cuadra y mapa (feed con cierre de lista, clusters) | ⬜ |
 | 8 | Adhesión (commit-then-register, impacto, firma formal) | ⬜ |
@@ -126,6 +126,34 @@
   y build Windows fallaban en CI. Se agregó `ar-c-caba.json` (ficha demo).
 - La secuencia case_ref_seq quedó en #2 en el volumen local (dato de prueba
   borrado); irrelevante.
+
+### Etapa 5 — Motor geográfico ✅ (2026-07-23)
+
+- **Validación de topónimos** (`services/geografia/validador_toponimos.dart`):
+  Nominatim/OSM con caché en memoria y User-Agent propio; interpreta tipos
+  place=suburb|neighbourhood|quarter cerca de la zona (±0.15°). Sin red NO
+  bloquea el alta (queda validation_source=manual). Google Places fallback
+  pendiente de API key.
+- **Solapamiento local**: `Geodesia.fraccionSolapada` (muestreo en grilla) y
+  rechazo >40% contra barrios activos en `RepoGeografia.crearBarrio`
+  (PostGIS repite el chequeo exacto al sincronizar).
+- **Máquina de estados** §6.3: `RepoGeografia.estadoSegunUmbrales` (3
+  verificados → activo; 10 + 1 caso presentado → consolidado). La promoción
+  real es job del servidor.
+- **UI**: `BuscadorBarrioScreen` (búsqueda local + crear siempre visible),
+  `CrearBarrioScreen` (dropdown de ciudad, validación de nombre, polígono por
+  toques en flutter_map/OSM con deshacer, área en vivo, guardar en vial),
+  `MiCuadraScreen` rediseñada (bienvenida con única acción / feed con cierre
+  explícito de lista). Rutas /barrio/buscar y /barrio/crear.
+- **Siembra local** (`data/local/siembra_local.dart`): AR + 5 ciudades con
+  lat/lng para que la jerarquía funcione offline en el primer arranque.
+  Se agregó lat/lng a `cities` (Drift, aún sin migración: v1 no publicada).
+- `Preferencias` (shared_preferences) guarda el barrio activo.
+- Riverpod 3: `AsyncValue` usa `.value`, no `.valueOrNull`.
+- **Falta del motor** (a futuro): buscador jerárquico remoto completo
+  (país→región→ciudad con autocompletado server), edición de vértices
+  arrastrando, fusión de duplicados (job servidor).
+- CI de la etapa 4: los 3 workflows verdes (drift testea bien en el contenedor).
 
 ## Cómo retomar
 

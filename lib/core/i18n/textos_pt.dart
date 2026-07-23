@@ -64,4 +64,54 @@ class TextosPt extends Textos {
       'Sem conexão. Seu reporte fica salvo e será enviado quando o sinal voltar.';
   @override
   String get errorReintentar => 'Tentar de novo';
+
+  @override
+  String get buscarBarrio => 'Encontre seu bairro';
+  @override
+  String get buscarBarrioPista => 'Nome do bairro, cidade…';
+  @override
+  String get sinResultados =>
+      'Seu bairro não aparece. Crie-o: o app verifica que existe e o adiciona ao mapa.';
+  @override
+  String get crearMiBarrio => 'Criar meu bairro';
+  @override
+  String get nombreDelBarrio => 'Como se chama seu bairro?';
+  @override
+  String get nombreDelBarrioPista => 'Ex.: Vila Madalena';
+  @override
+  String get validandoNombre => 'Verificando que o bairro existe…';
+  @override
+  String get nombreValidado => 'Encontrado no mapa. Agora marque seus limites.';
+  @override
+  String get nombreNoEncontrado =>
+      'Não o encontramos no mapa. Você pode desenhar os limites mesmo assim: '
+      'fica como proposto até que mais vizinhos o confirmem.';
+  @override
+  String get dibujarPoligono => 'Marque os limites';
+  @override
+  String get dibujarPoligonoPista =>
+      'Toque no mapa para marcar cada esquina do bairro (mínimo 4).';
+  @override
+  String verticesYArea(int vertices, String areaKm2) =>
+      '$vertices vértices · $areaKm2 km²';
+  @override
+  String get deshacerVertice => 'Desfazer último ponto';
+  @override
+  String get guardarBarrio => 'Propor este bairro';
+  @override
+  String get barrioCreado => 'Seu bairro foi proposto. Você já pode reportar.';
+  @override
+  String get barrioPropuestoAviso =>
+      'Com 3 vizinhos verificados passa a ativo e aparece na busca pública.';
+  @override
+  String estadoBarrio(String estado) => switch (estado) {
+    'propuesto' => 'Proposto',
+    'activo' => 'Ativo',
+    'consolidado' => 'Consolidado',
+    'fusionado' => 'Fundido',
+    _ => 'Oculto',
+  };
+  @override
+  String vecinosVerificados(int n) =>
+      n == 1 ? '1 vizinho verificado' : '$n vizinhos verificados';
 }
