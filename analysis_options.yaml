@@ -1,0 +1,28 @@
+# Análisis estático de Cuadra: flutter_lints como base + reglas extra.
+# Dart estricto según convenciones del documento maestro (sección 25).
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+  exclude:
+    # Código generado (drift, freezed, json_serializable)
+    - '**/*.g.dart'
+    - '**/*.freezed.dart'
+    - '**/*.drift.dart'
+
+linter:
+  rules:
+    - always_declare_return_types
+    - avoid_slow_async_io
+    - cancel_subscriptions
+    - directives_ordering
+    - prefer_final_in_for_each
+    - prefer_final_locals
+    - prefer_single_quotes
+    - require_trailing_commas
+    - unawaited_futures
+    - unnecessary_await_in_return
+    - unnecessary_parenthesis

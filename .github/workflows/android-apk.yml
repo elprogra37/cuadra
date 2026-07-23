@@ -1,0 +1,51 @@
+name: Android APK
+
+on:
+  push:
+    branches: [develop]
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  # APK de debug para validar en device real. No hay JDK local en la máquina de
+  # desarrollo: todo build Android sale de acá.
+  debug-apk:
+    if: github.ref_type != 'tag'
+    runs-on: ubuntu-latest
+    # Misma imagen que el dev local y ci.yml: Flutter 3.44.0 + Android SDK + Java.
+    container:
+      image: ghcr.io/cirruslabs/flutter:3.44.0
+    steps:
+      - uses: actions/checkout@v4
+      - run: git config --global --add safe.directory '*'
+      - run: flutter pub get
+      - name: Build APK (debug)
+        run: flutter build apk --debug
+      # continue-on-error: si la quota de storage de artifacts está llena,
+      # el build igual queda verde (el APK se recupera relanzando el job
+      # cuando la quota se libera).
+      - uses: actions/upload-artifact@v4
+        continue-on-error: true
+        with:
+          name: cuadra-debug-apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
+          retention-days: 7
+
+  # APK de release en tags → GitHub Release (sin firma propia todavía:
+  # ver PENDIENTES "firma release").
+  release-apk:
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/cirruslabs/flutter:3.44.0
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - run: git config --global --add safe.directory '*'
+      - run: flutter pub get
+      - name: Build APK (release)
+        run: flutter build apk --release
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: build/app/outputs/flutter-apk/app-release.apk

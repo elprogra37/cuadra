@@ -1,0 +1,41 @@
+name: Windows
+
+on:
+  push:
+    branches: [develop]
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  # Build de escritorio Windows. No hay Visual Studio en la máquina de
+  # desarrollo: la verificación de que el target Windows compila sale de acá.
+  build-windows:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.44.4
+          cache: true
+      - run: flutter pub get
+      - name: Build Windows (release)
+        run: flutter build windows --release
+      - name: Empaquetar
+        shell: pwsh
+        run: Compress-Archive -Path build/windows/x64/runner/Release/* -DestinationPath cuadra-windows-x64.zip
+      # continue-on-error: si la quota de storage de artifacts está llena,
+      # el build igual queda verde.
+      - uses: actions/upload-artifact@v4
+        if: github.ref_type != 'tag'
+        continue-on-error: true
+        with:
+          name: cuadra-windows-x64
+          path: cuadra-windows-x64.zip
+          retention-days: 7
+      - uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
+        with:
+          files: cuadra-windows-x64.zip

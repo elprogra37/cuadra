@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [develop, main]
+
+jobs:
+  analyze-test:
+    runs-on: ubuntu-latest
+    # Corre dentro de la misma imagen de referencia del proyecto
+    # (cirruslabs/flutter:3.44.0) para que `dart format`/`analyze` den un
+    # resultado idéntico al del entorno de desarrollo.
+    container:
+      image: ghcr.io/cirruslabs/flutter:3.44.0
+    steps:
+      - uses: actions/checkout@v4
+      - run: git config --global --add safe.directory '*'
+      - run: flutter pub get
+      - name: Formato
+        run: dart format --set-exit-if-changed lib test
+      - name: Análisis estático
+        run: flutter analyze
+      - name: Tests
+        run: flutter test --coverage
+      - uses: actions/upload-artifact@v4
+        if: always()
+        continue-on-error: true
+        with:
+          name: coverage
+          path: coverage/lcov.info
+          if-no-files-found: ignore

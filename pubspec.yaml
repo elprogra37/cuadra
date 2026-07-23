@@ -1,0 +1,79 @@
+name: cuadra
+description: "Cuadra — Tu barrio deja constancia. Reclamos vecinales que sí llegan."
+publish_to: 'none'
+
+# Versionado semántico + build number (Android: versionName/versionCode).
+version: 0.1.0+1
+
+environment:
+  # >=3.12.0 (no ^3.12.2): la imagen de CI (cirruslabs/flutter:3.44.0) trae Dart 3.12.0.
+  sdk: '>=3.12.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # Material en español (es-AR).
+  flutter_localizations:
+    sdk: flutter
+
+  # Estado / inyección de dependencias
+  flutter_riverpod: ^3.3.2
+  # Navegación declarativa, deep links para compartir casos
+  go_router: ^17.3.0
+  # Persistencia local offline-first: Drift sobre SQLite es la fuente de verdad
+  drift: ^2.28.2
+  drift_flutter: ^0.2.7
+  # Modelos inmutables + serialización
+  freezed_annotation: ^3.1.0
+  json_annotation: ^4.9.0
+  # Mapas: teselas OSM, funciona en Android y Windows
+  flutter_map: ^8.3.1
+  latlong2: ^0.10.1
+  # HTTP con reintentos (sincronización con Supabase)
+  dio: ^5.9.0
+  # SHA-256 de evidencia al momento de captura
+  crypto: ^3.0.7
+  # 0.20.2: versión pinneada por flutter_localizations del SDK.
+  intl: ^0.20.2
+  # client_uuid idempotente para la SyncQueue
+  uuid: ^4.5.1
+  # Preferencias locales (tema, onboarding)
+  shared_preferences: ^2.5.0
+  # Rutas de archivos (base de datos Drift, evidencia local)
+  path_provider: ^2.1.5
+  path: ^1.9.0
+  # Compresión de imágenes y borrado de EXIF en cliente
+  image: ^4.5.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  build_runner: ^2.7.1
+  drift_dev: ^2.28.2
+  freezed: ^3.2.3
+  json_serializable: ^6.11.1
+  mocktail: ^1.0.4
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/categories/
+    - assets/jurisdictions/
+
+  fonts:
+    # Fuentes variables (un solo archivo por familia): el peso se aplica con
+    # `fontVariations`. Ver lib/core/theme/tokens.dart.
+    # Display: títulos de caso y contador de días. Nada más.
+    - family: Oswald
+      fonts:
+        - asset: assets/fonts/Oswald-Variable.ttf
+    # Cuerpo: todo el texto.
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Variable.ttf
+    # Datos: números de expediente, fechas, contadores, sellos.
+    - family: JetBrainsMono
+      fonts:
+        - asset: assets/fonts/JetBrainsMono-Variable.ttf
