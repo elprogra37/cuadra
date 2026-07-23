@@ -1,9 +1,13 @@
 name: CI
 
+# Desde ~2026-07-17 los eventos push no disparan workflows en esta cuenta
+# (los runs por push de antes de esa fecha andan; después, nada). Workaround:
+# workflow_dispatch disparado por API después de cada push.
 on:
   pull_request:
   push:
     branches: [develop, main]
+  workflow_dispatch:
 
 jobs:
   analyze-test:
