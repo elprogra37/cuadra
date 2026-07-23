@@ -162,4 +162,29 @@ class TextosEs extends Textos {
   @override
   String get fueraDeTuBarrio =>
       'El pin quedó fuera de tu barrio. Solo se reporta donde sos vecino.';
+
+  @override
+  String diasAbierto(int dias) => dias == 1 ? '1 día' : '$dias días';
+  @override
+  String adhesiones(int n) => n == 1 ? '1 adhesión' : '$n adhesiones';
+  @override
+  String get casoNoEncontrado => 'Ese caso no está en tu base local.';
+  @override
+  String get adheriste => 'Tu adhesión quedó registrada.';
+  @override
+  String get accionSiguiente => 'Paso siguiente';
+  @override
+  String get verEnElMapa => 'Ver en el mapa';
+  @override
+  String get lineaDeTiempo => 'Línea de tiempo';
+  @override
+  String get eventoCreado => 'Reportado con evidencia';
+  @override
+  String get eventoPresentado => 'Presentado ante el organismo';
+  @override
+  String get eventoResuelto => 'Resuelto y verificado';
+  @override
+  String get presentacionEnFase2 =>
+      'La presentación formal ante el organismo llega en la próxima fase. '
+      'Mientras tanto, cada adhesión hace más fuerte el expediente.';
 }

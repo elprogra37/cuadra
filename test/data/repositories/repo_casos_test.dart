@@ -160,6 +160,30 @@ void main() {
     },
   );
 
+  test('ordenarFeed: lo pendiente arriba, lo más nuevo primero', () async {
+    Future<void> fijar(String id, String status, int epochSeg) =>
+        db.customStatement(
+          'UPDATE cases SET status = ?, created_at = ? WHERE id = ?',
+          [status, epochSeg, id],
+        );
+
+    final viejoAbierto = await crear();
+    final resueltoNuevo = await crear(lat: -34.605);
+    final nuevoAbierto = await crear(lat: -34.607);
+    await fijar(viejoAbierto, 'abierto', 1000);
+    await fijar(resueltoNuevo, 'resuelto', 9000);
+    await fijar(nuevoAbierto, 'abierto', 5000);
+
+    final feed = await repo.watchCasosDeBarrio('b1').first;
+    expect(feed.map((c) => c.id).toList(), [
+      // Pendientes primero (más nuevo arriba), lo cerrado al final aunque
+      // sea más reciente.
+      nuevoAbierto,
+      viejoAbierto,
+      resueltoNuevo,
+    ]);
+  });
+
   test('el feed del barrio excluye estados no visibles', () async {
     final id = await crear();
     await crear(lat: -34.605); // segundo caso

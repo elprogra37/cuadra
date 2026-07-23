@@ -158,4 +158,29 @@ class TextosPt extends Textos {
   @override
   String get fueraDeTuBarrio =>
       'O pino ficou fora do seu bairro. Só se reporta onde você mora.';
+
+  @override
+  String diasAbierto(int dias) => dias == 1 ? '1 dia' : '$dias dias';
+  @override
+  String adhesiones(int n) => n == 1 ? '1 adesão' : '$n adesões';
+  @override
+  String get casoNoEncontrado => 'Esse caso não está na sua base local.';
+  @override
+  String get adheriste => 'Sua adesão ficou registrada.';
+  @override
+  String get accionSiguiente => 'Próximo passo';
+  @override
+  String get verEnElMapa => 'Ver no mapa';
+  @override
+  String get lineaDeTiempo => 'Linha do tempo';
+  @override
+  String get eventoCreado => 'Reportado com evidência';
+  @override
+  String get eventoPresentado => 'Protocolado no órgão';
+  @override
+  String get eventoResuelto => 'Resolvido e verificado';
+  @override
+  String get presentacionEnFase2 =>
+      'O protocolo formal no órgão chega na próxima fase. '
+      'Enquanto isso, cada adesão fortalece o registro.';
 }

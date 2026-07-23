@@ -31,9 +31,9 @@
 | 4 | Backend (Supabase: SQL, PostGIS, RLS, siembra GeoNames) | ✅ hecho |
 | 5 | Motor geográfico (buscador, crear barrio, polígonos, resolve) | ✅ hecho |
 | 6 | Flujo de reporte guiado (cámara, EXIF, hash, árbol JSON, dedup) | ✅ hecho |
-| 7 | Mi cuadra y mapa (feed con cierre de lista, clusters) | ⬜ |
-| 8 | Adhesión (commit-then-register, impacto, firma formal) | ⬜ |
-| 9 | Detalle de caso (timeline, contador, acción siguiente, sello animado) | ⬜ |
+| 7 | Mi cuadra y mapa (feed con cierre de lista, clusters) | ✅ hecho (clusters pendientes) |
+| 8 | Adhesión (commit-then-register, impacto, firma formal) | 🔶 parcial (falta auth) |
+| 9 | Detalle de caso (timeline, contador, acción siguiente, sello animado) | ✅ hecho |
 
 ## Qué se hizo
 
@@ -181,6 +181,43 @@
 - 74 tests en verde.
 - **Pendiente de probar en dispositivo real**: cámara, GPS y el flujo entero
   en Android (bajar APK del CI).
+
+### Etapas 7 + 9 (y 8 parcial) — Feed, mapa y detalle de caso ✅ (2026-07-23)
+
+- **Feed real** en `MiCuadraScreen`: tarjetas con sello (75%), días y
+  adhesiones; orden puro `RepoCasos.ordenarFeed` ("lo pendiente arriba, lo más
+  nuevo primero") testeado; cierre explícito de lista. FAB Reportar en vial.
+- **`MapaScreen`**: pines de casos coloreados por la tinta del sello
+  (regla del amarillo también en el mapa), tap → detalle.
+  Falta clustering (se agrega con densidad real).
+- **`CasoScreen`** (§25.9): evidencia con el sello estampado encima, contador
+  de días en display (vial si espera acción), escrito completo, línea de
+  tiempo (creado/presentado/resuelto), y SIEMPRE acción siguiente: Adherir
+  (vial) o el aviso explícito de que la presentación formal llega en Fase 2.
+- **`EstadoSelloAnimado`** (`core/theme/`): la única animación con peso —
+  150 ms, caída 1.6→1.0 con rebote mínimo, respeta `prefers-reduced-motion`
+  (testeado). Solo se anima el paso a resuelto.
+- **Adhesión (etapa 8 parcial)**: funciona local con userId `'local'`
+  (offline-first, contador optimista, dedup de doble adhesión). El patrón
+  commit-then-register, la confirmación de impacto en UI y la firma formal
+  verificada necesitan auth de Supabase → van con la integración remota.
+- Rutas nuevas: `/mapa` y `/caso/:id` (futuro deep link compartible).
+- 78 tests en verde.
+
+## Estado general al cierre de la sesión 2026-07-23
+
+**La Fase 1 está funcionalmente completa en local** (sin backend conectado):
+elegir/crear barrio → reportar guiado con foto → caso en feed/mapa → detalle
+con sello y adhesión. Todo offline-first con cola de sync esperando el
+`ClienteRemoto` real.
+
+**Lo más importante que sigue** (en orden sugerido):
+1. Probar el APK en un dispositivo Android real (cámara, GPS, mapa).
+2. `ClienteRemoto` Supabase + auth (email/OTP) → destraba etapa 8 completa.
+3. Fase 2: generador de PDF, presentación formal con acuse, contador de plazos
+   (`check_deadlines`), escalera de escalamiento.
+4. Clustering del mapa, editor de vértices del polígono, buscador jerárquico
+   remoto.
 
 ## Cómo retomar
 

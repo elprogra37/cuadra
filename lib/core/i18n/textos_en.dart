@@ -160,4 +160,29 @@ class TextosEn extends Textos {
   @override
   String get fueraDeTuBarrio =>
       'The pin landed outside your neighborhood. You can only report where you live.';
+
+  @override
+  String diasAbierto(int dias) => dias == 1 ? '1 day' : '$dias days';
+  @override
+  String adhesiones(int n) => n == 1 ? '1 endorsement' : '$n endorsements';
+  @override
+  String get casoNoEncontrado => "That case isn't in your local database.";
+  @override
+  String get adheriste => 'Your endorsement is on record.';
+  @override
+  String get accionSiguiente => 'Next step';
+  @override
+  String get verEnElMapa => 'See on the map';
+  @override
+  String get lineaDeTiempo => 'Timeline';
+  @override
+  String get eventoCreado => 'Reported with evidence';
+  @override
+  String get eventoPresentado => 'Filed with the agency';
+  @override
+  String get eventoResuelto => 'Resolved and verified';
+  @override
+  String get presentacionEnFase2 =>
+      'Formal filing with the agency arrives in the next phase. '
+      'Meanwhile, every endorsement makes the record stronger.';
 }

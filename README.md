@@ -71,6 +71,23 @@ pantallas de caso a partir de la etapa 7. Mientras tanto:
 **Cómo probarlo:** `flutter test test/data/` (cola, repos y esquema contra una
 base en memoria). La UI de reporte que consume esto llega en la etapa 6.
 
+### Feed, mapa y expediente (Etapas 7–9) ✅
+
+- **Mi cuadra:** los casos del barrio con su sello de estado, días abiertos y
+  adhesiones. Lo pendiente arriba, lo más nuevo primero — y la lista termina:
+  "Eso es todo lo que hay abierto cerca tuyo".
+- **Mapa:** cada caso es un pin del color de su estado (amarillo = espera
+  acción, rojo óxido = sin respuesta, verde = resuelto).
+- **Detalle del caso:** la foto con el sello estampado, el contador de días en
+  tipografía de cartel, el escrito completo, la línea de tiempo y siempre un
+  paso siguiente (adherir, o el aviso de qué llega en la próxima fase).
+- **El sello se estampa:** al abrir un caso resuelto, la única animación del
+  producto (150 ms, respeta la reducción de movimiento del sistema).
+
+**Cómo probarlo:** publicar un reporte → aparece en el feed → tocarlo abre el
+expediente → "Adherir" suma la firma (una sola vez por usuario). El ícono de
+mapa en la barra superior muestra los pines.
+
 ### Reporte guiado (Etapa 6) ✅
 
 - **Reportá en 40 segundos sin escribir:** foto con la cámara (sin galería),

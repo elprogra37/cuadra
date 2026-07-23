@@ -64,3 +64,16 @@ final validadorToponimosProvider = Provider<ValidadorToponimos>(
 final barrioProvider = StreamProvider.family<Neighborhood?, String>(
   (ref, id) => ref.watch(repoGeografiaProvider).watchBarrio(id),
 );
+
+/// Feed de casos del barrio (pendiente arriba, más nuevo primero).
+final casosDeBarrioProvider = StreamProvider.family<List<Case>, String>(
+  (ref, barrioId) => ref.watch(repoCasosProvider).watchCasosDeBarrio(barrioId),
+);
+
+final casoProvider = StreamProvider.family<Case?, String>(
+  (ref, id) => ref.watch(repoCasosProvider).watchCaso(id),
+);
+
+final evidenciasProvider = StreamProvider.family<List<Evidence>, String>(
+  (ref, caseId) => ref.watch(repoCasosProvider).watchEvidencias(caseId),
+);

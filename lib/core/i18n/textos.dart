@@ -98,6 +98,19 @@ abstract class Textos {
   String get crearNuevoIgual;
   String get reportePublicado;
   String get fueraDeTuBarrio;
+
+  // Feed, mapa y detalle de caso (§12)
+  String diasAbierto(int dias);
+  String adhesiones(int n);
+  String get casoNoEncontrado;
+  String get adheriste;
+  String get accionSiguiente;
+  String get verEnElMapa;
+  String get lineaDeTiempo;
+  String get eventoCreado;
+  String get eventoPresentado;
+  String get eventoResuelto;
+  String get presentacionEnFase2;
 }
 
 class _TextosDelegate extends LocalizationsDelegate<Textos> {

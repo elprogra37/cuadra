@@ -152,19 +152,42 @@ class RepoCasos {
   }
 
   /// Feed de la cuadra: casos visibles del barrio, los que esperan acción
-  /// primero, después por fecha. El orden se explica en una frase (§25.6).
+  /// primero, después por fecha. El orden se explica en una frase (§25.6):
+  /// "lo pendiente arriba, lo más nuevo primero".
   Stream<List<Case>> watchCasosDeBarrio(String neighborhoodId) {
     final q = _db.select(_db.cases)
-      ..where((t) => t.neighborhoodId.equals(neighborhoodId))
-      ..orderBy([(t) => OrderingTerm.desc(t.createdAt)]);
-    return q.watch().map(
-      (casos) => casos.where((c) => c.status.visibleEnFeed).toList(),
-    );
+      ..where((t) => t.neighborhoodId.equals(neighborhoodId));
+    return q.watch().map((casos) => ordenarFeed(casos));
+  }
+
+  /// Orden del feed, puro y testeable.
+  static List<Case> ordenarFeed(List<Case> casos) {
+    final visibles = casos.where((c) => c.status.visibleEnFeed).toList()
+      ..sort((a, b) {
+        if (a.status.esperaAccion != b.status.esperaAccion) {
+          return a.status.esperaAccion ? -1 : 1;
+        }
+        return b.createdAt.compareTo(a.createdAt);
+      });
+    return visibles;
   }
 
   Stream<Case?> watchCaso(String id) => (_db.select(
     _db.cases,
   )..where((t) => t.id.equals(id))).watchSingleOrNull();
+
+  Stream<List<Evidence>> watchEvidencias(String caseId) =>
+      (_db.select(_db.evidences)
+            ..where((t) => t.caseId.equals(caseId))
+            ..orderBy([(t) => OrderingTerm.asc(t.capturedAt)]))
+          .watch();
+
+  /// ¿Este usuario ya adhirió? (para el botón de acción siguiente).
+  Future<bool> yaAdhirio({required String caseId, required String userId}) =>
+      (_db.select(_db.endorsements)
+            ..where((t) => t.caseId.equals(caseId) & t.userId.equals(userId)))
+          .getSingleOrNull()
+          .then((e) => e != null);
 
   /// Adhesión (§11): un toque. El contador local es caché optimista; la
   /// autoridad del número es el servidor (§20.2).
