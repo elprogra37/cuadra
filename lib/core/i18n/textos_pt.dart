@@ -183,4 +183,63 @@ class TextosPt extends Textos {
   String get presentacionEnFase2 =>
       'O protocolo formal no órgão chega na próxima fase. '
       'Enquanto isso, cada adesão fortalece o registro.';
+
+  @override
+  String presentadoConPlazo(int dias) =>
+      'Protocolado. O órgão tem $dias dias para responder; o contador é público.';
+  @override
+  String esperandoRespuesta(int diasRestantes) => diasRestantes == 1
+      ? 'O prazo vence amanhã. Enquanto isso: some adesões e evidências.'
+      : 'Restam $diasRestantes dias de prazo. Enquanto isso: some adesões e evidências.';
+  @override
+  String escalonNombre(String tipo) => switch (tipo) {
+    'presentar' => 'Protocolar reclamação formal',
+    'reiterar' => 'Reiterar a reclamação',
+    'prontoDespacho' => 'Pedir pronto despacho',
+    'accesoInformacion' => 'Pedir acesso à informação',
+    'defensoria' => 'Ir à Defensoria do Povo',
+    'concejal' => 'Escrever ao seu vereador',
+    'prensa' => 'Montar o dossiê de imprensa',
+    'datoAbierto' => 'Publicar como dado aberto',
+    _ => tipo,
+  };
+  @override
+  String escalonDescripcion(String tipo) => switch (tipo) {
+    'presentar' =>
+      'O app redige o documento em formato oficial com a evidência anexa.',
+    'reiterar' =>
+      'Vencido o prazo, a reiteração deixa registro e renova o relógio por 15 dias.',
+    'prontoDespacho' =>
+      'Figura formal que obriga o órgão a se pronunciar sobre o processo.',
+    'accesoInformacion' =>
+      'O que foi feito com o processo? A lei obriga a responder.',
+    'defensoria' =>
+      'O órgão de controle assume o caso com todo o histórico anexo.',
+    'concejal' =>
+      'Contato direto com seu representante, com o documento já pronto.',
+    'prensa' =>
+      'Dossiê completo do caso: cronologia, evidências e silêncios. Pronto para enviar.',
+    'datoAbierto' =>
+      'O caso entra no registro público da cidade. O silêncio deixa de ser grátis.',
+    _ => '',
+  };
+  @override
+  String get generarYCompartirPdf => 'Gerar e compartilhar o PDF';
+  @override
+  String get sinOrganismos =>
+      'Ainda não carregamos os órgãos da sua cidade. Seu caso fica registrado '
+      'e será protocolado assim que estiverem.';
+  @override
+  String get fotoDelDespues => 'Foto do depois';
+  @override
+  String get reclamarResuelto => 'Marcar como resolvido';
+  @override
+  String get confirmarResolucion => 'Confirmar que está resolvido';
+  @override
+  String esperandoConfirmaciones(int faltan) => faltan == 1
+      ? 'Falta 1 confirmação de outro vizinho para fechar o caso.'
+      : 'Faltam $faltan confirmações de outros vizinhos para fechar o caso.';
+  @override
+  String get resueltoGracias =>
+      'Resolvido e no registro do bairro, com os nomes de quem o empurrou.';
 }

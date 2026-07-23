@@ -187,4 +187,64 @@ class TextosEs extends Textos {
   String get presentacionEnFase2 =>
       'La presentación formal ante el organismo llega en la próxima fase. '
       'Mientras tanto, cada adhesión hace más fuerte el expediente.';
+
+  @override
+  String presentadoConPlazo(int dias) =>
+      'Presentado. El organismo tiene $dias días para responder; el contador '
+      'queda a la vista de todos.';
+  @override
+  String esperandoRespuesta(int diasRestantes) => diasRestantes == 1
+      ? 'El plazo vence mañana. Mientras tanto: sumá adhesiones y evidencia.'
+      : 'Quedan $diasRestantes días de plazo. Mientras tanto: sumá adhesiones y evidencia.';
+  @override
+  String escalonNombre(String tipo) => switch (tipo) {
+    'presentar' => 'Presentar reclamo formal',
+    'reiterar' => 'Reiterar el reclamo',
+    'prontoDespacho' => 'Pedir pronto despacho',
+    'accesoInformacion' => 'Pedir acceso a la información',
+    'defensoria' => 'Ir a la Defensoría del Pueblo',
+    'concejal' => 'Escribirle a tu concejal',
+    'prensa' => 'Armar el dossier de prensa',
+    'datoAbierto' => 'Publicar como dato abierto',
+    _ => tipo,
+  };
+  @override
+  String escalonDescripcion(String tipo) => switch (tipo) {
+    'presentar' =>
+      'La app arma el escrito con formato de mesa de entradas y evidencia adjunta.',
+    'reiterar' =>
+      'Vencido el plazo, la reiteración deja constancia y renueva el reloj 15 días.',
+    'prontoDespacho' =>
+      'Figura formal que obliga al organismo a expedirse sobre el expediente.',
+    'accesoInformacion' =>
+      '¿Qué se hizo con el expediente? La ley obliga a responder.',
+    'defensoria' =>
+      'El organismo de control toma el caso con todo el historial adjunto.',
+    'concejal' =>
+      'Contacto directo a tu representante, con el escrito ya armado.',
+    'prensa' =>
+      'Dossier completo del caso: cronología, evidencia y silencios. Listo para enviar.',
+    'datoAbierto' =>
+      'El caso entra al registro público de la ciudad. El silencio deja de ser gratis.',
+    _ => '',
+  };
+  @override
+  String get generarYCompartirPdf => 'Generar y compartir el PDF';
+  @override
+  String get sinOrganismos =>
+      'Todavía no cargamos los organismos de tu ciudad. Tu caso queda '
+      'registrado y lo presentamos apenas estén.';
+  @override
+  String get fotoDelDespues => 'Foto del después';
+  @override
+  String get reclamarResuelto => 'Marcar como resuelto';
+  @override
+  String get confirmarResolucion => 'Confirmar que está resuelto';
+  @override
+  String esperandoConfirmaciones(int faltan) => faltan == 1
+      ? 'Falta 1 confirmación de otro vecino para cerrar el caso.'
+      : 'Faltan $faltan confirmaciones de otros vecinos para cerrar el caso.';
+  @override
+  String get resueltoGracias =>
+      'Resuelto y en el registro del barrio, con los nombres de quienes lo empujaron.';
 }

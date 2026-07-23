@@ -185,4 +185,63 @@ class TextosEn extends Textos {
   String get presentacionEnFase2 =>
       'Formal filing with the agency arrives in the next phase. '
       'Meanwhile, every endorsement makes the record stronger.';
+
+  @override
+  String presentadoConPlazo(int dias) =>
+      'Filed. The agency has $dias days to respond; the clock is public.';
+  @override
+  String esperandoRespuesta(int diasRestantes) => diasRestantes == 1
+      ? 'The deadline is tomorrow. Meanwhile: add endorsements and evidence.'
+      : '$diasRestantes days left on the clock. Meanwhile: add endorsements and evidence.';
+  @override
+  String escalonNombre(String tipo) => switch (tipo) {
+    'presentar' => 'File formal claim',
+    'reiterar' => 'Reiterate the claim',
+    'prontoDespacho' => 'Demand prompt dispatch',
+    'accesoInformacion' => 'File an information request',
+    'defensoria' => 'Go to the Ombudsman',
+    'concejal' => 'Write to your council member',
+    'prensa' => 'Build the press dossier',
+    'datoAbierto' => 'Publish as open data',
+    _ => tipo,
+  };
+  @override
+  String escalonDescripcion(String tipo) => switch (tipo) {
+    'presentar' =>
+      'The app drafts the filing in official format with evidence attached.',
+    'reiterar' =>
+      'Past the deadline, reiteration leaves a record and restarts a 15-day clock.',
+    'prontoDespacho' =>
+      'A formal figure that obliges the agency to rule on the file.',
+    'accesoInformacion' =>
+      'What was done with the file? The law requires an answer.',
+    'defensoria' =>
+      'The oversight body takes the case with its full history attached.',
+    'concejal' =>
+      'Direct contact to your representative, with the letter already drafted.',
+    'prensa' =>
+      'Complete case dossier: chronology, evidence and silences. Ready to send.',
+    'datoAbierto' =>
+      "The case enters the city's public record. Silence stops being free.",
+    _ => '',
+  };
+  @override
+  String get generarYCompartirPdf => 'Generate and share the PDF';
+  @override
+  String get sinOrganismos =>
+      "We haven't loaded your city's agencies yet. Your case stays on record "
+      'and gets filed as soon as they are.';
+  @override
+  String get fotoDelDespues => 'After photo';
+  @override
+  String get reclamarResuelto => 'Mark as resolved';
+  @override
+  String get confirmarResolucion => 'Confirm it is resolved';
+  @override
+  String esperandoConfirmaciones(int faltan) => faltan == 1
+      ? '1 more neighbor confirmation needed to close the case.'
+      : '$faltan more neighbor confirmations needed to close the case.';
+  @override
+  String get resueltoGracias =>
+      "Resolved and in the neighborhood's record, with the names of those who pushed it.";
 }

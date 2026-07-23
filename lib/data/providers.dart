@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../services/documents/generador_pdf.dart';
 import '../services/geografia/validador_toponimos.dart';
 import 'local/base_datos.dart';
 import 'local/conexion.dart';
@@ -9,6 +10,7 @@ import 'local/siembra_local.dart';
 import 'repositories/repo_casos.dart';
 import 'repositories/repo_categorias.dart';
 import 'repositories/repo_geografia.dart';
+import 'repositories/repo_jurisdicciones.dart';
 import 'sync/cliente_remoto.dart';
 import 'sync/cola_sync.dart';
 
@@ -77,3 +79,26 @@ final casoProvider = StreamProvider.family<Case?, String>(
 final evidenciasProvider = StreamProvider.family<List<Evidence>, String>(
   (ref, caseId) => ref.watch(repoCasosProvider).watchEvidencias(caseId),
 );
+
+final accionesProvider = StreamProvider.family<List<CaseAction>, String>(
+  (ref, caseId) => ref.watch(repoCasosProvider).watchAcciones(caseId),
+);
+
+final resolucionProvider = StreamProvider.family<Resolution?, String>(
+  (ref, caseId) => ref.watch(repoCasosProvider).watchResolucion(caseId),
+);
+
+final repoJurisdiccionesProvider = Provider<RepoJurisdicciones>(
+  (ref) => RepoJurisdicciones(rootBundle),
+);
+
+final generadorPdfProvider = Provider<GeneradorPdf>(
+  (ref) => GeneradorPdf(rootBundle),
+);
+
+/// Tareas de arranque: siembra local + job de vencimientos (§21
+/// check_deadlines, versión local). Se observa desde la raíz de la app.
+final arranqueProvider = FutureProvider<void>((ref) async {
+  await ref.watch(siembraLocalProvider.future);
+  await ref.watch(repoCasosProvider).marcarVencidos();
+});

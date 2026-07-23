@@ -1,7 +1,13 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+import 'package:printing/printing.dart';
 
 import '../../core/i18n/textos.dart';
 import '../../core/theme/estado_sello.dart';
@@ -10,6 +16,9 @@ import '../../core/theme/tokens.dart';
 import '../../data/local/base_datos.dart';
 import '../../data/models/enums.dart';
 import '../../data/providers.dart';
+import '../../services/camera/procesador_evidencia.dart';
+import '../../services/documents/escalera.dart';
+import '../../services/documents/generador_escrito.dart';
 import 'estado_visual.dart';
 
 /// Detalle de caso (§25.9): foto, sello, contador de días en display, línea
@@ -120,12 +129,16 @@ class _Detalle extends ConsumerWidget {
         ),
         const Divider(height: TokensCuadra.esp32),
 
-        // Línea de tiempo mínima (se enriquece con case_actions en Fase 2).
+        // Línea de tiempo: creación + cada acción de la escalera (§13).
         Text(t.lineaDeTiempo, style: Theme.of(context).textTheme.titleMedium),
         const SizedBox(height: TokensCuadra.esp8),
         _Evento(texto: t.eventoCreado, fecha: caso.createdAt),
-        if (caso.submittedAt != null)
-          _Evento(texto: t.eventoPresentado, fecha: caso.submittedAt!),
+        for (final accion
+            in ref.watch(accionesProvider(caso.id)).value ?? <CaseAction>[])
+          _Evento(
+            texto: t.escalonNombre(accion.type.name),
+            fecha: accion.performedAt,
+          ),
         if (caso.resolvedAt != null)
           _Evento(texto: t.eventoResuelto, fecha: caso.resolvedAt!),
         const SizedBox(height: TokensCuadra.esp24),
@@ -185,6 +198,9 @@ class _AccionSiguiente extends ConsumerStatefulWidget {
 
 class _AccionSiguienteState extends ConsumerState<_AccionSiguiente> {
   bool? _yaAdhirio;
+  var _trabajando = false;
+
+  Case get caso => widget.caso;
 
   @override
   void initState() {
@@ -195,45 +211,240 @@ class _AccionSiguienteState extends ConsumerState<_AccionSiguiente> {
   Future<void> _verificar() async {
     final ya = await ref
         .read(repoCasosProvider)
-        .yaAdhirio(caseId: widget.caso.id, userId: 'local');
+        .yaAdhirio(caseId: caso.id, userId: 'local');
     if (mounted) setState(() => _yaAdhirio = ya);
   }
 
+  void _aviso(String mensaje) => ScaffoldMessenger.of(
+    context,
+  ).showSnackBar(SnackBar(content: Text(mensaje), persist: false));
+
   Future<void> _adherir() async {
     final t = Textos.of(context);
-    final mensajero = ScaffoldMessenger.of(context);
     final r = await ref
         .read(repoCasosProvider)
-        .adherir(caseId: widget.caso.id, userId: 'local', esResidente: true);
-    mensajero.showSnackBar(
-      SnackBar(
-        content: Text(r.fold((f) => f.message, (_) => t.adheriste)),
-        persist: false,
-      ),
-    );
+        .adherir(caseId: caso.id, userId: 'local', esResidente: true);
+    _aviso(r.fold((f) => f.message, (_) => t.adheriste));
     await _verificar();
+  }
+
+  /// Presenta o escala: genera el PDF, lo comparte y registra la acción.
+  Future<void> _ejecutarEscalon(CaseActionType tipo) async {
+    if (_trabajando) return;
+    setState(() => _trabajando = true);
+    final t = Textos.of(context);
+    try {
+      final jurisdiccionId = await ref
+          .read(repoGeografiaProvider)
+          .jurisdiccionDeBarrio(caso.neighborhoodId);
+      if (jurisdiccionId == null) {
+        _aviso(t.sinOrganismos);
+        return;
+      }
+      final rOrg = await ref
+          .read(repoJurisdiccionesProvider)
+          .organismoPara(
+            jurisdictionId: jurisdiccionId,
+            categoryId: caso.categoryId,
+          );
+      final org = rOrg.valueOrNull;
+      if (org == null) {
+        _aviso(t.sinOrganismos);
+        return;
+      }
+
+      // Escrito definitivo: con normativa, plazo y adhesiones actuales.
+      final categoria =
+          (await ref.read(repoCategoriasProvider).porId(caso.categoryId))
+              .valueOrNull;
+      var cuerpo = caso.generatedBody;
+      if (categoria != null && mounted) {
+        cuerpo = GeneradorEscrito.generar(
+          categoria: categoria,
+          subtipoId: caso.subtypeId,
+          respuestas: jsonDecode(caso.guidedAnswers) as Map<String, dynamic>,
+          textoLibre: caso.freeText,
+          ctx: ContextoEscrito(
+            idioma: Localizations.localeOf(context).languageCode,
+            lat: caso.lat,
+            lng: caso.lng,
+            fechaCaptura: caso.createdAt,
+            adhesiones: caso.endorsementCount,
+            adhesionesVerificadas: caso.verifiedEndorsementCount,
+            normativa: org.organismo.normativa,
+            plazoDias: org.organismo.responseDays,
+          ),
+        );
+      }
+
+      final barrio = await ref
+          .read(repoGeografiaProvider)
+          .watchBarrio(caso.neighborhoodId)
+          .first;
+      final evidencias = await ref
+          .read(repoCasosProvider)
+          .watchEvidencias(caso.id)
+          .first;
+      final pdf = await ref
+          .read(generadorPdfProvider)
+          .generar(
+            caso: caso,
+            evidencias: evidencias,
+            organismo: org.organismo,
+            ficha: org.ficha,
+            nombreBarrio: barrio?.name ?? '',
+            tipo: Escalera.plantillaDe(tipo),
+          );
+
+      // Guardar el legajo y compartir/imprimir (canal Exportar PDF §14.2).
+      final dir = await getApplicationDocumentsDirectory();
+      final carpeta = Directory(p.join(dir.path, 'presentaciones'));
+      await carpeta.create(recursive: true);
+      final nombre =
+          '${caso.publicRef?.replaceAll('#', 'exp-') ?? caso.id}-${tipo.name}.pdf';
+      final ruta = p.join(carpeta.path, nombre);
+      await File(ruta).writeAsBytes(pdf);
+      await Printing.sharePdf(bytes: pdf, filename: nombre);
+
+      if (tipo == CaseActionType.presentar) {
+        final r = await ref
+            .read(repoCasosProvider)
+            .presentar(
+              caseId: caso.id,
+              jurisdictionId: jurisdiccionId,
+              organismId: org.organismo.id,
+              responseDays: org.organismo.responseDays,
+              generatedBody: cuerpo,
+              documentUrl: ruta,
+              performedBy: 'local',
+            );
+        _aviso(
+          r.fold(
+            (f) => f.message,
+            (_) => t.presentadoConPlazo(org.organismo.responseDays),
+          ),
+        );
+      } else {
+        final r = await ref
+            .read(repoCasosProvider)
+            .escalar(
+              caseId: caso.id,
+              tipo: tipo,
+              documentUrl: ruta,
+              performedBy: 'local',
+            );
+        _aviso(r.fold((f) => f.message, (_) => t.escalonNombre(tipo.name)));
+      }
+    } finally {
+      if (mounted) setState(() => _trabajando = false);
+    }
+  }
+
+  Future<void> _reclamarResuelto() async {
+    final t = Textos.of(context);
+    // Foto del después: cámara en Android; en escritorio se permite sin foto.
+    String? ruta;
+    String? hash;
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      final captura = await ImagePicker().pickImage(
+        source: ImageSource.camera,
+        requestFullMetadata: false,
+      );
+      if (captura == null) return;
+      final procesada = ProcesadorEvidencia.procesar(
+        await captura.readAsBytes(),
+      );
+      final dir = await getApplicationDocumentsDirectory();
+      final carpeta = Directory(p.join(dir.path, 'evidencias'));
+      await carpeta.create(recursive: true);
+      ruta = p.join(carpeta.path, '${caso.id}-despues.jpg');
+      await File(ruta).writeAsBytes(procesada.jpeg);
+      hash = procesada.sha256;
+    }
+    final r = await ref
+        .read(repoCasosProvider)
+        .reclamarResuelto(
+          caseId: caso.id,
+          userId: 'local',
+          fotoDespuesPath: ruta,
+          sha256Foto: hash,
+        );
+    _aviso(r.fold((f) => f.message, (_) => t.esperandoConfirmaciones(2)));
   }
 
   @override
   Widget build(BuildContext context) {
     final t = Textos.of(context);
-    if (_yaAdhirio == null) return const SizedBox.shrink();
+    final acciones = ref.watch(accionesProvider(caso.id)).value ?? [];
+    final resolucion = ref.watch(resolucionProvider(caso.id)).value;
 
-    if (_yaAdhirio == false && widget.caso.status.esperaAccion) {
-      return FilledButton(
-        style: FilledButton.styleFrom(
-          backgroundColor: TokensCuadra.vial,
-          foregroundColor: TokensCuadra.asfalto,
-        ),
-        onPressed: _adherir,
-        child: Text(t.adherir),
+    // Resolución en curso o cerrada.
+    if (caso.status == CaseStatus.resuelto) {
+      return Text(t.resueltoGracias);
+    }
+    if (caso.status == CaseStatus.enEjecucion && resolucion != null) {
+      final confirmaciones =
+          (jsonDecode(resolucion.confirmations) as List<dynamic>).length;
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(t.esperandoConfirmaciones(2 - confirmaciones)),
+          const SizedBox(height: TokensCuadra.esp8),
+          OutlinedButton(
+            onPressed: () async {
+              final r = await ref
+                  .read(repoCasosProvider)
+                  .confirmarResuelto(caseId: caso.id, userId: 'local');
+              _aviso(r.fold((f) => f.message, (_) => t.resueltoGracias));
+            },
+            child: Text(t.confirmarResolucion),
+          ),
+        ],
       );
     }
-    // Adherido y abierto: el siguiente escalón (presentación formal) es de
-    // la Fase 2 — se dice explícito, nunca un callejón sin salida mudo.
-    return Text(
-      t.presentacionEnFase2,
-      style: Theme.of(context).textTheme.bodySmall,
+
+    final proximo = Escalera.proximo(caso.status, [
+      for (final a in acciones) a.type,
+    ]);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (proximo != null) ...[
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: TokensCuadra.vial,
+              foregroundColor: TokensCuadra.asfalto,
+            ),
+            onPressed: _trabajando ? null : () => _ejecutarEscalon(proximo),
+            child: Text(t.escalonNombre(proximo.name)),
+          ),
+          const SizedBox(height: TokensCuadra.esp4),
+          Text(
+            t.escalonDescripcion(proximo.name),
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ] else if (caso.status == CaseStatus.presentado &&
+            caso.deadlineAt != null)
+          Text(
+            t.esperandoRespuesta(
+              caso.deadlineAt!.difference(DateTime.now()).inDays,
+            ),
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        const SizedBox(height: TokensCuadra.esp8),
+        if (_yaAdhirio == false && caso.status.esperaAccion)
+          OutlinedButton(onPressed: _adherir, child: Text(t.adherir)),
+        if (caso.status == CaseStatus.presentado ||
+            caso.status == CaseStatus.sinRespuesta ||
+            caso.status == CaseStatus.abierto) ...[
+          const SizedBox(height: TokensCuadra.esp8),
+          TextButton(
+            onPressed: _reclamarResuelto,
+            child: Text(t.reclamarResuelto),
+          ),
+        ],
+      ],
     );
   }
 }

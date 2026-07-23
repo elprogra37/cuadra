@@ -71,6 +71,24 @@ pantallas de caso a partir de la etapa 7. Mientras tanto:
 **Cómo probarlo:** `flutter test test/data/` (cola, repos y esquema contra una
 base en memoria). La UI de reporte que consume esto llega en la etapa 6.
 
+### Presentación formal y escalamiento (Fase 2) ✅
+
+- **De reclamo a expediente presentable:** la app genera el PDF formal
+  (carátula de mesa de entradas, hechos, ubicación, adhesiones, evidencia con
+  su hash SHA-256) y lo comparte o imprime para presentarlo ante el organismo.
+- **El reloj corre a la vista:** al presentar, arranca el plazo legal; cuando
+  vence, el caso pasa solo a "sin respuesta · N días".
+- **La escalera de escalamiento:** siempre hay un paso siguiente con el escrito
+  armado — reiteración (renueva 15 días), pronto despacho, acceso a la
+  información, Defensoría, concejal, prensa, dato abierto.
+- **Cierre con antes/después:** marcás resuelto con una foto del después; cuando
+  dos vecinos lo confirman, el caso pasa a resuelto y su sello se estampa.
+
+**Cómo probarlo:** en un caso, botón "Presentar reclamo formal" → se genera y
+comparte el PDF, y el caso queda presentado con el contador de días. El botón
+"Marcar como resolvido" inicia el cierre; hace falta la confirmación de otros
+dos vecinos.
+
 ### Feed, mapa y expediente (Etapas 7–9) ✅
 
 - **Mi cuadra:** los casos del barrio con su sello de estado, días abiertos y

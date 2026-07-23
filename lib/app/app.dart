@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/i18n/textos.dart';
 import '../core/theme/tema.dart';
+import '../data/providers.dart';
 import 'router.dart';
 
 /// Raíz de la aplicación: tema, i18n y navegación.
@@ -12,6 +13,8 @@ class CuadraApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Siembra local + job de vencimientos, una vez por sesión.
+    ref.watch(arranqueProvider);
     final router = ref.watch(routerProvider);
     return MaterialApp.router(
       title: 'Cuadra',

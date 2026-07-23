@@ -190,6 +190,19 @@ class RepoGeografia {
     _db.neighborhoods,
   )..where((t) => t.id.equals(id))).watchSingleOrNull();
 
+  /// Jurisdicción que hereda un barrio vía su ciudad (§6.5). Null =
+  /// modo solo comunidad.
+  Future<String?> jurisdiccionDeBarrio(String neighborhoodId) async {
+    final barrio = await (_db.select(
+      _db.neighborhoods,
+    )..where((t) => t.id.equals(neighborhoodId))).getSingleOrNull();
+    if (barrio == null) return null;
+    final ciudad = await (_db.select(
+      _db.cities,
+    )..where((t) => t.id.equals(barrio.cityId))).getSingleOrNull();
+    return ciudad?.jurisdictionId;
+  }
+
   /// Normalización para búsqueda y detección de duplicados (§6.4).
   static String normalizar(String nombre) => nombre
       .toLowerCase()

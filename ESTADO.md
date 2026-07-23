@@ -204,6 +204,38 @@
 - Rutas nuevas: `/mapa` y `/caso/:id` (futuro deep link compartible).
 - 78 tests en verde.
 
+## FASE 2 — La presentación ✅ (2026-07-23)
+
+Acá el producto "existe de verdad": el reclamo se convierte en expediente
+presentable con reloj corriendo.
+
+- **`RepoJurisdicciones`** (`data/repositories/`): carga fichas §14.3 de
+  `assets/jurisdictions/` (indice.json + ar-c-caba.json), enruta categoría →
+  organismo, y explica el modo solo comunidad (§6.5) si la ciudad no tiene
+  organismos. Expandir a una ciudad = agregar un JSON.
+- **`GeneradorPdf`** (`services/documents/`, dep `pdf`+`printing`): PDF de mesa
+  de entradas — carátula, escrito seccionado, adhesiones (verificadas aparte),
+  ubicación, anexo de evidencia con SHA-256 y timestamp. Fuentes Inter/JetBrains
+  embebidas. Se comparte/imprime con `Printing.sharePdf` (canal Exportar §14.2).
+- **`Escalera`** (`services/documents/`): la escalera §13 (presentar → reiterar
+  → pronto despacho → acceso info → defensoría → concejal → prensa → dato
+  abierto). `proximo()` decide el escalón accionable; test cubre el orden.
+- **`RepoCasos` Fase 2**: `presentar` (arranca el reloj legal, +N días),
+  `escalar` (reiterar renueva +15 días), `marcarVencidos` (job local
+  check_deadlines: presentado→sinRespuesta), `reclamarResuelto` (foto del
+  después + estado enEjecucion) y `confirmarResuelto` (2 confirmaciones de
+  OTROS vecinos → resuelto, con `resolvedAt`). Todo encolado para sync.
+- **`CasoScreen` rehecha**: el botón de acción siguiente ahora ejecuta el
+  escalón real — genera el PDF con normativa+plazo+adhesiones, lo comparte,
+  registra la acción y cambia el estado. Muestra días restantes de plazo,
+  botón "marcar resuelto" (con foto en Android) y el flujo de confirmación.
+  La línea de tiempo lista cada acción de la escalera.
+- **Arranque**: `arranqueProvider` corre siembra local + `marcarVencidos` una
+  vez por sesión (en `CuadraApp`).
+- 92 tests en verde (escalera, presentación/plazos/resolución, jurisdicciones).
+- **Pendiente Fase 2**: envío real por email/Open311 (hoy es Exportar PDF +
+  captura manual del acuse); llega con el `ClienteRemoto` de Supabase.
+
 ## Estado general al cierre de la sesión 2026-07-23
 
 **La Fase 1 está funcionalmente completa en local** (sin backend conectado):

@@ -306,6 +306,292 @@ class RepoCasos {
     return const Ok(null);
   }
 
+  Stream<List<CaseAction>> watchAcciones(String caseId) =>
+      (_db.select(_db.caseActions)
+            ..where((t) => t.caseId.equals(caseId))
+            ..orderBy([(t) => OrderingTerm.asc(t.performedAt)]))
+          .watch();
+
+  /// Presenta el caso ante el organismo (§14): arranca el reloj legal.
+  Future<Result<void>> presentar({
+    required String caseId,
+    required String jurisdictionId,
+    required String organismId,
+    required int responseDays,
+    required String generatedBody,
+    String channel = 'pdf',
+    String? documentUrl,
+    String? performedBy,
+  }) async {
+    final ahora = _ahora();
+    final id = _uuid.v4();
+    await _db.transaction(() async {
+      await (_db.update(_db.cases)..where((t) => t.id.equals(caseId))).write(
+        CasesCompanion(
+          status: const Value(CaseStatus.presentado),
+          submittedAt: Value(ahora),
+          deadlineAt: Value(ahora.add(Duration(days: responseDays))),
+          organismId: Value(organismId),
+          jurisdictionId: Value(jurisdictionId),
+          generatedBody: Value(generatedBody),
+          updatedAt: Value(ahora),
+          syncStatus: const Value(SyncStatus.pendiente),
+        ),
+      );
+      await _db
+          .into(_db.caseActions)
+          .insert(
+            CaseActionsCompanion.insert(
+              id: id,
+              caseId: caseId,
+              type: CaseActionType.presentar,
+              performedBy: Value(performedBy),
+              performedAt: ahora,
+              channel: Value(channel),
+              documentUrl: Value(documentUrl),
+              clientUuid: id,
+              updatedAt: ahora,
+            ),
+          );
+      await _cola.encolar(
+        entity: 'case_action',
+        entityId: id,
+        operation: 'crear',
+        payload: {
+          'id': id,
+          'case_id': caseId,
+          'type': CaseActionType.presentar.name,
+          'channel': channel,
+          'organism_id': organismId,
+          'performed_at': ahora.toIso8601String(),
+        },
+      );
+    });
+    return const Ok(null);
+  }
+
+  /// Registra un escalón de la escalera (§13). La reiteración renueva el
+  /// plazo (+15 días) y vuelve el caso a `presentado`.
+  Future<Result<void>> escalar({
+    required String caseId,
+    required CaseActionType tipo,
+    String channel = 'pdf',
+    String? documentUrl,
+    String? performedBy,
+    int diasReiteracion = 15,
+  }) async {
+    if (tipo == CaseActionType.presentar) {
+      return const Err(
+        ValidationFailure('La presentación inicial va por presentar().'),
+      );
+    }
+    final ahora = _ahora();
+    final id = _uuid.v4();
+    await _db.transaction(() async {
+      if (tipo == CaseActionType.reiterar) {
+        await (_db.update(_db.cases)..where((t) => t.id.equals(caseId))).write(
+          CasesCompanion(
+            status: const Value(CaseStatus.presentado),
+            deadlineAt: Value(ahora.add(Duration(days: diasReiteracion))),
+            updatedAt: Value(ahora),
+          ),
+        );
+      }
+      await _db
+          .into(_db.caseActions)
+          .insert(
+            CaseActionsCompanion.insert(
+              id: id,
+              caseId: caseId,
+              type: tipo,
+              performedBy: Value(performedBy),
+              performedAt: ahora,
+              channel: Value(channel),
+              documentUrl: Value(documentUrl),
+              clientUuid: id,
+              updatedAt: ahora,
+            ),
+          );
+      await _cola.encolar(
+        entity: 'case_action',
+        entityId: id,
+        operation: 'crear',
+        payload: {
+          'id': id,
+          'case_id': caseId,
+          'type': tipo.name,
+          'channel': channel,
+          'performed_at': ahora.toIso8601String(),
+        },
+      );
+    });
+    return const Ok(null);
+  }
+
+  /// Job local `check_deadlines` (§21): marca vencidos. El servidor corre el
+  /// suyo con autoridad; esto mantiene el contador honesto sin conexión.
+  Future<int> marcarVencidos() async {
+    final ahora = _ahora();
+    final vencidos =
+        await (_db.select(_db.cases)..where(
+              (t) =>
+                  t.status.equals(CaseStatus.presentado.name) &
+                  t.deadlineAt.isSmallerThanValue(ahora),
+            ))
+            .get();
+    for (final c in vencidos) {
+      await (_db.update(_db.cases)..where((t) => t.id.equals(c.id))).write(
+        CasesCompanion(
+          status: const Value(CaseStatus.sinRespuesta),
+          updatedAt: Value(ahora),
+        ),
+      );
+    }
+    return vencidos.length;
+  }
+
+  /// Marca resuelto (§11): foto del después + confirmación de otros 2.
+  /// El que reclama no confirma; el caso queda EN EJECUCIÓN hasta juntar 2.
+  Future<Result<void>> reclamarResuelto({
+    required String caseId,
+    required String userId,
+    String? fotoDespuesPath,
+    String? sha256Foto,
+  }) async {
+    final existente = await (_db.select(
+      _db.resolutions,
+    )..where((t) => t.caseId.equals(caseId))).getSingleOrNull();
+    if (existente != null) {
+      return const Err(
+        ValidationFailure('Este caso ya tiene una resolución en curso.'),
+      );
+    }
+    final ahora = _ahora();
+    final id = _uuid.v4();
+    String? evidenciaId;
+    await _db.transaction(() async {
+      if (fotoDespuesPath != null && sha256Foto != null) {
+        evidenciaId = _uuid.v4();
+        await _db
+            .into(_db.evidences)
+            .insert(
+              EvidencesCompanion.insert(
+                id: evidenciaId!,
+                caseId: caseId,
+                type: EvidenceType.foto,
+                localPath: Value(fotoDespuesPath),
+                sha256: sha256Foto,
+                capturedAt: ahora,
+                uploadedBy: Value(userId),
+                exifStripped: const Value(true),
+                clientUuid: evidenciaId!,
+                updatedAt: ahora,
+              ),
+            );
+      }
+      await _db
+          .into(_db.resolutions)
+          .insert(
+            ResolutionsCompanion.insert(
+              id: id,
+              caseId: caseId,
+              afterPhotoId: Value(evidenciaId),
+              claimedBy: userId,
+              claimedAt: ahora,
+              clientUuid: id,
+              updatedAt: ahora,
+            ),
+          );
+      await (_db.update(_db.cases)..where((t) => t.id.equals(caseId))).write(
+        CasesCompanion(
+          status: const Value(CaseStatus.enEjecucion),
+          updatedAt: Value(ahora),
+        ),
+      );
+      await _cola.encolar(
+        entity: 'resolution',
+        entityId: id,
+        operation: 'crear',
+        payload: {
+          'id': id,
+          'case_id': caseId,
+          'claimed_by': userId,
+          'claimed_at': ahora.toIso8601String(),
+        },
+      );
+    });
+    return const Ok(null);
+  }
+
+  /// Confirmación de resolución por otro vecino. A las 2 confirmaciones el
+  /// caso pasa a RESUELTO (§11) — la recompensa del producto entero.
+  Future<Result<void>> confirmarResuelto({
+    required String caseId,
+    required String userId,
+  }) async {
+    final resolucion = await (_db.select(
+      _db.resolutions,
+    )..where((t) => t.caseId.equals(caseId))).getSingleOrNull();
+    if (resolucion == null) {
+      return const Err(NotFoundFailure('Nadie marcó este caso como resuelto.'));
+    }
+    if (resolucion.claimedBy == userId) {
+      return const Err(
+        ValidationFailure(
+          'La confirmación tiene que venir de otro vecino, no de quien '
+          'lo marcó.',
+        ),
+      );
+    }
+    final confirmaciones =
+        (jsonDecode(resolucion.confirmations) as List<dynamic>)
+            .cast<Map<String, dynamic>>();
+    if (confirmaciones.any((c) => c['userId'] == userId)) {
+      return const Err(ValidationFailure('Ya confirmaste esta resolución.'));
+    }
+
+    final ahora = _ahora();
+    confirmaciones.add({'userId': userId, 'at': ahora.toIso8601String()});
+    final completo = confirmaciones.length >= 2;
+
+    await _db.transaction(() async {
+      await (_db.update(
+        _db.resolutions,
+      )..where((t) => t.id.equals(resolucion.id))).write(
+        ResolutionsCompanion(
+          confirmations: Value(jsonEncode(confirmaciones)),
+          confirmedAt: completo ? Value(ahora) : const Value.absent(),
+          updatedAt: Value(ahora),
+          syncStatus: const Value(SyncStatus.pendiente),
+        ),
+      );
+      if (completo) {
+        await (_db.update(_db.cases)..where((t) => t.id.equals(caseId))).write(
+          CasesCompanion(
+            status: const Value(CaseStatus.resuelto),
+            resolvedAt: Value(ahora),
+            updatedAt: Value(ahora),
+          ),
+        );
+      }
+      await _cola.encolar(
+        entity: 'resolution',
+        entityId: resolucion.id,
+        operation: 'actualizar',
+        payload: {
+          'id': resolucion.id,
+          'confirmations': confirmaciones,
+          'confirmed_at': completo ? ahora.toIso8601String() : null,
+        },
+      );
+    });
+    return const Ok(null);
+  }
+
+  Stream<Resolution?> watchResolucion(String caseId) => (_db.select(
+    _db.resolutions,
+  )..where((t) => t.caseId.equals(caseId))).watchSingleOrNull();
+
   Future<int> _casosCreadosDesde(DateTime desde, String? usuario) async {
     final cuenta = _db.cases.id.count();
     final q = _db.selectOnly(_db.cases)

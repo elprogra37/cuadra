@@ -111,6 +111,19 @@ abstract class Textos {
   String get eventoPresentado;
   String get eventoResuelto;
   String get presentacionEnFase2;
+
+  // Presentación formal y escalera (§13, §14)
+  String presentadoConPlazo(int dias);
+  String esperandoRespuesta(int diasRestantes);
+  String escalonNombre(String tipo);
+  String escalonDescripcion(String tipo);
+  String get generarYCompartirPdf;
+  String get sinOrganismos;
+  String get fotoDelDespues;
+  String get reclamarResuelto;
+  String get confirmarResolucion;
+  String esperandoConfirmaciones(int faltan);
+  String get resueltoGracias;
 }
 
 class _TextosDelegate extends LocalizationsDelegate<Textos> {
