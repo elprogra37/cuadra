@@ -213,6 +213,16 @@ Win32Window::MessageHandler(HWND hwnd,
       }
       return 0;
 
+    // Tamaño mínimo de ventana 1024x640 (Cuadra, doc maestro §20.4): el panel
+    // de escritorio es de alta densidad y no funciona más chico.
+    case WM_GETMINMAXINFO: {
+      MINMAXINFO* info = reinterpret_cast<MINMAXINFO*>(lparam);
+      const double scale = GetDpiForWindow(window_handle_) / 96.0;
+      info->ptMinTrackSize.x = static_cast<LONG>(1024 * scale);
+      info->ptMinTrackSize.y = static_cast<LONG>(640 * scale);
+      return 0;
+    }
+
     case WM_DWMCOLORIZATIONCOLORCHANGED:
       UpdateTheme(hwnd);
       return 0;

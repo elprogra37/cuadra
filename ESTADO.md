@@ -236,6 +236,27 @@ presentable con reloj corriendo.
 - **Pendiente Fase 2**: envío real por email/Open311 (hoy es Exportar PDF +
   captura manual del acuse); llega con el `ClienteRemoto` de Supabase.
 
+## FASE 3 — Escritorio y moderación ✅ (2026-07-23)
+
+- **Ventana Windows** (`windows/runner/`): tamaño inicial 1280×800, **mínimo
+  1024×640** por `WM_GETMINMAXINFO` con escala DPI, título "Cuadra".
+- **`Plataforma`** (`core/`): `esEscritorio`/`esMovil`. En Windows la ruta raíz
+  muestra `DeskShell`; en Android, el feed.
+- **`DeskShell`**: NavigationRail (mesa de trabajo del referente §20.4) con
+  Casos / Datos / Moderación.
+- **`DeskCasos`**: tabla densa (`DataTable`) filtrable por texto/categoría/
+  estado, clic abre el detalle. Cierre explícito de lista.
+- **`DeskDatos`** (`DatosPanel`): embudo del barrio (reportes→presentados→
+  respondidos→resueltos), tasa de resolución, **días medios de respuesta del
+  organismo** (el dato periodístico §23), export CSV y legajo PDF. Respeta
+  §15.2: la métrica es la respuesta del Estado, nunca un puntaje de barrio, y
+  lo dice explícito en la UI.
+- **`DeskModeracion`**: cola de barrios propuestos con promover (activo) /
+  rechazar. La cola de contenido y categorías candidatas es server-side.
+- 94 tests en verde (nuevo: `datos_panel_test` valida el embudo).
+- **Pendiente Fase 3**: impresión de legajo de caso individual (hoy imprime el
+  resumen de datos), multiventana, atajos de teclado.
+
 ## Estado general al cierre de la sesión 2026-07-23
 
 **La Fase 1 está funcionalmente completa en local** (sin backend conectado):

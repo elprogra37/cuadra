@@ -124,6 +124,32 @@ abstract class Textos {
   String get confirmarResolucion;
   String esperandoConfirmaciones(int faltan);
   String get resueltoGracias;
+
+  // Panel de escritorio (§17, §20.4)
+  String get deskPanel;
+  String get deskCasos;
+  String get deskDatos;
+  String get deskModeracion;
+  String get deskBarrios;
+  String get deskColumnaRef;
+  String get deskColumnaCategoria;
+  String get deskColumnaEstado;
+  String get deskColumnaDias;
+  String get deskColumnaAdhesiones;
+  String get deskFiltrar;
+  String get deskEmbudo;
+  String get deskReportes;
+  String get deskPresentados;
+  String get deskRespondidos;
+  String get deskResueltos;
+  String get deskSinRespuesta;
+  String get deskTasaResolucion;
+  String get deskDiasRespuestaOrg;
+  String get deskExportarCsv;
+  String get deskImprimirLegajo;
+  String get deskSinBarrio;
+  String get deskColaVacia;
+  String get deskBarrioEstigmaNota;
 }
 
 class _TextosDelegate extends LocalizationsDelegate<Textos> {

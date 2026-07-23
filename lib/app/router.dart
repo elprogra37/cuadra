@@ -1,7 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/plataforma.dart';
 import '../features/case/caso_screen.dart';
+import '../features/desk/desk_shell.dart';
 import '../features/feed/mi_cuadra_screen.dart';
 import '../features/geography/buscador_barrio_screen.dart';
 import '../features/geography/crear_barrio_screen.dart';
@@ -27,7 +29,11 @@ final routerProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(
         path: Rutas.miCuadra,
-        builder: (context, state) => const MiCuadraScreen(),
+        // En Windows la raíz es la mesa de trabajo del referente (§20.4);
+        // en Android, el feed de la cuadra.
+        builder: (context, state) => Plataforma.esEscritorio
+            ? const DeskShell()
+            : const MiCuadraScreen(),
       ),
       GoRoute(
         path: Rutas.buscarBarrio,

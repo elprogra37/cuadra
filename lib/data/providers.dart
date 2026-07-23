@@ -2,11 +2,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../features/desk/datos_panel.dart';
 import '../services/documents/generador_pdf.dart';
 import '../services/geografia/validador_toponimos.dart';
 import 'local/base_datos.dart';
 import 'local/conexion.dart';
 import 'local/siembra_local.dart';
+import 'models/enums.dart';
 import 'repositories/repo_casos.dart';
 import 'repositories/repo_categorias.dart';
 import 'repositories/repo_geografia.dart';
@@ -101,4 +103,21 @@ final generadorPdfProvider = Provider<GeneradorPdf>(
 final arranqueProvider = FutureProvider<void>((ref) async {
   await ref.watch(siembraLocalProvider.future);
   await ref.watch(repoCasosProvider).marcarVencidos();
+});
+
+/// Métricas agregadas del barrio para el panel de escritorio (§17.2).
+final datosPanelProvider = Provider<DatosPanel>(
+  (ref) => DatosPanel(ref.watch(baseDatosProvider)),
+);
+
+final datosBarrioProvider = FutureProvider.family<DatosBarrio, String>(
+  (ref, barrioId) => ref.watch(datosPanelProvider).deBarrio(barrioId),
+);
+
+/// Barrios propuestos, para la cola de moderación de barrios (§17.1).
+final barriosPropuestosProvider = StreamProvider<List<Neighborhood>>((ref) {
+  final db = ref.watch(baseDatosProvider);
+  return (db.select(
+    db.neighborhoods,
+  )..where((t) => t.status.equals(NeighborhoodStatus.propuesto.name))).watch();
 });

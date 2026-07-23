@@ -242,4 +242,56 @@ class TextosPt extends Textos {
   @override
   String get resueltoGracias =>
       'Resolvido e no registro do bairro, com os nomes de quem o empurrou.';
+
+  @override
+  String get deskPanel => 'Painel';
+  @override
+  String get deskCasos => 'Casos';
+  @override
+  String get deskDatos => 'Dados';
+  @override
+  String get deskModeracion => 'Moderação';
+  @override
+  String get deskBarrios => 'Bairros';
+  @override
+  String get deskColumnaRef => 'Processo';
+  @override
+  String get deskColumnaCategoria => 'Categoria';
+  @override
+  String get deskColumnaEstado => 'Estado';
+  @override
+  String get deskColumnaDias => 'Dias';
+  @override
+  String get deskColumnaAdhesiones => 'Adesões';
+  @override
+  String get deskFiltrar => 'Filtrar por texto, categoria ou estado…';
+  @override
+  String get deskEmbudo => 'Funil do bairro';
+  @override
+  String get deskReportes => 'Reportes';
+  @override
+  String get deskPresentados => 'Protocolados';
+  @override
+  String get deskRespondidos => 'Respondidos';
+  @override
+  String get deskResueltos => 'Resolvidos';
+  @override
+  String get deskSinRespuesta => 'Sem resposta';
+  @override
+  String get deskTasaResolucion => 'Taxa de resolução';
+  @override
+  String get deskDiasRespuestaOrg => 'Dias médios de resposta do órgão';
+  @override
+  String get deskExportarCsv => 'Exportar CSV';
+  @override
+  String get deskImprimirLegajo => 'Imprimir processo';
+  @override
+  String get deskSinBarrio =>
+      'Escolha um bairro no telefone para ver sua mesa de trabalho aqui.';
+  @override
+  String get deskColaVacia => 'Nada pendente nesta fila.';
+  @override
+  String get deskBarrioEstigmaNota =>
+      'Muitos reportes = bairro organizado. A métrica que importa é quanto o '
+      'Estado demora a responder, não quantos problemas existem.';
 }

@@ -244,4 +244,56 @@ class TextosEn extends Textos {
   @override
   String get resueltoGracias =>
       "Resolved and in the neighborhood's record, with the names of those who pushed it.";
+
+  @override
+  String get deskPanel => 'Dashboard';
+  @override
+  String get deskCasos => 'Cases';
+  @override
+  String get deskDatos => 'Data';
+  @override
+  String get deskModeracion => 'Moderation';
+  @override
+  String get deskBarrios => 'Neighborhoods';
+  @override
+  String get deskColumnaRef => 'File';
+  @override
+  String get deskColumnaCategoria => 'Category';
+  @override
+  String get deskColumnaEstado => 'Status';
+  @override
+  String get deskColumnaDias => 'Days';
+  @override
+  String get deskColumnaAdhesiones => 'Endorsements';
+  @override
+  String get deskFiltrar => 'Filter by text, category or status…';
+  @override
+  String get deskEmbudo => 'Neighborhood funnel';
+  @override
+  String get deskReportes => 'Reports';
+  @override
+  String get deskPresentados => 'Filed';
+  @override
+  String get deskRespondidos => 'Answered';
+  @override
+  String get deskResueltos => 'Resolved';
+  @override
+  String get deskSinRespuesta => 'No response';
+  @override
+  String get deskTasaResolucion => 'Resolution rate';
+  @override
+  String get deskDiasRespuestaOrg => 'Average agency response days';
+  @override
+  String get deskExportarCsv => 'Export CSV';
+  @override
+  String get deskImprimirLegajo => 'Print file';
+  @override
+  String get deskSinBarrio =>
+      'Pick a neighborhood on your phone to see its workbench here.';
+  @override
+  String get deskColaVacia => 'Nothing pending in this queue.';
+  @override
+  String get deskBarrioEstigmaNota =>
+      'Many reports = an organized neighborhood. The metric that matters is how '
+      'long the State takes to respond, not how many problems there are.';
 }

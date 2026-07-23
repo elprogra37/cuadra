@@ -71,6 +71,21 @@ pantallas de caso a partir de la etapa 7. Mientras tanto:
 **Cómo probarlo:** `flutter test test/data/` (cola, repos y esquema contra una
 base en memoria). La UI de reporte que consume esto llega en la etapa 6.
 
+### Panel de escritorio (Fase 3) ✅
+
+El build de Windows es la **mesa de trabajo del referente**: al abrirlo aparece
+un panel de tres secciones en vez del feed móvil.
+
+- **Casos:** tabla densa filtrable de todos los casos del barrio.
+- **Datos:** el embudo del barrio (reportes → presentados → respondidos →
+  resueltos), la tasa de resolución y los **días medios que tarda el organismo
+  en responder** — con exportación a CSV y a PDF para llevar a la prensa. Nunca
+  hay un puntaje de barrio; la métrica es la respuesta del Estado.
+- **Moderación:** cola de barrios propuestos para promover o rechazar.
+
+**Cómo probarlo:** abrir `cuadra.exe` en Windows con un barrio ya elegido desde
+el teléfono (o creado). La ventana no baja de 1024×640.
+
 ### Presentación formal y escalamiento (Fase 2) ✅
 
 - **De reclamo a expediente presentable:** la app genera el PDF formal
