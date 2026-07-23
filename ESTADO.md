@@ -26,8 +26,8 @@
 | # | Etapa | Estado |
 |---|---|---|
 | 1 | Andamiaje (estructura, Android+Windows compilan, CI) | ✅ hecho |
-| 2 | Sistema de diseño (tokens §5, `EstadoSello`, tests) | 🔨 en curso |
-| 3 | Datos (Drift §19, freezed, repos offline-first, SyncQueue) | ⬜ |
+| 2 | Sistema de diseño (tokens §5, `EstadoSello`, tests) | ✅ hecho |
+| 3 | Datos (Drift §19, freezed, repos offline-first, SyncQueue) | 🔨 en curso |
 | 4 | Backend (Supabase: SQL, PostGIS, RLS, siembra GeoNames) | ⬜ |
 | 5 | Motor geográfico (buscador, crear barrio, polígonos, resolve) | ⬜ |
 | 6 | Flujo de reporte guiado (cámara, EXIF, hash, árbol JSON, dedup) | ⬜ |
@@ -49,6 +49,23 @@
   `android-apk.yml` (APK debug en develop, release en tags), `windows.yml` (zip).
 - Fuentes descargadas: Oswald, Inter (copiada de `amor`), JetBrainsMono.
 - Test de humo `test/app/app_test.dart`.
+- Repo GitHub `elprogra37/cuadra` creado por API; ramas `main` y `develop` pusheadas.
+
+### Etapa 2 — Sistema de diseño ✅ (2026-07-23)
+
+- `lib/core/theme/tokens.dart`: paleta §5 exacta (asfalto/cal/vial/sello/vencido/tiza),
+  escala 32/24/20/16/14/12, pesos 400/600/800, espaciado, objetivo táctil 48dp.
+- `lib/core/theme/tipografia.dart`: Oswald (display), Inter (cuerpo),
+  JetBrainsMono (datos) con `fontVariations` + `fontWeight` espejado.
+- `lib/core/theme/tema.dart`: temas claro (cal) y oscuro (asfalto). `primary` es
+  tinta, NO vial: el amarillo lo aplica cada pantalla solo en pendientes.
+- `lib/core/theme/estado_sello.dart`: widget `EstadoSello` — borde 2px, rotación
+  estable ±[1.5°,3°] derivada del título, textura de tinta desgastada
+  (CustomPainter con motas del color del papel), semántica accesible.
+  Variantes: abierto/presentado (vial), sinRespuesta (vencido),
+  resuelto (sello), archivado (tiza). `esperaAccion` codifica la regla del amarillo.
+- Tests: regla del amarillo verificada por test, paleta exacta, borde, rotación,
+  semántica. 14 tests en verde.
 
 ## Cómo retomar
 

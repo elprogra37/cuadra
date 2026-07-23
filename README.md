@@ -37,6 +37,21 @@ Estado y un contador público de días sin respuesta.
 **Cómo probarla:** instalar el APK (o descomprimir el zip de Windows y abrir
 `cuadra.exe`). Se ve la pantalla inicial con el nombre y el tagline.
 
+### Sistema de diseño (Etapa 2) ✅
+
+- **Paleta y tipografías del expediente:** asfalto/cal/vial/sello/vencido/tiza,
+  Oswald (display), Inter (cuerpo), JetBrains Mono (datos). Temas claro y oscuro.
+- **Sello de estado (`EstadoSello`):** el elemento de firma del producto —
+  rectángulo rotado 1.5–3°, borde 2 px, tinta desgastada, con variantes
+  abierto/presentado (amarillo vial), sin respuesta (rojo óxido),
+  resuelto (verde tinta) y archivado (tiza).
+- **Regla del amarillo verificada por test:** el color vial aparece solo donde
+  hay algo abierto que espera acción.
+
+**Cómo probarlo:** la pantalla inicial usa el tema; el sello se ve en las
+pantallas de caso a partir de la etapa 7. Mientras tanto:
+`flutter test test/core/theme/` corre los tests del sistema de diseño.
+
 ---
 
 ## Desarrollo
