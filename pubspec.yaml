@@ -61,6 +61,19 @@ dev_dependencies:
   freezed: ^3.2.3
   json_serializable: ^6.11.1
   mocktail: ^1.0.4
+  flutter_launcher_icons: ^0.14.4
+
+# Ícono de la app: el sello de mesa de entradas (§5). El PNG fuente lo genera
+# tool/generar_icono.dart; regenerar íconos: dart run flutter_launcher_icons
+flutter_launcher_icons:
+  image_path: "assets/icon/cuadra.png"
+  android: true
+  adaptive_icon_background: "#1C1C1A"
+  adaptive_icon_foreground: "assets/icon/cuadra_foreground.png"
+  windows:
+    generate: true
+    image_path: "assets/icon/cuadra.png"
+    icon_size: 256
 
 flutter:
   uses-material-design: true
@@ -68,6 +81,7 @@ flutter:
   assets:
     - assets/categories/
     - assets/jurisdictions/
+    - assets/icon/
 
   fonts:
     # Fuentes variables (un solo archivo por familia): el peso se aplica con
