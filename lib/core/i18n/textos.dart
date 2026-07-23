@@ -78,6 +78,26 @@ abstract class Textos {
   String get barrioPropuestoAviso;
   String estadoBarrio(String estado);
   String vecinosVerificados(int n);
+
+  // Flujo de reporte guiado (§9)
+  String get tomarFoto;
+  String get repetirFoto;
+  String get fotoObligatoria;
+  String get sinCamaraEnEscritorio;
+  String get continuar;
+  String get ajustaElPin;
+  String get confirmarUbicacion;
+  String get queEstaPasando;
+  String get queTipo;
+  String get contanosMas;
+  String get algoMasOpcional;
+  String textoNoPasa(String fragmento);
+  String get vistaPreviaEscrito;
+  String yaHayCasoCerca(int n);
+  String get sumarmeAlCaso;
+  String get crearNuevoIgual;
+  String get reportePublicado;
+  String get fueraDeTuBarrio;
 }
 
 class _TextosDelegate extends LocalizationsDelegate<Textos> {

@@ -30,7 +30,7 @@
 | 3 | Datos (Drift §19, freezed, repos offline-first, SyncQueue) | ✅ hecho |
 | 4 | Backend (Supabase: SQL, PostGIS, RLS, siembra GeoNames) | ✅ hecho |
 | 5 | Motor geográfico (buscador, crear barrio, polígonos, resolve) | ✅ hecho |
-| 6 | Flujo de reporte guiado (cámara, EXIF, hash, árbol JSON, dedup) | ⬜ |
+| 6 | Flujo de reporte guiado (cámara, EXIF, hash, árbol JSON, dedup) | ✅ hecho |
 | 7 | Mi cuadra y mapa (feed con cierre de lista, clusters) | ⬜ |
 | 8 | Adhesión (commit-then-register, impacto, firma formal) | ⬜ |
 | 9 | Detalle de caso (timeline, contador, acción siguiente, sello animado) | ⬜ |
@@ -154,6 +154,33 @@
   (país→región→ciudad con autocompletado server), edición de vértices
   arrastrando, fusión de duplicados (job servidor).
 - CI de la etapa 4: los 3 workflows verdes (drift testea bien en el contenedor).
+
+### Etapa 6 — Flujo de reporte guiado ✅ (2026-07-23)
+
+- **`GeneradorEscrito`** (`services/documents/`): compone el escrito formal
+  (Objeto/Hechos/Afectación/Antecedentes/Manifestación/Normativa/Petitorio)
+  desde los `fragmento` del árbol JSON, es/en/pt. Fechas con formateador propio
+  determinista (DateFormat con locale exige init asíncrona — no usar).
+- **`FiltroTexto`** (`services/moderation/`): campo libre 200 chars; rechaza
+  insultos, teléfonos/mails/patentes/DNI y acusaciones a personas, señalando
+  el fragmento. El caso se publica igual sin el texto (§9.5).
+- **`ProcesadorEvidencia`** (`services/camera/`): bakeOrientation → resize 1600
+  → `exif = ExifData()` (¡el encoder de package:image CONSERVA el EXIF si no
+  se vacía a mano!) → JPEG q82 → SHA-256 del archivo final.
+- **`ArbolGuiado`** (`features/report/`): motor genérico que renderiza
+  cualquier categoría desde su JSON (opcion/multiple), nunca hardcodeado.
+- **`ReportarScreen`**: foto (image_picker cámara, sin galería; en Windows se
+  permite sin foto §20.4) → ubicación (pin fijo al centro, mapa arrastrable,
+  GPS con fallback a centroide del barrio) → grilla de categorías → subtipo →
+  preguntas → revisión con dedup (<80 m: ofrece sumarse), texto libre filtrado
+  en vivo y vista previa del escrito → publicar. Ubicación forzada §10.3: el
+  pin debe caer en el barrio activo. FAB vial "Reportar" en el feed.
+- `RepoCasos` ganó `generatedBody` en crearCaso y `agregarEvidencia` (guarda
+  jpg en documentos/evidencias/, registra hash y encola).
+- Permisos de ubicación agregados al AndroidManifest; label ahora "Cuadra".
+- 74 tests en verde.
+- **Pendiente de probar en dispositivo real**: cámara, GPS y el flujo entero
+  en Android (bajar APK del CI).
 
 ## Cómo retomar
 

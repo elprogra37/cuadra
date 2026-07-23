@@ -44,6 +44,11 @@ dependencies:
   path: ^1.9.0
   # Compresión de imágenes y borrado de EXIF en cliente
   image: ^4.5.4
+  # Cámara nativa para la evidencia principal (§10.1, Android; en Windows no
+  # hay captura: la mesa de trabajo no reporta desde la calle §20.4)
+  image_picker: ^1.2.1
+  # Ubicación automática del reporte con pin ajustable
+  geolocator: ^14.0.3
 
 dev_dependencies:
   flutter_test:

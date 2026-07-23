@@ -71,6 +71,25 @@ pantallas de caso a partir de la etapa 7. Mientras tanto:
 **Cómo probarlo:** `flutter test test/data/` (cola, repos y esquema contra una
 base en memoria). La UI de reporte que consume esto llega en la etapa 6.
 
+### Reporte guiado (Etapa 6) ✅
+
+- **Reportá en 40 segundos sin escribir:** foto con la cámara (sin galería),
+  ubicación con pin ajustable sobre el mapa, categoría y subtipo de una grilla,
+  y 3–5 preguntas de opción. La app redacta el escrito formal y te lo muestra
+  antes de publicar.
+- **Evidencia con integridad:** la foto pierde todo el EXIF (GPS, cámara), se
+  comprime a 1600 px y queda hasheada con SHA-256 en el momento.
+- **Deduplicación:** si ya hay un caso igual a menos de 80 metros, la app
+  ofrece sumarte en vez de duplicar.
+- **Único campo libre (200 caracteres) filtrado:** insultos, teléfonos,
+  patentes o acusaciones a personas no pasan — y el reclamo se publica igual.
+- **Todo funciona sin conexión** y sincroniza cuando vuelve la señal.
+
+**Cómo probarlo (Android):** con un barrio elegido, botón amarillo "Reportar" →
+foto → confirmar ubicación → elegir "Alumbrado público" → subtipo y preguntas →
+ver el escrito generado → "Publicar en mi cuadra". En Windows el flujo corre
+sin captura de cámara.
+
 ### Motor geográfico (Etapa 5) ✅
 
 - **Buscá tu barrio o crealo:** buscador local + alta de barrio con validación

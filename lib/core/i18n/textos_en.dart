@@ -116,4 +116,48 @@ class TextosEn extends Textos {
   @override
   String vecinosVerificados(int n) =>
       n == 1 ? '1 verified neighbor' : '$n verified neighbors';
+
+  @override
+  String get tomarFoto => 'Take the photo';
+  @override
+  String get repetirFoto => 'Retake it';
+  @override
+  String get fotoObligatoria =>
+      'Evidence starts with a photo of the place, taken here and now.';
+  @override
+  String get sinCamaraEnEscritorio =>
+      'No capture from desktop: photos are taken with your phone, on site. You can continue without a photo and add it later.';
+  @override
+  String get continuar => 'Continue';
+  @override
+  String get ajustaElPin => 'Move the map until the pin sits on the problem.';
+  @override
+  String get confirmarUbicacion => "It's here";
+  @override
+  String get queEstaPasando => "What's happening?";
+  @override
+  String get queTipo => 'What kind?';
+  @override
+  String get contanosMas => 'Tell us more';
+  @override
+  String get algoMasOpcional => 'Anything else? (optional, 200 characters)';
+  @override
+  String textoNoPasa(String fragmento) =>
+      'That part can\'t go in a public record: "$fragmento". '
+      'Rephrase it or publish without this text: the claim goes through anyway.';
+  @override
+  String get vistaPreviaEscrito => 'This is how the filing reads';
+  @override
+  String yaHayCasoCerca(int n) => n == 1
+      ? 'There is already an identical case within 80 meters'
+      : 'There are already $n identical cases within 80 meters';
+  @override
+  String get sumarmeAlCaso => 'Join that case';
+  @override
+  String get crearNuevoIgual => "It's a different problem, create new";
+  @override
+  String get reportePublicado => 'Published to your block. On the record.';
+  @override
+  String get fueraDeTuBarrio =>
+      'The pin landed outside your neighborhood. You can only report where you live.';
 }

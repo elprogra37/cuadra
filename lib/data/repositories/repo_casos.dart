@@ -41,6 +41,7 @@ class RepoCasos {
     String? occurredSince,
     String? createdBy,
     String? addressText,
+    String generatedBody = '',
     bool pinSobreDomicilio = false,
   }) async {
     final creadosHoy = await _casosCreadosDesde(
@@ -74,6 +75,7 @@ class RepoCasos {
       subtypeId: subtypeId,
       guidedAnswers: jsonEncode(guidedAnswers),
       freeText: Value(freeText),
+      generatedBody: Value(generatedBody),
       occurredSince: Value(occurredSince),
       status: CaseStatus.abierto,
       lat: latFinal,
@@ -104,6 +106,7 @@ class RepoCasos {
           'lat': latFinal,
           'lng': lngFinal,
           'address_text': addressText,
+          'generated_body': generatedBody,
           'pin_offset_applied': pinSobreDomicilio,
           'created_at': ahora.toIso8601String(),
         },
@@ -221,6 +224,59 @@ class RepoCasos {
           'impact_tags': [for (final t in impacto) t.name],
           'is_resident': esResidente,
           'created_at': ahora.toIso8601String(),
+        },
+      );
+    });
+    return const Ok(null);
+  }
+
+  /// Registra la evidencia principal ya procesada (sin EXIF, hasheada §10.2)
+  /// y la encola. El archivo vive en [localPath] hasta que Storage la reciba.
+  Future<Result<void>> agregarEvidencia({
+    required String caseId,
+    required String localPath,
+    required String sha256,
+    double? lat,
+    double? lng,
+    String? uploadedBy,
+  }) async {
+    final id = _uuid.v4();
+    final ahora = _ahora();
+    await _db.transaction(() async {
+      await _db
+          .into(_db.evidences)
+          .insert(
+            EvidencesCompanion.insert(
+              id: id,
+              caseId: caseId,
+              type: EvidenceType.foto,
+              localPath: Value(localPath),
+              sha256: sha256,
+              capturedAt: ahora,
+              lat: Value(lat),
+              lng: Value(lng),
+              uploadedBy: Value(uploadedBy),
+              exifStripped: const Value(true),
+              clientUuid: id,
+              updatedAt: ahora,
+            ),
+          );
+      await _db.customStatement(
+        'UPDATE cases SET evidence_count = evidence_count + 1 WHERE id = ?',
+        [caseId],
+      );
+      await _cola.encolar(
+        entity: 'evidence',
+        entityId: id,
+        operation: 'crear',
+        payload: {
+          'id': id,
+          'case_id': caseId,
+          'sha256': sha256,
+          'lat': lat,
+          'lng': lng,
+          'captured_at': ahora.toIso8601String(),
+          'exif_stripped': true,
         },
       );
     });

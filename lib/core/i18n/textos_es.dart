@@ -116,4 +116,50 @@ class TextosEs extends Textos {
   @override
   String vecinosVerificados(int n) =>
       n == 1 ? '1 vecino verificado' : '$n vecinos verificados';
+
+  @override
+  String get tomarFoto => 'Sacar la foto';
+  @override
+  String get repetirFoto => 'Sacarla de nuevo';
+  @override
+  String get fotoObligatoria =>
+      'La evidencia arranca con una foto del lugar, sacada acá y ahora.';
+  @override
+  String get sinCamaraEnEscritorio =>
+      'Desde la compu no hay captura: la foto se saca con el teléfono, en el lugar. Podés seguir sin foto y sumarla después.';
+  @override
+  String get continuar => 'Continuar';
+  @override
+  String get ajustaElPin =>
+      'Movete en el mapa hasta que el pin quede sobre el problema.';
+  @override
+  String get confirmarUbicacion => 'Es acá';
+  @override
+  String get queEstaPasando => '¿Qué pasa?';
+  @override
+  String get queTipo => '¿De qué tipo?';
+  @override
+  String get contanosMas => 'Contanos más';
+  @override
+  String get algoMasOpcional => '¿Algo más? (opcional, 200 caracteres)';
+  @override
+  String textoNoPasa(String fragmento) =>
+      'Esa parte no puede ir en un expediente público: “$fragmento”. '
+      'Reformulala o publicá sin este texto: el reclamo sale igual.';
+  @override
+  String get vistaPreviaEscrito => 'Así queda el escrito';
+  @override
+  String yaHayCasoCerca(int n) => n == 1
+      ? 'Ya hay un caso igual a menos de 80 metros'
+      : 'Ya hay $n casos iguales a menos de 80 metros';
+  @override
+  String get sumarmeAlCaso => 'Sumarme a ese caso';
+  @override
+  String get crearNuevoIgual => 'Es otro problema, crear nuevo';
+  @override
+  String get reportePublicado =>
+      'Publicado en tu cuadra. Quedó en el expediente.';
+  @override
+  String get fueraDeTuBarrio =>
+      'El pin quedó fuera de tu barrio. Solo se reporta donde sos vecino.';
 }

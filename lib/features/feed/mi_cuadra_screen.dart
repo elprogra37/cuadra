@@ -96,6 +96,14 @@ class _Feed extends ConsumerWidget {
           ),
         ],
       ),
+      // Reportar es LA acción pendiente del feed: amarillo vial.
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: TokensCuadra.vial,
+        foregroundColor: TokensCuadra.asfalto,
+        onPressed: () => context.push(Rutas.reportar),
+        icon: const Icon(Icons.photo_camera_outlined),
+        label: Text(t.tabReportar),
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(TokensCuadra.esp24),
