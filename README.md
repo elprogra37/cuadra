@@ -71,6 +71,24 @@ pantallas de caso a partir de la etapa 7. Mientras tanto:
 **Cómo probarlo:** `flutter test test/data/` (cola, repos y esquema contra una
 base en memoria). La UI de reporte que consume esto llega en la etapa 6.
 
+### Backend Supabase local (Etapa 4) ✅
+
+- **Stack completo self-hosted** (Postgres 15 + PostGIS + Auth + REST + Storage
+  + Realtime + Studio) con RLS en todas las tablas, triggers de contadores del
+  lado del servidor, `geo_resolve` (punto → barrio), `casos_cercanos`
+  (deduplicación por radio) y regla del 40% de solapamiento de polígonos.
+- **Siembra inicial:** 23 países, las 24 provincias argentinas, 5 ciudades y
+  las categorías del núcleo.
+
+**Cómo probarlo:**
+
+```bash
+cd supabase && cp .env.example .env && docker compose up -d
+# API REST:   http://localhost:55621  (anon key en .env.example)
+# Studio:     http://localhost:55623
+# Postgres:   localhost:55622 (postgres / postgres-dev-password)
+```
+
 ---
 
 ## Desarrollo

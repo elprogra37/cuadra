@@ -28,7 +28,7 @@
 | 1 | Andamiaje (estructura, Android+Windows compilan, CI) | ✅ hecho |
 | 2 | Sistema de diseño (tokens §5, `EstadoSello`, tests) | ✅ hecho |
 | 3 | Datos (Drift §19, freezed, repos offline-first, SyncQueue) | ✅ hecho |
-| 4 | Backend (Supabase: SQL, PostGIS, RLS, siembra GeoNames) | ⬜ |
+| 4 | Backend (Supabase: SQL, PostGIS, RLS, siembra GeoNames) | ✅ hecho |
 | 5 | Motor geográfico (buscador, crear barrio, polígonos, resolve) | ⬜ |
 | 6 | Flujo de reporte guiado (cámara, EXIF, hash, árbol JSON, dedup) | ⬜ |
 | 7 | Mi cuadra y mapa (feed con cierre de lista, clusters) | ⬜ |
@@ -94,6 +94,38 @@
 - **Tests**: 51 en verde (cola con base en memoria y reloj falso, repos, geohash,
   geodesia, JSON de categorías validados contra las reglas §9).
 - Ojo: Drift devuelve DateTime en hora local; comparar `.toUtc()` en tests.
+
+### Etapa 4 — Backend Supabase ✅ (2026-07-23)
+
+- **Stack self-hosted por docker-compose** en `supabase/` (patrón de asiscann,
+  sin Supabase CLI): Postgres 15 + PostGIS + Auth + REST + Storage + Realtime +
+  Studio + Kong. **Puertos 556xx** (Kong 55621, Postgres 55622, Studio 55623).
+  Uso: `cd supabase && cp .env.example .env && docker compose up -d`.
+- **Esquema en `supabase/init/`** (corre en el primer initdb del volumen):
+  - `10-extensiones.sql`: postgis, vector, pg_trgm, fuzzystrmatch.
+  - `20-geografia.sql`: countries/regions/cities/jurisdictions/neighborhoods
+    (geography 4326, índices GIST, límite 25 km² en constraint),
+    `geo_resolve(lat,lng)` y `solapamiento_maximo(geog)` (regla del 40%).
+  - `30-catalogo.sql`: categories, category_proposals (embedding vector 384),
+    proposal_clusters.
+  - `40-casos.sql`: cases (public_ref #n por trigger), evidences, endorsements
+    (unique case+user), case_actions, official_responses, resolutions.
+    Triggers de contadores (autoridad servidor §20.2). `casos_cercanos()` dedup.
+  - `50-usuarios.sql`: profiles (geohash 7, rol), trigger de alta, vista
+    `perfiles_publicos` sin datos sensibles.
+  - `60-siembra.sql`: 23 países, 24 provincias AR, 5 ciudades, 6 categorías,
+    jurisdicción demo AR-C-CABA (organismo ficticio para desarrollo).
+- **RLS habilitado en TODAS las tablas** (verificado por query): lectura pública
+  de lo publicado (modo visitante §15), escritura autenticada del propio
+  registro, moderación/cambios de estado vía service_role.
+- **Verificado en vivo:** geo_resolve resuelve un punto a su barrio,
+  solapamiento_maximo da 1.00 para un polígono contenido, public_ref asigna #1,
+  casos_cercanos encuentra a <80 m, triggers de contadores funcionan, y la API
+  REST vía Kong responde 200 con la anon key.
+- **Fix CI:** `assets/jurisdictions/` estaba vacío → no viajaba en git → analyze
+  y build Windows fallaban en CI. Se agregó `ar-c-caba.json` (ficha demo).
+- La secuencia case_ref_seq quedó en #2 en el volumen local (dato de prueba
+  borrado); irrelevante.
 
 ## Cómo retomar
 

@@ -1,0 +1,30 @@
+{
+  "jurisdictionId": "AR-C-CABA",
+  "name": "Ciudad Autónoma de Buenos Aires",
+  "country": "AR",
+  "timezone": "America/Argentina/Buenos_Aires",
+  "language": "es-AR",
+  "defaultResponseDays": 30,
+  "organisms": [
+    {
+      "id": "demo-mantenimiento",
+      "name": "Organismo demo de mantenimiento urbano (DESARROLLO)",
+      "categories": ["alumbrado", "calzada", "arbolado"],
+      "channels": {
+        "email": "demo@example.invalid",
+        "formUrl": null,
+        "open311": null
+      },
+      "responseDays": 30,
+      "normativa": ["Ley 104 de Acceso a la Información Pública"],
+      "escalation": ["defensoria_pueblo"]
+    }
+  ],
+  "templates": {
+    "reclamo": "pendiente de redacción legal",
+    "reiteracion": "pendiente",
+    "pronto_despacho": "pendiente",
+    "acceso_informacion": "pendiente",
+    "defensoria": "pendiente"
+  }
+}
