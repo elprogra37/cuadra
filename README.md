@@ -12,14 +12,28 @@ Estado y un contador público de días sin respuesta.
 
 ---
 
-## Descargas
+## Descargas — v0.1.0 (probá la app ya)
 
-| Plataforma | Dónde |
+**[⬇ Release v0.1.0](../../releases/tag/v0.1.0)** — las 4 fases completas, funciona offline.
+
+| Plataforma | Descarga directa |
 |---|---|
-| Android (APK debug) | Artifact `cuadra-debug-apk` del workflow [Android APK](../../actions/workflows/android-apk.yml) (último run verde de `develop`) |
-| Windows (zip) | Artifact `cuadra-windows-x64` del workflow [Windows](../../actions/workflows/windows.yml) |
+| **Android** | [`app-release.apk`](../../releases/download/v0.1.0/app-release.apk) (70 MB) — instalar y abrir |
+| **Windows** | [`cuadra-windows-x64.zip`](../../releases/download/v0.1.0/cuadra-windows-x64.zip) (19 MB) — descomprimir y abrir `cuadra.exe` |
 
-> Los builds salen de CI: esta máquina de desarrollo no tiene JDK ni Visual Studio.
+> APK de release sin firma de tienda todavía (Android puede pedir "permitir apps
+> de orígenes desconocidos"). Los builds salen de CI: esta máquina de desarrollo
+> no tiene JDK ni Visual Studio.
+
+### Probar el camino completo
+
+1. Abrir la app → **Buscá tu barrio** → **Crear mi barrio** (elegí una ciudad,
+   nombralo, tocá 4 esquinas en el mapa, proponelo).
+2. Botón amarillo **Reportar** → foto → confirmar ubicación → elegí una de las
+   12 categorías → respondé las preguntas → mirá el escrito generado → publicá.
+3. En el caso, **Presentar reclamo formal** genera y comparte el PDF y arranca
+   el contador de días.
+4. En Windows, `cuadra.exe` abre el **panel del referente** (tabla, datos, moderación).
 
 ---
 
