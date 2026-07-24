@@ -356,4 +356,19 @@ class TextosPt extends Textos {
   String get impactoGasto => 'Me gerou um gasto';
   @override
   String get impactoOmitir => 'Apenas somar minha assinatura';
+
+  @override
+  String get disputarTitulo => 'O que está errado neste caso?';
+  @override
+  String get disputaYaResuelto => 'Isto já foi resolvido';
+  @override
+  String get disputaUbicacion => 'A localização está errada';
+  @override
+  String get disputaCategoria => 'A categoria está errada';
+  @override
+  String get disputaNoCorresponde => 'Não corresponde ao app';
+  @override
+  String get disputaste => 'Registramos sua observação. Obrigado.';
+  @override
+  String get evidenciaAgregada => 'Você adicionou evidência ao processo.';
 }

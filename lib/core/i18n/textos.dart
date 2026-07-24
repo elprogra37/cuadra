@@ -181,6 +181,15 @@ abstract class Textos {
   String get impactoMiFamilia;
   String get impactoGasto;
   String get impactoOmitir;
+
+  // Disputar y aportar evidencia (§11)
+  String get disputarTitulo;
+  String get disputaYaResuelto;
+  String get disputaUbicacion;
+  String get disputaCategoria;
+  String get disputaNoCorresponde;
+  String get disputaste;
+  String get evidenciaAgregada;
 }
 
 class _TextosDelegate extends LocalizationsDelegate<Textos> {

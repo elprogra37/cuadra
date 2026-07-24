@@ -361,4 +361,19 @@ class TextosEs extends Textos {
   String get impactoGasto => 'Me generó un gasto';
   @override
   String get impactoOmitir => 'Solo sumar mi firma';
+
+  @override
+  String get disputarTitulo => '¿Qué está mal con este caso?';
+  @override
+  String get disputaYaResuelto => 'Esto ya se arregló';
+  @override
+  String get disputaUbicacion => 'La ubicación está mal';
+  @override
+  String get disputaCategoria => 'La categoría está mal';
+  @override
+  String get disputaNoCorresponde => 'No corresponde a la app';
+  @override
+  String get disputaste => 'Registramos tu observación. Gracias.';
+  @override
+  String get evidenciaAgregada => 'Sumaste evidencia al expediente.';
 }

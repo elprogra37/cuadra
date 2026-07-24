@@ -358,4 +358,19 @@ class TextosEn extends Textos {
   String get impactoGasto => 'It cost me money';
   @override
   String get impactoOmitir => 'Just add my signature';
+
+  @override
+  String get disputarTitulo => "What's wrong with this case?";
+  @override
+  String get disputaYaResuelto => 'This is already fixed';
+  @override
+  String get disputaUbicacion => 'The location is wrong';
+  @override
+  String get disputaCategoria => 'The category is wrong';
+  @override
+  String get disputaNoCorresponde => "It doesn't belong in the app";
+  @override
+  String get disputaste => 'We recorded your note. Thanks.';
+  @override
+  String get evidenciaAgregada => 'You added evidence to the file.';
 }

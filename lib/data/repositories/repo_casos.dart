@@ -29,6 +29,15 @@ class RepoCasos {
   /// Rate limit local (§10.3): 5 casos nuevos por día por usuario.
   static const maxCasosPorDia = 5;
 
+  /// Rate limit local (§10.3): 30 adhesiones por día por usuario.
+  static const maxAdhesionesPorDia = 30;
+
+  /// Sin adhesiones a 7 días → archivo automático (§10.3, §12).
+  static const ventanaArchivado = Duration(days: 7);
+
+  /// Disputas necesarias para mandar un caso a revisión (§11).
+  static const disputasParaRevision = 3;
+
   /// Crea un caso local en estado abierto y lo encola para sincronizar.
   Future<Result<Case>> crearCaso({
     required String neighborhoodId,
@@ -204,6 +213,24 @@ class RepoCasos {
             .getSingleOrNull();
     if (existente != null) {
       return const Err(ValidationFailure('Ya adheriste a este caso.'));
+    }
+
+    // Rate limit: 30 adhesiones/día (§10.3), escudo contra granjas de firmas.
+    final desde = _ahora().subtract(const Duration(days: 1));
+    final cuenta = _db.endorsements.id.count();
+    final q = _db.selectOnly(_db.endorsements)
+      ..addColumns([cuenta])
+      ..where(
+        _db.endorsements.userId.equals(userId) &
+            _db.endorsements.createdAt.isBiggerOrEqualValue(desde),
+      );
+    final hoy = (await q.getSingle()).read(cuenta) ?? 0;
+    if (hoy >= maxAdhesionesPorDia) {
+      return const Err(
+        ValidationFailure(
+          'Llegaste al máximo de 30 adhesiones por día. Volvé mañana.',
+        ),
+      );
     }
 
     final id = _uuid.v4();
@@ -421,6 +448,108 @@ class RepoCasos {
           'case_id': caseId,
           'type': tipo.name,
           'channel': channel,
+          'performed_at': ahora.toIso8601String(),
+        },
+      );
+    });
+    return const Ok(null);
+  }
+
+  /// Job local `archive_stale` (§21): un caso abierto sin ninguna adhesión a
+  /// 7 días se archiva solo (§10.3). Un problema real siempre tiene un segundo
+  /// vecino; si nadie más lo confirma, se descarta sin ruido.
+  Future<int> archivarSinAdhesiones() async {
+    final ahora = _ahora();
+    final limite = ahora.subtract(ventanaArchivado);
+    final viejos =
+        await (_db.select(_db.cases)..where(
+              (t) =>
+                  t.status.equals(CaseStatus.abierto.name) &
+                  t.endorsementCount.equals(0) &
+                  t.createdAt.isSmallerThanValue(limite),
+            ))
+            .get();
+    for (final c in viejos) {
+      await (_db.update(_db.cases)..where((t) => t.id.equals(c.id))).write(
+        CasesCompanion(
+          status: const Value(CaseStatus.archivado),
+          updatedAt: Value(ahora),
+        ),
+      );
+    }
+    return viejos.length;
+  }
+
+  /// Disputa (§11): motivo de lista cerrada. 3 disputas de vecinos distintos
+  /// mandan el caso a revisión. Registra la acción y frena la doble disputa.
+  Future<Result<void>> disputar({
+    required String caseId,
+    required String userId,
+    required DisputeReason motivo,
+  }) async {
+    // Una disputa por usuario por caso: se registra como CaseAction con el
+    // motivo en el payload; el índice único de sync evita duplicar.
+    final previa =
+        await (_db.select(_db.caseActions)..where(
+              (t) =>
+                  t.caseId.equals(caseId) &
+                  t.performedBy.equals(userId) &
+                  t.type.equals(CaseActionType.datoAbierto.name),
+            ))
+            .get();
+    // Reutilizamos payload.motivo para distinguir disputas; si ya disputó,
+    // rechazamos.
+    for (final a in previa) {
+      final p = a.payload;
+      if (p != null && p.contains('"disputa"')) {
+        return const Err(ValidationFailure('Ya disputaste este caso.'));
+      }
+    }
+
+    final ahora = _ahora();
+    final id = _uuid.v4();
+    await _db.transaction(() async {
+      await _db
+          .into(_db.caseActions)
+          .insert(
+            CaseActionsCompanion.insert(
+              id: id,
+              caseId: caseId,
+              type: CaseActionType.datoAbierto,
+              performedBy: Value(userId),
+              performedAt: ahora,
+              payload: Value(
+                jsonEncode({'disputa': true, 'motivo': motivo.name}),
+              ),
+              clientUuid: id,
+              updatedAt: ahora,
+            ),
+          );
+      await _db.customStatement(
+        'UPDATE cases SET dispute_count = dispute_count + 1 WHERE id = ?',
+        [caseId],
+      );
+      // 3 disputas → revisión (§11).
+      final caso = await (_db.select(
+        _db.cases,
+      )..where((t) => t.id.equals(caseId))).getSingle();
+      if (caso.disputeCount >= disputasParaRevision) {
+        await (_db.update(_db.cases)..where((t) => t.id.equals(caseId))).write(
+          CasesCompanion(
+            status: const Value(CaseStatus.enRevision),
+            updatedAt: Value(ahora),
+          ),
+        );
+      }
+      await _cola.encolar(
+        entity: 'case_action',
+        entityId: id,
+        operation: 'crear',
+        payload: {
+          'id': id,
+          'case_id': caseId,
+          'type': 'disputa',
+          'motivo': motivo.name,
           'performed_at': ahora.toIso8601String(),
         },
       );

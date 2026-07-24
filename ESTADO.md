@@ -304,6 +304,20 @@ Cubre gaps client-side que el documento pedía y que no dependen del backend:
 - 98 tests (nuevo: `preferencias_test` cubre visitante→vecino, userId estable,
   borrado, onboarding).
 
+## POST-FASES 2 — Interacciones y jobs de §10/§11/§12 ✅ (2026-07-23)
+
+- **Archivado automático** (`archivarSinAdhesiones`, §10.3/§12): caso abierto
+  sin ninguna adhesión a 7 días → archivado. Corre al arranque junto a
+  `marcarVencidos`.
+- **Rate limit de adhesiones** (§10.3): 30 por día por usuario, escudo contra
+  granjas de firmas.
+- **Disputar** (§11): `RepoCasos.disputar` con motivo de lista cerrada
+  (ya resuelto / ubicación / categoría / no corresponde); una por usuario;
+  3 disputas → `enRevision`. Botón + bottom sheet en el detalle de caso.
+- **Aportar evidencia** (§11): botón en el caso para que un vecino sume otra
+  foto (cámara, procesada y hasheada) al expediente.
+- 107 tests en verde (nuevos: archivado, límite de adhesiones, disputa a revisión).
+
 **Gaps que SIGUEN pendientes** (requieren ML on-device o backend, honestamente):
 - Clasificador de imágenes (NSFW/violencia/coherencia §10.1) y **difuminado de
   caras/patentes**: necesitan un modelo on-device (tflite/MLKit) y prueba en

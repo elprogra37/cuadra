@@ -170,4 +170,75 @@ void main() {
     final segundo = await repo.reclamarResuelto(caseId: id, userId: 'u2');
     expect(segundo.isOk, isFalse);
   });
+
+  test(
+    'archivarSinAdhesiones archiva casos abiertos sin firmas a 7 días',
+    () async {
+      final id = await crear();
+      // Todavía es de hoy: no se archiva.
+      expect(await repo.archivarSinAdhesiones(), 0);
+
+      // Ocho días después, sin adhesiones: se archiva.
+      reloj = reloj.add(const Duration(days: 8));
+      expect(await repo.archivarSinAdhesiones(), 1);
+      final caso = await (db.select(
+        db.cases,
+      )..where((t) => t.id.equals(id))).getSingle();
+      expect(caso.status, CaseStatus.archivado);
+    },
+  );
+
+  test('un caso con adhesión no se archiva aunque pasen 7 días', () async {
+    final id = await crear();
+    await repo.adherir(caseId: id, userId: 'u2', esResidente: true);
+    reloj = reloj.add(const Duration(days: 10));
+    expect(await repo.archivarSinAdhesiones(), 0);
+  });
+
+  test('3 disputas de vecinos distintos mandan el caso a revisión', () async {
+    final id = await crear();
+    expect(
+      (await repo.disputar(
+        caseId: id,
+        userId: 'u1',
+        motivo: DisputeReason.yaResuelto,
+      )).isOk,
+      isTrue,
+    );
+    // El mismo no puede disputar dos veces.
+    expect(
+      (await repo.disputar(
+        caseId: id,
+        userId: 'u1',
+        motivo: DisputeReason.yaResuelto,
+      )).isOk,
+      isFalse,
+    );
+    expect(
+      (await repo.disputar(
+        caseId: id,
+        userId: 'u2',
+        motivo: DisputeReason.noCorresponde,
+      )).isOk,
+      isTrue,
+    );
+    var caso = await (db.select(
+      db.cases,
+    )..where((t) => t.id.equals(id))).getSingle();
+    expect(caso.status, isNot(CaseStatus.enRevision));
+
+    expect(
+      (await repo.disputar(
+        caseId: id,
+        userId: 'u3',
+        motivo: DisputeReason.ubicacionIncorrecta,
+      )).isOk,
+      isTrue,
+    );
+    caso = await (db.select(
+      db.cases,
+    )..where((t) => t.id.equals(id))).getSingle();
+    expect(caso.status, CaseStatus.enRevision);
+    expect(caso.disputeCount, 3);
+  });
 }

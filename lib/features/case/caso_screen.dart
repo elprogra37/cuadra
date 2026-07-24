@@ -521,8 +521,94 @@ class _AccionSiguienteState extends ConsumerState<_AccionSiguiente> {
             onPressed: _reclamarResuelto,
             child: Text(t.reclamarResuelto),
           ),
+          // Aportar evidencia y disputar (§11): las otras interacciones
+          // estructuradas del caso, con opciones cerradas.
+          Row(
+            children: [
+              Expanded(
+                child: TextButton.icon(
+                  onPressed: _aportarEvidencia,
+                  icon: const Icon(Icons.add_a_photo_outlined, size: 18),
+                  label: Text(t.aportarEvidencia),
+                ),
+              ),
+              Expanded(
+                child: TextButton.icon(
+                  onPressed: _disputar,
+                  icon: const Icon(Icons.flag_outlined, size: 18),
+                  label: Text(t.disputar),
+                ),
+              ),
+            ],
+          ),
         ],
       ],
     );
+  }
+
+  Future<void> _aportarEvidencia() async {
+    if (!await asegurarVecino(context, ref)) return;
+    if (!mounted || defaultTargetPlatform != TargetPlatform.android) return;
+    final t = Textos.of(context);
+    final sesion = await ref.read(sesionProvider.future);
+    final captura = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+      requestFullMetadata: false,
+    );
+    if (captura == null) return;
+    final procesada = ProcesadorEvidencia.procesar(await captura.readAsBytes());
+    final dir = await getApplicationDocumentsDirectory();
+    final carpeta = Directory(p.join(dir.path, 'evidencias'));
+    await carpeta.create(recursive: true);
+    final ruta = p.join(
+      carpeta.path,
+      '${caso.id}-${DateTime.now().millisecondsSinceEpoch}.jpg',
+    );
+    await File(ruta).writeAsBytes(procesada.jpeg);
+    final r = await ref
+        .read(repoCasosProvider)
+        .agregarEvidencia(
+          caseId: caso.id,
+          localPath: ruta,
+          sha256: procesada.sha256,
+          uploadedBy: sesion.userId,
+        );
+    _aviso(r.fold((f) => f.message, (_) => t.evidenciaAgregada));
+  }
+
+  Future<void> _disputar() async {
+    if (!await asegurarVecino(context, ref)) return;
+    if (!mounted) return;
+    final t = Textos.of(context);
+    final motivo = await showModalBottomSheet<DisputeReason>(
+      context: context,
+      builder: (ctx) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(TokensCuadra.esp16),
+              child: Text(
+                t.disputarTitulo,
+                style: Theme.of(ctx).textTheme.titleLarge,
+              ),
+            ),
+            for (final (m, label) in [
+              (DisputeReason.yaResuelto, t.disputaYaResuelto),
+              (DisputeReason.ubicacionIncorrecta, t.disputaUbicacion),
+              (DisputeReason.categoriaIncorrecta, t.disputaCategoria),
+              (DisputeReason.noCorresponde, t.disputaNoCorresponde),
+            ])
+              ListTile(title: Text(label), onTap: () => Navigator.pop(ctx, m)),
+          ],
+        ),
+      ),
+    );
+    if (motivo == null || !mounted) return;
+    final sesion = await ref.read(sesionProvider.future);
+    final r = await ref
+        .read(repoCasosProvider)
+        .disputar(caseId: caso.id, userId: sesion.userId, motivo: motivo);
+    _aviso(r.fold((f) => f.message, (_) => t.disputaste));
   }
 }
