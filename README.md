@@ -41,45 +41,75 @@ destinatario concreto en el Estado y un contador público de días sin respuesta
 
 ---
 
-## Qué hace la app
+## Funcionalidades para probar (lista rápida)
 
-**Reporte guiado, el vecino elige y la app redacta.** Cámara nativa obligatoria
-(sin galería), EXIF eliminado y hash SHA-256 al capturar, ubicación con pin
-ajustable, 12 categorías con árbol de preguntas de opción (nunca texto libre
-salvo un campo de 200 caracteres filtrado). La app genera el escrito
-administrativo formal y lo muestra antes de publicar. Deduplicación a 80 m.
+Cada ítem es algo concreto que podés ver funcionando en la app.
 
-**Expediente y presión sobre el Estado.** Generación del PDF de mesa de entradas
-(carátula, hechos, ubicación, adhesiones verificadas aparte, evidencia con hash
-y timestamp, normativa, petitorio), plazo legal con vencimiento automático, y la
-escalera de escalamiento completa: reiteración (renueva 15 días) → pronto
-despacho → acceso a la información → Defensoría → concejal → prensa → dato
-abierto. Siempre hay un paso siguiente con el escrito armado.
+### Onboarding e identidad
+- [ ] **Onboarding de 3 pantallas** la primera vez que abrís la app.
+- [ ] **Entrás como visitante** (solo lectura); al intentar reportar o firmar te
+  pide un nombre para **entrar como vecino**.
+- [ ] En **Perfil**: cambiar de barrio, exportar o **borrar tus datos**.
 
-**El barrio a la vista.** Feed ordenado (lo pendiente arriba, lo más nuevo
-primero) con cierre explícito de lista, mapa con pines de color por estado,
-detalle con contador de días en tipografía de cartel y la línea de tiempo de
-acciones. La única animación del producto: el sello que se estampa al resolverse.
+### Crear tu barrio
+- [ ] **Buscador de barrio**; si no existe, lo creás vos.
+- [ ] **Validación del nombre contra OpenStreetMap** (el ícono de lupa lo verifica).
+- [ ] **Dibujás el polígono tocando el mapa** (mín. 4 esquinas), con **área en vivo** y deshacer.
+- [ ] Rechaza polígonos **> 25 km²** o que se **superponen > 40 %** con otro barrio activo.
 
-**Registro del barrio.** El archivo permanente de lo que se arregló, con el
-nombre de quienes lo empujaron.
+### Reportar (el corazón de la app)
+- [ ] **Cámara obligatoria, sin galería** — la foto se saca en el momento.
+- [ ] La foto pierde **todo el EXIF** (GPS, cámara) y queda con **hash SHA-256**.
+- [ ] **Ubicación con pin arrastrable**; solo te deja reportar **dentro de tu barrio**.
+- [ ] **12 categorías** (alumbrado, calzada, residuos, agua, arbolado, tránsito,
+  espacios verdes, transporte, ruido, obra, anegamiento, otro).
+- [ ] **Preguntas de opción** (nunca escribís el reclamo) → la app **redacta el
+  escrito formal** y te lo muestra antes de publicar.
+- [ ] **Campo libre de 200 caracteres filtrado:** probá poner un insulto, un
+  teléfono o una patente → te avisa y el reclamo se publica igual sin ese texto.
+- [ ] **Deduplicación:** si ya hay un caso igual a menos de 80 m, te ofrece sumarte.
+- [ ] Rate limit: **máximo 5 reportes por día**.
 
-**Panel de escritorio (Windows).** Mesa de trabajo del referente: tabla densa
-filtrable de casos, embudo del barrio (reportes → presentados → respondidos →
-resueltos), días medios de respuesta del organismo, export CSV/PDF, y cola de
-moderación de barrios. **Nunca un puntaje de barrio:** la métrica es la respuesta
-del Estado, no la cantidad de problemas.
+### El expediente y la presión
+- [ ] **Presentar reclamo formal** → genera y **comparte un PDF** de mesa de
+  entradas y **arranca el contador de días**.
+- [ ] Cuando **vence el plazo**, el caso pasa solo a **"sin respuesta · N días"**.
+- [ ] **Escalera de escalamiento:** reiterar (renueva 15 días) → pronto despacho
+  → acceso a la información → Defensoría → concejal → prensa → dato abierto.
+- [ ] **Adherir** (firmar) una sola vez por caso, con **confirmación de impacto**
+  (a mí también / afecta a mi familia / me generó un gasto).
+- [ ] **Aportar evidencia:** sumar otra foto al mismo caso.
+- [ ] **Disputar** con motivo cerrado (ya resuelto / ubicación / categoría / no corresponde).
+- [ ] **Marcar resuelto** con foto del después → con **2 confirmaciones de otros
+  vecinos** el caso se resuelve y **el sello se estampa** (la única animación).
 
-**Diseño de trámite oficial.** Paleta y tipografías del expediente
-(asfalto/cal/vial/sello/vencido/tiza; Oswald, Inter, JetBrains Mono). El
-amarillo `vial` aparece solo donde hay algo abierto que espera acción —
-verificado por test.
+### Ver el barrio
+- [ ] **Feed** ordenado: lo pendiente arriba, lo más nuevo primero, y la lista
+  **termina** ("Eso es todo lo que hay abierto cerca tuyo").
+- [ ] **Mapa** con pines de color por estado (amarillo = espera acción, rojo =
+  sin respuesta, verde = resuelto).
+- [ ] **Detalle del caso:** foto con el sello, contador de días en tipografía de
+  cartel, el escrito, la línea de tiempo y siempre un paso siguiente.
+- [ ] **Registro del barrio:** lo resuelto, permanente, con quiénes lo empujaron.
 
-**Offline-first de verdad.** Drift (SQLite) es la fuente de verdad; todo el flujo
-funciona sin conexión y una cola de sincronización con backoff exponencial e
-idempotencia empuja los cambios cuando vuelve la señal. Privacidad en el modelo:
-domicilios como geohash de 7 caracteres (~150 m), pines sobre viviendas
-desplazados hasta 25 m.
+### Automático (corre solo)
+- [ ] Un caso **sin ninguna adhesión a 7 días se archiva** solo.
+- [ ] Rate limit de **30 adhesiones por día** (anti-granja de firmas).
+
+### En Windows (panel del referente)
+- [ ] `cuadra.exe` abre un **panel de escritorio** (no el feed móvil).
+- [ ] **Tabla de casos filtrable** por texto, categoría o estado.
+- [ ] **Datos:** embudo del barrio + **días medios de respuesta del organismo**,
+  con **export CSV y PDF**. Nunca un puntaje de barrio.
+- [ ] **Moderación:** cola de barrios propuestos para promover o rechazar.
+- [ ] La ventana **no baja de 1024×640**.
+
+### Transversal
+- [ ] **Tres idiomas** (español, inglés, portugués) según el idioma del sistema.
+- [ ] **Funciona 100 % sin conexión** — probá con el modo avión: todo se guarda
+  y se sincroniza cuando vuelve la señal.
+- [ ] **Estética de trámite oficial:** el amarillo aparece **solo** donde hay
+  algo pendiente que espera acción.
 
 ---
 
@@ -87,7 +117,7 @@ desplazados hasta 25 m.
 
 ```bash
 flutter pub get
-flutter test          # 97 tests: dominio, sync, geografía, escrito, escalera, e2e
+flutter test          # 107 tests: dominio, sync, geografía, escrito, escalera, sesión, e2e
 flutter analyze       # sin warnings
 dart format lib test  # formato del CI
 ```
