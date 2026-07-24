@@ -103,7 +103,9 @@ final generadorPdfProvider = Provider<GeneradorPdf>(
 /// check_deadlines, versión local). Se observa desde la raíz de la app.
 final arranqueProvider = FutureProvider<void>((ref) async {
   await ref.watch(siembraLocalProvider.future);
-  await ref.watch(repoCasosProvider).marcarVencidos();
+  final repo = ref.watch(repoCasosProvider);
+  await repo.marcarVencidos();
+  await repo.archivarSinAdhesiones();
 });
 
 /// Métricas agregadas del barrio para el panel de escritorio (§17.2).

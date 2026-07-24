@@ -21,6 +21,7 @@ class PerfilScreen extends ConsumerWidget {
     final barrio = barrioId == null
         ? null
         : ref.watch(barrioProvider(barrioId)).value;
+    final sesion = ref.watch(sesionProvider).value;
 
     return Scaffold(
       appBar: AppBar(title: Text(t.perfilTitulo)),
@@ -28,9 +29,16 @@ class PerfilScreen extends ConsumerWidget {
         padding: const EdgeInsets.all(TokensCuadra.esp16),
         children: [
           ListTile(
-            leading: const Icon(Icons.person_outline),
-            title: Text(t.perfilVecino),
-            subtitle: Text(barrio?.name ?? '—'),
+            leading: Icon(
+              sesion?.esVecino ?? false
+                  ? Icons.verified_user_outlined
+                  : Icons.person_outline,
+            ),
+            title: Text(sesion?.displayName ?? t.perfilVisitante),
+            subtitle: Text(
+              '${sesion?.esVecino ?? false ? t.perfilVecino : t.modoVisitante}'
+              '${barrio == null ? '' : ' · ${barrio.name}'}',
+            ),
           ),
           const Divider(),
           ListTile(
@@ -84,8 +92,9 @@ class PerfilScreen extends ConsumerWidget {
     );
     if (confirmado != true) return;
     final prefs = await ref.read(preferenciasProvider.future);
-    await prefs.setBarrioActivo('');
+    await prefs.borrarTodo();
     ref.invalidate(barrioActivoProvider);
+    ref.invalidate(sesionProvider);
     if (context.mounted) context.go(Rutas.miCuadra);
   }
 }

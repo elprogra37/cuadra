@@ -19,6 +19,8 @@ import '../../data/providers.dart';
 import '../../services/camera/procesador_evidencia.dart';
 import '../../services/documents/escalera.dart';
 import '../../services/documents/generador_escrito.dart';
+import '../../services/preferencias.dart';
+import '../onboarding/entrar_vecino.dart';
 import 'estado_visual.dart';
 
 /// Detalle de caso (§25.9): foto, sello, contador de días en display, línea
@@ -209,9 +211,10 @@ class _AccionSiguienteState extends ConsumerState<_AccionSiguiente> {
   }
 
   Future<void> _verificar() async {
+    final sesion = await ref.read(sesionProvider.future);
     final ya = await ref
         .read(repoCasosProvider)
-        .yaAdhirio(caseId: caso.id, userId: 'local');
+        .yaAdhirio(caseId: caso.id, userId: sesion.userId);
     if (mounted) setState(() => _yaAdhirio = ya);
   }
 
@@ -220,19 +223,89 @@ class _AccionSiguienteState extends ConsumerState<_AccionSiguiente> {
   ).showSnackBar(SnackBar(content: Text(mensaje), persist: false));
 
   Future<void> _adherir() async {
+    // Modo visitante (§15.1): firmar exige ser vecino.
+    if (!await asegurarVecino(context, ref)) return;
+    if (!mounted) return;
+    // Confirmación de impacto (§11): convierte una firma en testimonio.
+    final impacto = await _elegirImpacto();
+    if (!mounted) return;
     final t = Textos.of(context);
+    final sesion = await ref.read(sesionProvider.future);
     final r = await ref
         .read(repoCasosProvider)
-        .adherir(caseId: caso.id, userId: 'local', esResidente: true);
+        .adherir(
+          caseId: caso.id,
+          userId: sesion.userId,
+          esResidente: true,
+          impacto: impacto,
+        );
     _aviso(r.fold((f) => f.message, (_) => t.adheriste));
     await _verificar();
+  }
+
+  /// Opciones cerradas de impacto (§11): a mí también / mi familia / un gasto.
+  /// Devuelve la lista elegida (vacía = solo sumar la firma).
+  Future<List<ImpactTag>> _elegirImpacto() async {
+    final t = Textos.of(context);
+    final seleccion = <ImpactTag>{};
+    final confirmado = await showModalBottomSheet<bool>(
+      context: context,
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setLocal) => Padding(
+          padding: const EdgeInsets.all(TokensCuadra.esp24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(t.impactoTitulo, style: Theme.of(ctx).textTheme.titleLarge),
+              const SizedBox(height: TokensCuadra.esp12),
+              for (final (tag, label) in [
+                (ImpactTag.aMiTambien, t.impactoAMiTambien),
+                (ImpactTag.afectaMiFamilia, t.impactoMiFamilia),
+                (ImpactTag.meGeneroGasto, t.impactoGasto),
+              ])
+                CheckboxListTile(
+                  value: seleccion.contains(tag),
+                  title: Text(label),
+                  contentPadding: EdgeInsets.zero,
+                  onChanged: (v) => setLocal(() {
+                    if (v ?? false) {
+                      seleccion.add(tag);
+                    } else {
+                      seleccion.remove(tag);
+                    }
+                  }),
+                ),
+              const SizedBox(height: TokensCuadra.esp8),
+              FilledButton(
+                style: FilledButton.styleFrom(
+                  backgroundColor: TokensCuadra.vial,
+                  foregroundColor: TokensCuadra.asfalto,
+                ),
+                onPressed: () => Navigator.pop(ctx, true),
+                child: Text(t.adherir),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(ctx, true),
+                child: Text(t.impactoOmitir),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    return confirmado == true ? seleccion.toList() : <ImpactTag>[];
   }
 
   /// Presenta o escala: genera el PDF, lo comparte y registra la acción.
   Future<void> _ejecutarEscalon(CaseActionType tipo) async {
     if (_trabajando) return;
+    // Presentar/escalar exige ser vecino (§7).
+    if (!await asegurarVecino(context, ref)) return;
+    if (!mounted) return;
     setState(() => _trabajando = true);
     final t = Textos.of(context);
+    final sesion = await ref.read(sesionProvider.future);
     try {
       final jurisdiccionId = await ref
           .read(repoGeografiaProvider)
@@ -316,7 +389,7 @@ class _AccionSiguienteState extends ConsumerState<_AccionSiguiente> {
               responseDays: org.organismo.responseDays,
               generatedBody: cuerpo,
               documentUrl: ruta,
-              performedBy: 'local',
+              performedBy: sesion.userId,
             );
         _aviso(
           r.fold(
@@ -331,7 +404,7 @@ class _AccionSiguienteState extends ConsumerState<_AccionSiguiente> {
               caseId: caso.id,
               tipo: tipo,
               documentUrl: ruta,
-              performedBy: 'local',
+              performedBy: sesion.userId,
             );
         _aviso(r.fold((f) => f.message, (_) => t.escalonNombre(tipo.name)));
       }
@@ -341,7 +414,10 @@ class _AccionSiguienteState extends ConsumerState<_AccionSiguiente> {
   }
 
   Future<void> _reclamarResuelto() async {
+    if (!await asegurarVecino(context, ref)) return;
+    if (!mounted) return;
     final t = Textos.of(context);
+    final sesion = await ref.read(sesionProvider.future);
     // Foto del después: cámara en Android; en escritorio se permite sin foto.
     String? ruta;
     String? hash;
@@ -365,7 +441,7 @@ class _AccionSiguienteState extends ConsumerState<_AccionSiguiente> {
         .read(repoCasosProvider)
         .reclamarResuelto(
           caseId: caso.id,
-          userId: 'local',
+          userId: sesion.userId,
           fotoDespuesPath: ruta,
           sha256Foto: hash,
         );
@@ -392,9 +468,11 @@ class _AccionSiguienteState extends ConsumerState<_AccionSiguiente> {
           const SizedBox(height: TokensCuadra.esp8),
           OutlinedButton(
             onPressed: () async {
+              if (!await asegurarVecino(context, ref)) return;
+              final sesion = await ref.read(sesionProvider.future);
               final r = await ref
                   .read(repoCasosProvider)
-                  .confirmarResuelto(caseId: caso.id, userId: 'local');
+                  .confirmarResuelto(caseId: caso.id, userId: sesion.userId);
               _aviso(r.fold((f) => f.message, (_) => t.resueltoGracias));
             },
             child: Text(t.confirmarResolucion),
@@ -443,8 +521,94 @@ class _AccionSiguienteState extends ConsumerState<_AccionSiguiente> {
             onPressed: _reclamarResuelto,
             child: Text(t.reclamarResuelto),
           ),
+          // Aportar evidencia y disputar (§11): las otras interacciones
+          // estructuradas del caso, con opciones cerradas.
+          Row(
+            children: [
+              Expanded(
+                child: TextButton.icon(
+                  onPressed: _aportarEvidencia,
+                  icon: const Icon(Icons.add_a_photo_outlined, size: 18),
+                  label: Text(t.aportarEvidencia),
+                ),
+              ),
+              Expanded(
+                child: TextButton.icon(
+                  onPressed: _disputar,
+                  icon: const Icon(Icons.flag_outlined, size: 18),
+                  label: Text(t.disputar),
+                ),
+              ),
+            ],
+          ),
         ],
       ],
     );
+  }
+
+  Future<void> _aportarEvidencia() async {
+    if (!await asegurarVecino(context, ref)) return;
+    if (!mounted || defaultTargetPlatform != TargetPlatform.android) return;
+    final t = Textos.of(context);
+    final sesion = await ref.read(sesionProvider.future);
+    final captura = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+      requestFullMetadata: false,
+    );
+    if (captura == null) return;
+    final procesada = ProcesadorEvidencia.procesar(await captura.readAsBytes());
+    final dir = await getApplicationDocumentsDirectory();
+    final carpeta = Directory(p.join(dir.path, 'evidencias'));
+    await carpeta.create(recursive: true);
+    final ruta = p.join(
+      carpeta.path,
+      '${caso.id}-${DateTime.now().millisecondsSinceEpoch}.jpg',
+    );
+    await File(ruta).writeAsBytes(procesada.jpeg);
+    final r = await ref
+        .read(repoCasosProvider)
+        .agregarEvidencia(
+          caseId: caso.id,
+          localPath: ruta,
+          sha256: procesada.sha256,
+          uploadedBy: sesion.userId,
+        );
+    _aviso(r.fold((f) => f.message, (_) => t.evidenciaAgregada));
+  }
+
+  Future<void> _disputar() async {
+    if (!await asegurarVecino(context, ref)) return;
+    if (!mounted) return;
+    final t = Textos.of(context);
+    final motivo = await showModalBottomSheet<DisputeReason>(
+      context: context,
+      builder: (ctx) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(TokensCuadra.esp16),
+              child: Text(
+                t.disputarTitulo,
+                style: Theme.of(ctx).textTheme.titleLarge,
+              ),
+            ),
+            for (final (m, label) in [
+              (DisputeReason.yaResuelto, t.disputaYaResuelto),
+              (DisputeReason.ubicacionIncorrecta, t.disputaUbicacion),
+              (DisputeReason.categoriaIncorrecta, t.disputaCategoria),
+              (DisputeReason.noCorresponde, t.disputaNoCorresponde),
+            ])
+              ListTile(title: Text(label), onTap: () => Navigator.pop(ctx, m)),
+          ],
+        ),
+      ),
+    );
+    if (motivo == null || !mounted) return;
+    final sesion = await ref.read(sesionProvider.future);
+    final r = await ref
+        .read(repoCasosProvider)
+        .disputar(caseId: caso.id, userId: sesion.userId, motivo: motivo);
+    _aviso(r.fold((f) => f.message, (_) => t.disputaste));
   }
 }

@@ -331,4 +331,46 @@ class TextosEn extends Textos {
       'The city takes an average of $dias days to respond here.';
   @override
   String get sinDatosAun => 'Not enough data yet.';
+
+  @override
+  String get onbEmpezar => 'Get started';
+  @override
+  String get onbSiguiente => 'Next';
+  @override
+  String get tuNombre => 'Your name or nickname';
+  @override
+  String get tuNombrePista => 'How your neighbors will see you';
+  @override
+  String get entrar => 'Enter';
+  @override
+  String get comoTeLlamas => 'How do you want to be seen in the neighborhood?';
+  @override
+  String get soloParaVecinos =>
+      'You\'re viewing as a visitor. To report, sign or create a neighborhood, '
+      'enter as a neighbor.';
+  @override
+  String get impactoTitulo => 'Does it affect you too?';
+  @override
+  String get impactoAMiTambien => 'It happens to me too';
+  @override
+  String get impactoMiFamilia => 'It affects my family';
+  @override
+  String get impactoGasto => 'It cost me money';
+  @override
+  String get impactoOmitir => 'Just add my signature';
+
+  @override
+  String get disputarTitulo => "What's wrong with this case?";
+  @override
+  String get disputaYaResuelto => 'This is already fixed';
+  @override
+  String get disputaUbicacion => 'The location is wrong';
+  @override
+  String get disputaCategoria => 'The category is wrong';
+  @override
+  String get disputaNoCorresponde => "It doesn't belong in the app";
+  @override
+  String get disputaste => 'We recorded your note. Thanks.';
+  @override
+  String get evidenciaAgregada => 'You added evidence to the file.';
 }

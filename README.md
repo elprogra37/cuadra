@@ -12,14 +12,14 @@ destinatario concreto en el Estado y un contador público de días sin respuesta
 
 ---
 
-## Descargas — v0.1.0 (probá la app ya)
+## Descargas — v0.2.0 (probá la app ya)
 
-**[⬇ Release v0.1.0](../../releases/tag/v0.1.0)** — las 4 fases completas, funciona 100% offline.
+**[⬇ Última release](../../releases/latest)** — las 4 fases completas + identidad/modo visitante, onboarding, disputas y jobs de archivado. Funciona 100% offline.
 
 | Plataforma | Descarga directa |
 |---|---|
-| **Android** | [`app-release.apk`](../../releases/download/v0.1.0/app-release.apk) (70 MB) — instalar y abrir |
-| **Windows** | [`cuadra-windows-x64.zip`](../../releases/download/v0.1.0/cuadra-windows-x64.zip) (19 MB) — descomprimir y abrir `cuadra.exe` |
+| **Android** | [`app-release.apk`](../../releases/latest/download/app-release.apk) — instalar y abrir |
+| **Windows** | [`cuadra-windows-x64.zip`](../../releases/latest/download/cuadra-windows-x64.zip) — descomprimir y abrir `cuadra.exe` |
 
 > APK de release sin firma de tienda todavía (Android puede pedir permitir apps
 > de orígenes desconocidos). Los builds salen de CI: esta máquina de desarrollo

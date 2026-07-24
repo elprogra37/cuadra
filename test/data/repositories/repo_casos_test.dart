@@ -142,6 +142,25 @@ void main() {
     expect(caso.verifiedEndorsementCount, 0);
   });
 
+  test('rate limit: la adhesión 31 del día se rechaza', () async {
+    for (var i = 0; i < RepoCasos.maxAdhesionesPorDia; i++) {
+      final r = await repo.crearCaso(
+        neighborhoodId: 'b1',
+        categoryId: 'alumbrado',
+        subtypeId: 'luminaria_apagada',
+        guidedAnswers: {},
+        lat: -34.6 + i * 0.001,
+        lng: -58.44,
+        createdBy: 'autor$i',
+      );
+      await repo.adherir(caseId: r.valueOrNull!.id, userId: 'firmon');
+    }
+    final unoMas = await crear(usuario: 'otro');
+    final r = await repo.adherir(caseId: unoMas, userId: 'firmon');
+    expect(r.isOk, isFalse);
+    expect(r.failureOrNull!.message, contains('30 adhesiones'));
+  });
+
   test(
     'la firma formal de un verificado suma al contador de verificadas',
     () async {

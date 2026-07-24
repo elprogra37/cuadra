@@ -280,6 +280,52 @@ presentable con reloj corriendo.
   mundial. La lógica de "Otro" ya publica como caso normal con plantilla
   genérica; falta solo el agrupamiento.
 
+## POST-FASES — Identidad, modo visitante, onboarding e impacto ✅ (2026-07-23)
+
+Cubre gaps client-side que el documento pedía y que no dependen del backend:
+
+- **Sesión/identidad local** (`services/preferencias.dart`): `userId` uuid
+  estable (se genera una vez; el login real lo migrará), `displayName`, `role`
+  (visitante→vecino), flag de onboarding. `sesionProvider`. Se reemplazó el
+  `userId: 'local'` hardcodeado por la sesión real en TODOS los flujos
+  (reportar, adherir, presentar, escalar, resolver, confirmar, crear barrio,
+  evidencia).
+- **Modo visitante (§15.1)**: `asegurarVecino()` (`features/onboarding/
+  entrar_vecino.dart`) — un bottom sheet que pide nombre y pasa a vecino.
+  Se dispara antes de reportar, firmar, presentar/escalar, resolver/confirmar
+  y crear barrio. Quien mira sin identidad no puede publicar nada.
+- **Onboarding de 3 pantallas (§4.4)** (`features/onboarding/`): se muestra
+  una sola vez (`RaizMovil` decide onboarding vs. HomeShell). El escritorio
+  no pasa por onboarding.
+- **Confirmación de impacto al adherir (§11)**: bottom sheet con las 3 opciones
+  cerradas (a mí también / mi familia / un gasto); convierte firma en testimonio.
+  Se guardan en `impact_tags` de la adhesión.
+- **Perfil** muestra nombre/rol reales; "borrar mis datos" usa `borrarTodo`.
+- 98 tests (nuevo: `preferencias_test` cubre visitante→vecino, userId estable,
+  borrado, onboarding).
+
+## POST-FASES 2 — Interacciones y jobs de §10/§11/§12 ✅ (2026-07-23)
+
+- **Archivado automático** (`archivarSinAdhesiones`, §10.3/§12): caso abierto
+  sin ninguna adhesión a 7 días → archivado. Corre al arranque junto a
+  `marcarVencidos`.
+- **Rate limit de adhesiones** (§10.3): 30 por día por usuario, escudo contra
+  granjas de firmas.
+- **Disputar** (§11): `RepoCasos.disputar` con motivo de lista cerrada
+  (ya resuelto / ubicación / categoría / no corresponde); una por usuario;
+  3 disputas → `enRevision`. Botón + bottom sheet en el detalle de caso.
+- **Aportar evidencia** (§11): botón en el caso para que un vecino sume otra
+  foto (cámara, procesada y hasheada) al expediente.
+- 107 tests en verde (nuevos: archivado, límite de adhesiones, disputa a revisión).
+
+**Gaps que SIGUEN pendientes** (requieren ML on-device o backend, honestamente):
+- Clasificador de imágenes (NSFW/violencia/coherencia §10.1) y **difuminado de
+  caras/patentes**: necesitan un modelo on-device (tflite/MLKit) y prueba en
+  device real. No incluido.
+- Login real (email/OTP), sincronización, verificación de domicilio, envío con
+  acuse (email/Open311), notificaciones, jobs del servidor. Todo depende del
+  backend Supabase conectado.
+
 ## Estado general al cierre de la sesión 2026-07-23
 
 **Las 4 fases están funcionalmente completas en local.** La app es un producto

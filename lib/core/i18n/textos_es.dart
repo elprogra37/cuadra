@@ -334,4 +334,46 @@ class TextosEs extends Textos {
       'El municipio tarda en promedio $dias días en responder acá.';
   @override
   String get sinDatosAun => 'Sin datos suficientes todavía.';
+
+  @override
+  String get onbEmpezar => 'Empezar';
+  @override
+  String get onbSiguiente => 'Siguiente';
+  @override
+  String get tuNombre => 'Tu nombre o apodo';
+  @override
+  String get tuNombrePista => 'Cómo van a verte tus vecinos';
+  @override
+  String get entrar => 'Entrar';
+  @override
+  String get comoTeLlamas => '¿Cómo querés que te vean en el barrio?';
+  @override
+  String get soloParaVecinos =>
+      'Estás mirando como visitante. Para reportar, firmar o crear un barrio, '
+      'entrá como vecino.';
+  @override
+  String get impactoTitulo => '¿Te afecta a vos también?';
+  @override
+  String get impactoAMiTambien => 'A mí también me pasa';
+  @override
+  String get impactoMiFamilia => 'Afecta a mi familia';
+  @override
+  String get impactoGasto => 'Me generó un gasto';
+  @override
+  String get impactoOmitir => 'Solo sumar mi firma';
+
+  @override
+  String get disputarTitulo => '¿Qué está mal con este caso?';
+  @override
+  String get disputaYaResuelto => 'Esto ya se arregló';
+  @override
+  String get disputaUbicacion => 'La ubicación está mal';
+  @override
+  String get disputaCategoria => 'La categoría está mal';
+  @override
+  String get disputaNoCorresponde => 'No corresponde a la app';
+  @override
+  String get disputaste => 'Registramos tu observación. Gracias.';
+  @override
+  String get evidenciaAgregada => 'Sumaste evidencia al expediente.';
 }
