@@ -329,4 +329,31 @@ class TextosPt extends Textos {
       'A prefeitura leva em média $dias dias para responder aqui.';
   @override
   String get sinDatosAun => 'Ainda sem dados suficientes.';
+
+  @override
+  String get onbEmpezar => 'Começar';
+  @override
+  String get onbSiguiente => 'Próximo';
+  @override
+  String get tuNombre => 'Seu nome ou apelido';
+  @override
+  String get tuNombrePista => 'Como seus vizinhos vão te ver';
+  @override
+  String get entrar => 'Entrar';
+  @override
+  String get comoTeLlamas => 'Como você quer ser visto no bairro?';
+  @override
+  String get soloParaVecinos =>
+      'Você está vendo como visitante. Para reportar, assinar ou criar um '
+      'bairro, entre como vizinho.';
+  @override
+  String get impactoTitulo => 'Afeta você também?';
+  @override
+  String get impactoAMiTambien => 'Comigo também acontece';
+  @override
+  String get impactoMiFamilia => 'Afeta minha família';
+  @override
+  String get impactoGasto => 'Me gerou um gasto';
+  @override
+  String get impactoOmitir => 'Apenas somar minha assinatura';
 }

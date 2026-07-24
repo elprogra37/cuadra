@@ -167,6 +167,20 @@ abstract class Textos {
   String get entrarComoVecino;
   String tiempoMedioRespuesta(int dias);
   String get sinDatosAun;
+
+  // Onboarding + entrar como vecino (§4.4, §7, §11)
+  String get onbEmpezar;
+  String get onbSiguiente;
+  String get tuNombre;
+  String get tuNombrePista;
+  String get entrar;
+  String get comoTeLlamas;
+  String get soloParaVecinos;
+  String get impactoTitulo;
+  String get impactoAMiTambien;
+  String get impactoMiFamilia;
+  String get impactoGasto;
+  String get impactoOmitir;
 }
 
 class _TextosDelegate extends LocalizationsDelegate<Textos> {

@@ -22,6 +22,7 @@ import '../../services/camera/procesador_evidencia.dart';
 import '../../services/documents/generador_escrito.dart';
 import '../../services/moderation/filtro_texto.dart';
 import '../../services/preferencias.dart';
+import '../onboarding/entrar_vecino.dart';
 import 'arbol_guiado.dart';
 
 /// Flujo de reporte guiado (§9.2): cámara → ubicación → categoría → subtipo →
@@ -157,9 +158,13 @@ class _ReportarScreenState extends ConsumerState<ReportarScreen> {
     final pin = _pin;
     final c = _categoria;
     if (pin == null || c == null || _subtipoId == null || _publicando) return;
+    // Modo visitante (§15.1): reportar exige ser vecino.
+    if (!await asegurarVecino(context, ref)) return;
+    if (!mounted) return;
     setState(() => _publicando = true);
     final t = Textos.of(context);
     final mensajero = ScaffoldMessenger.of(context);
+    final sesion = await ref.read(sesionProvider.future);
 
     // Ubicación forzada (§10.3): el pin tiene que caer en el barrio activo.
     final barrioId = await ref.read(barrioActivoProvider.future);
@@ -188,6 +193,7 @@ class _ReportarScreenState extends ConsumerState<ReportarScreen> {
               : null,
           occurredSince: _respuestas['desde_cuando'] as String?,
           generatedBody: _escrito,
+          createdBy: sesion.userId,
         );
 
     await r.fold(
@@ -213,6 +219,7 @@ class _ReportarScreenState extends ConsumerState<ReportarScreen> {
                 sha256: foto.sha256,
                 lat: pin.latitude,
                 lng: pin.longitude,
+                uploadedBy: sesion.userId,
               );
         }
         mensajero.showSnackBar(
@@ -224,11 +231,14 @@ class _ReportarScreenState extends ConsumerState<ReportarScreen> {
   }
 
   Future<void> _sumarme(Case caso) async {
+    if (!await asegurarVecino(context, ref)) return;
+    if (!mounted) return;
     final mensajero = ScaffoldMessenger.of(context);
     final t = Textos.of(context);
+    final sesion = await ref.read(sesionProvider.future);
     final r = await ref
         .read(repoCasosProvider)
-        .adherir(caseId: caso.id, userId: 'local', esResidente: true);
+        .adherir(caseId: caso.id, userId: sesion.userId, esResidente: true);
     mensajero.showSnackBar(
       SnackBar(
         content: Text(r.fold((f) => f.message, (_) => t.reportePublicado)),

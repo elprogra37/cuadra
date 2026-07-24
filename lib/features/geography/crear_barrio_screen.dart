@@ -12,6 +12,7 @@ import '../../data/providers.dart';
 import '../../data/repositories/repo_geografia.dart';
 import '../../services/geografia/validador_toponimos.dart';
 import '../../services/preferencias.dart';
+import '../onboarding/entrar_vecino.dart';
 
 /// Alta de barrio (§6.2): nombre → validación externa automática → dibujo
 /// del polígono → propuesto. Nada bloquea: si la validación no encuentra el
@@ -90,9 +91,13 @@ class _CrearBarrioScreenState extends ConsumerState<CrearBarrioScreen> {
   Future<void> _guardar() async {
     final ciudad = _ciudad;
     if (ciudad == null || _guardando) return;
+    // Crear barrio exige ser vecino (§7).
+    if (!await asegurarVecino(context, ref)) return;
+    if (!mounted) return;
     setState(() => _guardando = true);
     final t = Textos.of(context);
     final mensajero = ScaffoldMessenger.of(context);
+    final sesion = await ref.read(sesionProvider.future);
 
     final r = await ref
         .read(repoGeografiaProvider)
@@ -102,6 +107,7 @@ class _CrearBarrioScreenState extends ConsumerState<CrearBarrioScreen> {
           poligono: [
             for (final v in _vertices) (lat: v.latitude, lng: v.longitude),
           ],
+          createdBy: sesion.userId,
           validationSource: _validacion == _Validacion.encontrado
               ? 'osm'
               : 'manual',

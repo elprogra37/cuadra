@@ -6,8 +6,8 @@ import '../features/case/caso_screen.dart';
 import '../features/desk/desk_shell.dart';
 import '../features/geography/buscador_barrio_screen.dart';
 import '../features/geography/crear_barrio_screen.dart';
-import '../features/home_shell.dart';
 import '../features/map/mapa_screen.dart';
+import '../features/raiz_movil.dart';
 import '../features/report/reportar_screen.dart';
 
 /// Rutas nombradas de la app. Los deep links de casos (compartir por WhatsApp)
@@ -32,7 +32,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         // En Windows la raíz es la mesa de trabajo del referente (§20.4);
         // en Android, el feed de la cuadra.
         builder: (context, state) =>
-            Plataforma.esEscritorio ? const DeskShell() : const HomeShell(),
+            Plataforma.esEscritorio ? const DeskShell() : const RaizMovil(),
       ),
       GoRoute(
         path: Rutas.buscarBarrio,
